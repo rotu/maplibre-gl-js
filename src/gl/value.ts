@@ -15,6 +15,7 @@ import type {
     CullFaceModeType,
     FrontFaceType,
 } from './types';
+import {isWebGL2} from './webgl2';
 
 export interface IValue<T> {
     current: T;
@@ -417,19 +418,17 @@ export class BindElementBuffer extends BaseValue<WebGLBuffer> {
     }
 }
 
-export class BindVertexArrayOES extends BaseValue<any> {
-    vao: any;
-
-    constructor(context: Context) {
-        super(context);
-        this.vao = context.extVertexArrayObject;
-    }
+export class BindVertexArray extends BaseValue<any> {
     getDefault(): any {
         return null;
     }
     set(v: any) {
-        if (!this.vao || v === this.current && !this.dirty) return;
-        this.vao.bindVertexArrayOES(v);
+        if (v === this.current && !this.dirty) return;
+        if (isWebGL2(this.gl)) {
+            this.gl.bindVertexArray(v);
+        } else {
+            this.gl.getExtension('OES_vertex_array_object')?.bindVertexArrayOES(v);
+        }
         this.current = v;
         this.dirty = false;
     }

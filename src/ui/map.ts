@@ -2551,8 +2551,9 @@ class Map extends Camera {
             }
         }, {once: true});
 
-        const gl = this._canvas.getContext('webgl', attributes) ||
-            this._canvas.getContext('experimental-webgl', attributes);
+        const gl =
+            this._canvas.getContext('webgl2', attributes) ||
+            this._canvas.getContext('webgl', attributes);
 
         if (!gl) {
             const msg = 'Failed to initialize WebGL';
@@ -2665,10 +2666,10 @@ class Map extends Camera {
      */
     _render(paintStartTimeStamp: number) {
         let gpuTimer, frameStartTime = 0;
-        const extTimerQuery = this.painter.context.extTimerQuery;
+        const timing = this.painter.context.timing;
         if (this.listens('gpu-timing-frame')) {
-            gpuTimer = extTimerQuery.createQueryEXT();
-            extTimerQuery.beginQueryEXT(extTimerQuery.TIME_ELAPSED_EXT, gpuTimer);
+            gpuTimer = timing.createQuery();
+            timing.beginQuery(timing.TIME_ELAPSED, gpuTimer);
             frameStartTime = browser.now();
         }
 
@@ -2755,10 +2756,11 @@ class Map extends Camera {
 
         if (this.listens('gpu-timing-frame')) {
             const renderCPUTime = browser.now() - frameStartTime;
-            extTimerQuery.endQueryEXT(extTimerQuery.TIME_ELAPSED_EXT, gpuTimer);
+            const timing = this.painter.context.timing;
+            timing.endQuery(timing.TIME_ELAPSED);
             setTimeout(() => {
-                const renderGPUTime = extTimerQuery.getQueryObjectEXT(gpuTimer, extTimerQuery.QUERY_RESULT_EXT) / (1000 * 1000);
-                extTimerQuery.deleteQueryEXT(gpuTimer);
+                const renderGPUTime = timing.getQueryParameter(gpuTimer, timing.QUERY_RESULT) / (1000 * 1000);
+                timing.deleteQuery(gpuTimer);
                 this.fire(new Event('gpu-timing-frame', {
                     cpuTime: renderCPUTime,
                     gpuTime: renderGPUTime
