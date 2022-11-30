@@ -7,7 +7,7 @@ import StencilMode from './stencil_mode';
 import ColorMode from './color_mode';
 import CullFaceMode from './cull_face_mode';
 import {deepEqual} from '../util/util';
-import {ClearColor, ClearDepth, ClearStencil, ColorMask, DepthMask, StencilMask, StencilFunc, StencilOp, StencilTest, DepthRange, DepthTest, DepthFunc, Blend, BlendFunc, BlendColor, BlendEquation, CullFace, CullFaceSide, FrontFace, ProgramValue, ActiveTextureUnit, Viewport, BindFramebuffer, BindRenderbuffer, BindTexture, BindVertexBuffer, BindElementBuffer, BindVertexArrayOES, PixelStoreUnpack, PixelStoreUnpackPremultiplyAlpha, PixelStoreUnpackFlipY} from './value';
+import {ClearColor, ClearDepth, ClearStencil, ColorMask, DepthMask, StencilMask, StencilFunc, StencilOp, StencilTest, DepthRange, DepthTest, DepthFunc, Blend, BlendFunc, BlendColor, BlendEquation, CullFace, CullFaceSide, FrontFace, ProgramValue, ActiveTextureUnit, Viewport, BindFramebuffer, BindRenderbuffer, BindTexture, BindVertexBuffer, BindElementBuffer, BindVertexArray, PixelStoreUnpack, PixelStoreUnpackPremultiplyAlpha, PixelStoreUnpackFlipY} from './value';
 
 import type {TriangleIndexArray, LineIndexArray, LineStripIndexArray} from '../data/index_array_type';
 import type {
@@ -15,6 +15,8 @@ import type {
     StructArrayMember
 } from '../util/struct_array';
 import type Color from '../style-spec/util/color';
+import {getTimingAPI} from './timing';
+import {isWebGL2} from './webgl2';
 
 type ClearArgs = {
     color?: Color;
@@ -24,7 +26,7 @@ type ClearArgs = {
 
 class Context {
     gl: WebGLRenderingContext;
-    extVertexArrayObject: any;
+
     currentNumAttributes: number;
     maxTextureSize: number;
 
@@ -55,7 +57,7 @@ class Context {
     bindTexture: BindTexture;
     bindVertexBuffer: BindVertexBuffer;
     bindElementBuffer: BindElementBuffer;
-    bindVertexArrayOES: BindVertexArrayOES;
+    bindVertexArray: BindVertexArray;
     pixelStoreUnpack: PixelStoreUnpack;
     pixelStoreUnpackPremultiplyAlpha: PixelStoreUnpackPremultiplyAlpha;
     pixelStoreUnpackFlipY: PixelStoreUnpackFlipY;
@@ -64,12 +66,38 @@ class Context {
     extTextureFilterAnisotropicMax: any;
     extTextureHalfFloat: any;
     extRenderToTextureHalfFloat: any;
-    extTimerQuery: any;
+
+    get timing() {
+        return getTimingAPI(this.gl);
+    }
+
+    get HALF_FLOAT(): GLenum | null {
+        return isWebGL2(this.gl) ? this.gl.HALF_FLOAT : this.gl.getExtension('OES_texture_half_float')?.HALF_FLOAT_OES;
+    }
+
+    createVertexArray(): WebGLVertexArrayObject | WebGLVertexArrayObjectOES | undefined {
+        if (isWebGL2(this.gl))
+            return this.gl.createVertexArray();
+        return this.gl.getExtension('OES_vertex_array_object')?.createVertexArrayOES();
+    }
+
+    deleteVertexArray(x: WebGLVertexArrayObject | WebGLVertexArrayObjectOES | undefined) {
+        if (isWebGL2(this.gl))
+            return this.gl.deleteVertexArray(x);
+        return this.gl.getExtension('OES_vertex_array_object')?.deleteVertexArrayOES(x);
+    }
+
+    get extColorBufferHalfFloat(): null | {
+        readonly RGBA16F_EXT: GLenum;
+        readonly RGB16F_EXT: GLenum;
+        readonly FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT: GLenum;
+        readonly UNSIGNED_NORMALIZED_EXT :  GLenum;
+    } {
+        return this.gl.getExtension('EXT_color_buffer_half_float');
+    }
 
     constructor(gl: WebGLRenderingContext) {
         this.gl = gl;
-        this.extVertexArrayObject = this.gl.getExtension('OES_vertex_array_object');
-
         this.clearColor = new ClearColor(this);
         this.clearDepth = new ClearDepth(this);
         this.clearStencil = new ClearStencil(this);
@@ -97,7 +125,7 @@ class Context {
         this.bindTexture = new BindTexture(this);
         this.bindVertexBuffer = new BindVertexBuffer(this);
         this.bindElementBuffer = new BindElementBuffer(this);
-        this.bindVertexArrayOES = this.extVertexArrayObject && new BindVertexArrayOES(this);
+        this.bindVertexArray = new BindVertexArray(this);
         this.pixelStoreUnpack = new PixelStoreUnpack(this);
         this.pixelStoreUnpackPremultiplyAlpha = new PixelStoreUnpackPremultiplyAlpha(this);
         this.pixelStoreUnpackFlipY = new PixelStoreUnpackFlipY(this);
@@ -117,7 +145,6 @@ class Context {
             this.extRenderToTextureHalfFloat = gl.getExtension('EXT_color_buffer_half_float');
         }
 
-        this.extTimerQuery = gl.getExtension('EXT_disjoint_timer_query');
         this.maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
     }
 
@@ -179,9 +206,7 @@ class Context {
         this.bindTexture.dirty = true;
         this.bindVertexBuffer.dirty = true;
         this.bindElementBuffer.dirty = true;
-        if (this.extVertexArrayObject) {
-            this.bindVertexArrayOES.dirty = true;
-        }
+        this.bindVertexArray.dirty = true;
         this.pixelStoreUnpack.dirty = true;
         this.pixelStoreUnpackPremultiplyAlpha.dirty = true;
         this.pixelStoreUnpackFlipY.dirty = true;
@@ -295,9 +320,7 @@ class Context {
     unbindVAO() {
         // Unbinding the VAO prevents other things (custom layers, new buffer creation) from
         // unintentionally changing the state of the last VAO used.
-        if (this.extVertexArrayObject) {
-            this.bindVertexArrayOES.set(null);
-        }
+        this.bindVertexArray.set(null);
     }
 }
 

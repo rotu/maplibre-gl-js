@@ -62,7 +62,7 @@ export function setErrorWebGlContext() {
     const originalGetContext = global.HTMLCanvasElement.prototype.getContext;
 
     function imitateErrorWebGlGetContext(type, attributes) {
-        if (type === 'webgl') {
+        if (type === 'webgl' || type === 'webgl2') {
             const errorEvent = new Event('webglcontextcreationerror');
             (errorEvent as any).statusMessage = 'mocked webglcontextcreationerror message';
             this.dispatchEvent(errorEvent);

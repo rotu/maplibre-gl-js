@@ -1,6 +1,9 @@
 ## main
 ### ✨ Features and improvements
 - *...Add new stuff here...*
+- Use WebGL2 context when available ([#1891](https://github.com/maplibre/maplibre-gl-js/pull/1891))
+-
+
 ### 🐞 Bug fixes
 - *...Add new stuff here...*
 - 
