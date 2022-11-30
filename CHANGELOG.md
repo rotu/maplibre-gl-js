@@ -1,6 +1,9 @@
 ## main
 ### ✨ Features and improvements
 - *...Add new stuff here...*
+- Use WebGL2 context when available ([#1891](https://github.com/maplibre/maplibre-gl-js/pull/1891))
+-
+
 ### 🐞 Bug fixes
 - Fix errors when running style-spec bin scripts and added missing help. Removed unnecessary script 'gl-style-composite'. ([#1971](https://github.com/maplibre/maplibre-gl-js/pull/1971))
 - *...Add new stuff here...*
