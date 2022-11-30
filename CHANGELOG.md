@@ -12,6 +12,7 @@
 
 ### 🐞 Bug fixes
 - *...Add new stuff here...*
+:q- Remove dependency on `@rollup/plugin-json`, whcih was in conflict with `rollup-plugin-import-assert`
 - Fix `getElevation()` causing uncaught error ([#1650](https://github.com/maplibre/maplibre-gl-js/issues/1650)).
 - Add dev version for csp build ([#1730](https://github.com/maplibre/maplibre-gl-js/pull/1730))
 - Fix headless benchmark execution especially on VM ([#1732](https://github.com/maplibre/maplibre-gl-js/pull/1732))
