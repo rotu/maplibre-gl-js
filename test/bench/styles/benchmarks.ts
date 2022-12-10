@@ -1,6 +1,6 @@
 import maplibregl from '../../../src';
 import locationsWithTileID from '../lib/locations_with_tile_id';
-import styleBenchmarkLocations from '@mapbox/gazetteer/benchmark/style-benchmark-locations.json' assert {type: 'json'};
+import styleBenchmarkLocations from '../data/style-benchmark-locations.json' assert {type: 'json'};
 import StyleLayerCreate from '../benchmarks/style_layer_create';
 import Validate from '../benchmarks/style_validate';
 import Layout from '../benchmarks/layout';
@@ -23,7 +23,7 @@ function register(name, Benchmark, locations?, location?) {
             bench: new Benchmark(style, locations)
         });
     }
-    benchmarks.push({name, versions, location});
+    benchmarks.push({ name, versions, location });
 }
 
 register('StyleLayerCreate', StyleLayerCreate);

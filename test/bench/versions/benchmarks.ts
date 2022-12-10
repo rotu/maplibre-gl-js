@@ -1,21 +1,21 @@
 import maplibregl from '../../../src';
 import locationsWithTileID from '../lib/locations_with_tile_id';
-import styleBenchmarkLocations from '@mapbox/gazetteer/benchmark/style-benchmark-locations.json' assert {type: 'json'};
+import styleBenchmarkLocations from '../data/style-benchmark-locations.json' assert {type: 'json'};
 import Layout from '../benchmarks/layout';
 import Placement from '../benchmarks/placement';
 import SymbolLayout from '../benchmarks/symbol_layout';
 import WorkerTransfer from '../benchmarks/worker_transfer';
 import Paint from '../benchmarks/paint';
 import PaintStates from '../benchmarks/paint_states';
-import {PropertyLevelRemove, FeatureLevelRemove, SourceLevelRemove} from '../benchmarks/remove_paint_state';
-import {LayerBackground, LayerCircle, LayerFill, LayerFillExtrusion, LayerHeatmap, LayerHillshade, LayerLine, LayerRaster, LayerSymbol, LayerSymbolWithIcons, LayerTextWithVariableAnchor, LayerSymbolWithSortKey} from '../benchmarks/layers';
+import { PropertyLevelRemove, FeatureLevelRemove, SourceLevelRemove } from '../benchmarks/remove_paint_state';
+import { LayerBackground, LayerCircle, LayerFill, LayerFillExtrusion, LayerHeatmap, LayerHillshade, LayerLine, LayerRaster, LayerSymbol, LayerSymbolWithIcons, LayerTextWithVariableAnchor, LayerSymbolWithSortKey } from '../benchmarks/layers';
 import Load from '../benchmarks/map_load';
 import HillshadeLoad from '../benchmarks/hillshade_load';
 import Validate from '../benchmarks/style_validate';
 import StyleLayerCreate from '../benchmarks/style_layer_create';
 import QueryPoint from '../benchmarks/query_point';
 import QueryBox from '../benchmarks/query_box';
-import {FunctionCreate, FunctionEvaluate, ExpressionCreate, ExpressionEvaluate} from '../benchmarks/expressions';
+import { FunctionCreate, FunctionEvaluate, ExpressionCreate, ExpressionEvaluate } from '../benchmarks/expressions';
 import FilterCreate from '../benchmarks/filter_create';
 import FilterEvaluate from '../benchmarks/filter_evaluate';
 import CustomLayer from '../benchmarks/customlayer';
@@ -23,7 +23,7 @@ import MapIdle from '../benchmarks/map_idle';
 
 import getWorkerPool from '../../../src/util/global_worker_pool';
 
-const styleLocations = locationsWithTileID(styleBenchmarkLocations.features  as GeoJSON.Feature<GeoJSON.Point>[]).filter(v => v.zoom < 15); // the used maptiler sources have a maxzoom of 14
+const styleLocations = locationsWithTileID(styleBenchmarkLocations.features as GeoJSON.Feature<GeoJSON.Point>[]).filter(v => v.zoom < 15); // the used maptiler sources have a maxzoom of 14
 
 (window as any).maplibreglBenchmarks = (window as any).maplibreglBenchmarks || {};
 
@@ -37,7 +37,7 @@ function register(name, bench) {
 const style = 'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL';
 const center = [-77.032194, 38.912753];
 const zooms = [4, 8, 11, 13, 15, 17];
-const locations = zooms.map(zoom => ({center, zoom}));
+const locations = zooms.map(zoom => ({ center, zoom }));
 
 register('Paint', new Paint(style, locations));
 register('QueryPoint', new QueryPoint(style, locations));
