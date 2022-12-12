@@ -1,0 +1,78 @@
+name: Workflow
+on: [push, pull_request]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: >
+          npm ci
+          npm run lint
+          npm run lint-docs
+          npm run lint-css
+  typecheck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: >
+          npm ci
+          npm run typecheck
+  build:
+    name: build the project
+    strategy:
+      matrix:
+        node: [10, 12, 14, 16, 18, 19]
+        platform: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.platform }}
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with: 
+          node-version: ${{ matrix.node }}
+    - name: build
+      run: >
+        npm ci
+        npm run generate-typings
+        npm run build-prod
+        npm run build-csp
+        npm run build-dev
+        npm run build-css
+        npm run build-style-spec
+        npm run test-build
+      shell: bash
+    - name: test
+      run: npm test
+    - uses: actions/upload-artifact@v3
+      with:
+        name: dist
+        path: ./dist
+  testbrowser:
+    name: test on a browser
+    needs: build
+    strategy:
+      matrix:
+          node: [current, latest, lts/*]
+          platform: [ubuntu-latest, windows-latest, macos-latest]  
+    runs-on: ${{ matrix.platform }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 16 x64
+        uses: actions/setup-node@v3
+        with:
+          node-version:  ${{ matrix.node }}
+          architecture: x64
+      - name: Install fonts-noto-cjk
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install fonts-noto-cjk
+      - if: runner.os == 'Linux'
+        run: |
+          npm ci
+          npm run build-dev
+          xvfb-run -s "-ac -screen 0 1280x1024x24" npm run test-browser

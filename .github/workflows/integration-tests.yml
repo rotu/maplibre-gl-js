@@ -1,0 +1,98 @@
+name: Integration Tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test_browser:
+    name: Browser
+    runs-on: ubuntu-20.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 16 x64
+        uses: actions/setup-node@v3.5.1
+        with:
+          node-version: 16
+          architecture: x64
+      - name: Install fonts-noto-cjk
+        run: |
+          sudo apt-get update
+          sudo apt-get install fonts-noto-cjk
+      - run: |
+          npm ci
+          npm run build-dev
+          xvfb-run -s "-ac -screen 0 1280x1024x24" npm run test-browser
+  test_expression:
+    name: Expression
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 16 x64
+        uses: actions/setup-node@v3.5.1
+        with:
+          node-version: 16
+          architecture: x64
+      - run: |
+          npm ci
+          npm run test-expression
+  test_render:
+    name: Render
+    runs-on: ubuntu-20.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 16 x64
+        uses: actions/setup-node@v3.5.1
+        with:
+          node-version: 16
+          architecture: x64
+      - run: npm run build-dev
+      - run: xvfb-run -s "-ac -screen 0 1280x1024x24" npm run test-render
+  test_style_spec:
+    name: Style Spec
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 16 x64
+        uses: actions/setup-node@v3.5.1
+        with:
+          node-version: 16
+          architecture: x64
+      - run: |
+          npm ci
+          npm run build-dev
+      - run: xvfb-run -s "-ac -screen 0 1280x1024x24" npm run test-style-spec
+  test_symbol_shaping:
+    name: Symbol Shaping
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 16 x64
+        uses: actions/setup-node@v3.5.1
+        with:
+          node-version: 16
+          architecture: x64
+      - run: |
+          npm ci
+          npm run build-dev      
+      - run: xvfb-run -s "-ac -screen 0 1280x1024x24" npm run test-symbol-shaping
+  test_query:
+    name: Query
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 16 x64
+        uses: actions/setup-node@v3.5.1
+        with:
+          node-version: 16
+          architecture: x64
+      - run: |
+          npm ci
+          npm run build-dev
+      - run: xvfb-run -s "-ac -screen 0 1280x1024x24" npm run test-query

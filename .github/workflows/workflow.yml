@@ -1,0 +1,143 @@
+name: Workflow
+on: [push, pull_request]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: |
+          npm ci
+          npm run lint
+          npm run lint-docs
+          npm run lint-css
+  typecheck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: |
+          npm ci
+          npm run typecheck
+  build:
+    name: Build
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [latest,current,lts/*]
+        platform: [ubuntu-latest, windows-latest, macOS-latest]
+    runs-on: ${{ matrix.platform }}
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: "recursive"
+    - uses: actions/setup-node@v3
+      with: 
+          node-version: ${{ matrix.node }}
+    - name: Install dependencies (Linux)
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get install -y build-essential libxi-dev libglu1-mesa-dev libglew-dev pkg-config
+    - name: Install dependencies (Mac)
+      if: runner.os == 'macOS'
+      run: |
+        brew install pango cairo
+    - name: build
+      run: |
+        npm ci
+        npm run generate-typings
+        npm run build-prod
+        npm run build-csp
+        npm run build-dev
+        npm run build-css
+        npm run build-style-spec
+        npm run test-build
+  test:
+    name: test
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [latest,current,lts/*]
+        platform: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.platform }}
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: "recursive"
+    - uses: actions/setup-node@v3
+      with: 
+          node-version: ${{ matrix.node }}
+    - name: Install dependencies (Linux)
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get install -y build-essential libxi-dev libglu1-mesa-dev libglew-dev pkg-config
+    - name: Install dependencies (Mac)
+      if: runner.os == 'macOS'
+      run: |
+        brew install pango cairo
+    - name: build
+      run: |
+        npm ci
+        npm test
+  testbrowser:
+    name: test on a browser
+    needs: build
+    strategy:
+      matrix:
+          node: [current, latest, lts/*]
+          platform: [ubuntu-latest, windows-latest, macos-latest]  
+    runs-on: ${{ matrix.platform }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: "recursive"
+      - name: Use Node.js 16 x64
+        uses: actions/setup-node@v3
+        with:
+          node-version:  ${{ matrix.node }}
+      - name: Install fonts-noto-cjk
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install fonts-noto-cjk
+      - if: runner.os == 'Linux'
+        run: |
+          npm install
+          npm run build-dev
+          xvfb-run -s "-ac -screen 0 1280x1024x24" npm run test-browser
+  check-size:
+    needs: build
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: "recursive"
+      - uses: actions/setup-node@v3
+      - run: |
+          npm install
+          npm run generate-typings
+          npm run build-prod
+          npm run build-csp
+          npm run build-dev
+          npm run build-css
+          npm run build-style-spec
+          npm run test-build
+      - run: npx source-map-explorer before/maplibre-gl.js --gzip --json before.json
+      - run: npx source-map-explorer after/maplibre-gl.js --gzip --json after.json
+      - name: Build bundle size report
+        run: |
+          node build/check-bundle-size.js > comment-body.txt
+          cat comment-body.txt
+      - if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          path: comment-body.txt
+          header: bundle-size-report
+          number: ${{github.event.number}}
