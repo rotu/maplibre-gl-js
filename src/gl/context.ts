@@ -15,7 +15,6 @@ import type {
     StructArrayMember
 } from '../util/struct_array';
 import type Color from '../style-spec/util/color';
-import {getTimingAPI} from './timing';
 import {isWebGL2} from './webgl2';
 
 type ClearArgs = {
@@ -66,10 +65,6 @@ class Context {
     extTextureFilterAnisotropicMax: any;
     extTextureHalfFloat: any;
     extRenderToTextureHalfFloat: any;
-
-    get timing() {
-        return getTimingAPI(this.gl);
-    }
 
     get HALF_FLOAT(): GLenum | null {
         return isWebGL2(this.gl) ? this.gl.HALF_FLOAT : this.gl.getExtension('OES_texture_half_float')?.HALF_FLOAT_OES;
