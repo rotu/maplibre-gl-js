@@ -1,7 +1,14 @@
 /// <reference lib="dom" />
 
+const cache = new WeakMap();
 export function isWebGL2(
     gl: WebGLRenderingContext
 ): gl is WebGL2RenderingContext {
-    return gl.canvas.getContext('webgl2') === gl;
+    if (cache.has(gl)) {
+        return cache.get(gl);
+    } else {
+        const value = gl.getParameter(gl.VERSION).startsWith('WebGL 2.0');
+        cache.set(gl, value);
+        return value;
+    }
 }
