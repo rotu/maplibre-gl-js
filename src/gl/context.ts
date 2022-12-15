@@ -63,8 +63,6 @@ class Context {
 
     extTextureFilterAnisotropic: any;
     extTextureFilterAnisotropicMax: any;
-    extTextureHalfFloat: any;
-    extRenderToTextureHalfFloat: any;
 
     get HALF_FLOAT(): GLenum | null {
         return isWebGL2(this.gl) ? this.gl.HALF_FLOAT : this.gl.getExtension('OES_texture_half_float')?.HALF_FLOAT_OES;
@@ -80,15 +78,6 @@ class Context {
         if (isWebGL2(this.gl))
             return this.gl.deleteVertexArray(x);
         return this.gl.getExtension('OES_vertex_array_object')?.deleteVertexArrayOES(x);
-    }
-
-    get extColorBufferHalfFloat(): null | {
-        readonly RGBA16F_EXT: GLenum;
-        readonly RGB16F_EXT: GLenum;
-        readonly FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT: GLenum;
-        readonly UNSIGNED_NORMALIZED_EXT :  GLenum;
-    } {
-        return this.gl.getExtension('EXT_color_buffer_half_float');
     }
 
     constructor(gl: WebGLRenderingContext) {
@@ -132,12 +121,6 @@ class Context {
         );
         if (this.extTextureFilterAnisotropic) {
             this.extTextureFilterAnisotropicMax = gl.getParameter(this.extTextureFilterAnisotropic.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
-        }
-
-        this.extTextureHalfFloat = gl.getExtension('OES_texture_half_float');
-        if (this.extTextureHalfFloat) {
-            gl.getExtension('OES_texture_half_float_linear');
-            this.extRenderToTextureHalfFloat = gl.getExtension('EXT_color_buffer_half_float');
         }
 
         this.maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
