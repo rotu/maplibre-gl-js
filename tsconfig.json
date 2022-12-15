@@ -20,14 +20,25 @@
       "DOM",
       "DOM.Iterable"
     ],
-    "types": ["node", "jest", "geojson", "offscreencanvas"]
+    "types": [
+      "node",
+      "jest",
+      "geojson",
+      "offscreencanvas"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "gl": [
+        "src/mockgl"
+      ]
+    }
   },
   "include": [
     "rollup.config.**",
     "src/**/*.ts",
     "test/bench/**/*.ts",
     "test/bench/**/*.tsx",
-    "build/**/*.ts"
+    "build/**/*.ts",
   ],
   "exclude": [
     "node_modules",
