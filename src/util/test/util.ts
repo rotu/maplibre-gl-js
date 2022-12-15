@@ -44,6 +44,9 @@ export function setWebGlContext() {
     const originalGetContext = global.HTMLCanvasElement.prototype.getContext;
 
     function imitateWebGlGetContext(type, attributes) {
+        if (type === 'webgl2') {
+            return null;
+        }
         if (type === 'webgl') {
             if (!this._webGLContext) {
                 this._webGLContext = gl(this.width, this.height, attributes);
@@ -62,7 +65,10 @@ export function setErrorWebGlContext() {
     const originalGetContext = global.HTMLCanvasElement.prototype.getContext;
 
     function imitateErrorWebGlGetContext(type, attributes) {
-        if (type === 'webgl' || type === 'webgl2') {
+        if (type === 'webgl2') {
+            return null;
+        }
+        if (type === 'webgl') {
             const errorEvent = new Event('webglcontextcreationerror');
             (errorEvent as any).statusMessage = 'mocked webglcontextcreationerror message';
             this.dispatchEvent(errorEvent);

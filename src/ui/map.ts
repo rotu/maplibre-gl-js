@@ -2665,14 +2665,6 @@ class Map extends Camera {
      * @private
      */
     _render(paintStartTimeStamp: number) {
-        let gpuTimer, frameStartTime = 0;
-        const timing = this.painter.context.timing;
-        if (this.listens('gpu-timing-frame')) {
-            gpuTimer = timing.createQuery();
-            timing.beginQuery(timing.TIME_ELAPSED, gpuTimer);
-            frameStartTime = browser.now();
-        }
-
         // A custom layer may have used the context asynchronously. Mark the state as dirty.
         this.painter.context.setDirty();
         this.painter.setBaseState();
@@ -2732,7 +2724,6 @@ class Map extends Camera {
             moving: this.isMoving(),
             fadeDuration: this._fadeDuration,
             showPadding: this.showPadding,
-            gpuTiming: !!this.listens('gpu-timing-layer'),
         });
 
         this.fire(new Event('render'));
@@ -2752,34 +2743,6 @@ class Map extends Camera {
             // all tiles held for fading. If we didn't do this, the tiles
             // would just sit in the SourceCaches until the next render
             this.style._releaseSymbolFadeTiles();
-        }
-
-        if (this.listens('gpu-timing-frame')) {
-            const renderCPUTime = browser.now() - frameStartTime;
-            const timing = this.painter.context.timing;
-            timing.endQuery(timing.TIME_ELAPSED);
-            setTimeout(() => {
-                const renderGPUTime = timing.getQueryParameter(gpuTimer, timing.QUERY_RESULT) / (1000 * 1000);
-                timing.deleteQuery(gpuTimer);
-                this.fire(new Event('gpu-timing-frame', {
-                    cpuTime: renderCPUTime,
-                    gpuTime: renderGPUTime
-                }));
-            }, 50); // Wait 50ms to give time for all GPU calls to finish before querying
-        }
-
-        if (this.listens('gpu-timing-layer')) {
-            // Resetting the Painter's per-layer timing queries here allows us to isolate
-            // the queries to individual frames.
-            const frameLayerQueries = this.painter.collectGpuTimers();
-
-            setTimeout(() => {
-                const renderedLayerTimes = this.painter.queryGpuTimers(frameLayerQueries);
-
-                this.fire(new Event('gpu-timing-layer', {
-                    layerTimes: renderedLayerTimes
-                }));
-            }, 50); // Wait 50ms to give time for all GPU calls to finish before querying
         }
 
         // Schedule another render frame if it's needed.
