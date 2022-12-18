@@ -3,7 +3,7 @@ import type Painter from './painter';
 import type LineStyleLayer from '../style/style_layer/line_style_layer';
 import type SymbolStyleLayer from '../style/style_layer/symbol_style_layer';
 import Context from '../gl/context';
-import gl from 'gl';
+import gl from '../mockgl';
 import ColorMode from '../gl/color_mode';
 import Terrain from './terrain';
 import Style from '../style/style';

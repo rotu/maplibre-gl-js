@@ -1,7 +1,7 @@
 import VertexBuffer from './vertex_buffer';
 import {StructArrayLayout3i6} from '../data/array_types.g';
 import Context from '../gl/context';
-import gl from 'gl';
+import gl from '../mockgl';
 import {StructArrayMember} from '../util/struct_array';
 
 describe('VertexBuffer', () => {

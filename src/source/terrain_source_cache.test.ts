@@ -7,7 +7,7 @@ import Transform from '../geo/transform';
 import {Evented} from '../util/evented';
 import Painter from '../render/painter';
 import Context from '../gl/context';
-import gl from 'gl';
+import gl from '../mockgl';
 import RasterDEMTileSource from './raster_dem_tile_source';
 import {OverscaledTileID} from './tile_id';
 import Tile from './tile';

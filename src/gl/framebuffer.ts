@@ -22,7 +22,7 @@ class Framebuffer {
             this.depthAttachment = new DepthAttachment(context, fbo);
         }
         if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) {
-            throw new Error('Framebuffer is not complete');
+            console.warn('Framebuffer is not complete');
         }
     }
 

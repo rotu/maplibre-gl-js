@@ -1,6 +1,6 @@
 import Context from './context';
 import RenderPool from './render_pool';
-import gl from 'gl';
+import gl from '../mockgl';
 
 describe('render pool', () => {
     const POOL_SIZE = 3;

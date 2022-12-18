@@ -2,7 +2,7 @@ import {ClearColor, ClearDepth, ClearStencil, ColorMask, DepthMask, StencilMask,
 import Context from './context';
 import Color from '../style-spec/util/color';
 import {deepEqual} from '../util/util';
-import gl from 'gl';
+import gl from '../mockgl';
 
 const context = new Context(gl(10, 10) as any);
 
