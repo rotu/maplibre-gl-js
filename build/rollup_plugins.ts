@@ -12,6 +12,8 @@ import json from '@rollup/plugin-json';
 // Common set of plugins/transformations shared across different rollup
 // builds (main maplibre bundle, style-spec package, benchmarks bundle)
 
+
+
 export const nodeResolve = resolve({
     browser: true,
     preferBuiltins: false

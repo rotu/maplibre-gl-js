@@ -1,5 +1,6 @@
 import composite from './composite';
-import {LineLayerSpecification} from './types.g';
+import { LineLayerSpecification } from './types.g';
+import * as WA from 'wide-align';
 
 describe('composite', () => {
     test('composites Mapbox vector sources', () => {
