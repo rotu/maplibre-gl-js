@@ -3,7 +3,6 @@ import typescript from '@rollup/plugin-typescript';
 import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import commonjs from '@rollup/plugin-commonjs';
-import terser from '@rollup/plugin-terser';
 import minifyStyleSpec from './rollup_plugin_minify_style_spec';
 import strip from '@rollup/plugin-strip';
 import {Plugin} from 'rollup';
@@ -32,13 +31,6 @@ export const plugins = (production: boolean): Plugin[] => [
     production && strip({
         sourceMap: true,
         functions: ['PerformanceUtils.*', 'Debug.*']
-    }),
-    production && terser({
-        compress: {
-            // eslint-disable-next-line camelcase
-            pure_getters: true,
-            passes: 3
-        }
     }),
     nodeResolve,
     typescript(),
