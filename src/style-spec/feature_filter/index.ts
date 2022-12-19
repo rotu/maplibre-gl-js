@@ -2,7 +2,10 @@ import {createExpression} from '../expression';
 import type {GlobalProperties, Feature} from '../expression';
 import type {CanonicalTileID} from '../../source/tile_id';
 import {StylePropertySpecification} from '../style-spec';
-import {ExpressionFilterSpecification} from '../types.g';
+import { ExpressionFilterSpecification } from '../types.g';
+import StencilMode from '../../gl/stencil_mode';
+
+console.log(StencilMode)
 
 type FilterExpression = (
     globalProperties: GlobalProperties,
