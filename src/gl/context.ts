@@ -106,6 +106,9 @@ class Context {
 
         this.maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
         this.HALF_FLOAT = isWebGL2(gl) ? gl.HALF_FLOAT : gl.getExtension('OES_texture_half_float')?.HALF_FLOAT_OES;
+
+        gl.getExtension('OES_texture_half_float_linear');
+        gl.getExtension('EXT_color_buffer_half_float');
     }
 
     setDefault() {
