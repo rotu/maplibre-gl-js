@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import composite from './composite';
 import { LineLayerSpecification } from './types.g';
 import * as WA from 'wide-align';
