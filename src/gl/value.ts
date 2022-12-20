@@ -418,16 +418,17 @@ export class BindElementBuffer extends BaseValue<WebGLBuffer> {
     }
 }
 
-export class BindVertexArray extends BaseValue<any> {
-    getDefault(): any {
+export class BindVertexArray extends BaseValue<WebGLVertexArrayObject> {
+    getDefault(): WebGLVertexArrayObject | null {
         return null;
     }
-    set(v: any) {
+    set(v: WebGLVertexArrayObject | null) {
         if (v === this.current && !this.dirty) return;
-        if (isWebGL2(this.gl)) {
-            this.gl.bindVertexArray(v);
+        const gl = this.gl;
+        if (isWebGL2(gl)) {
+            gl.bindVertexArray(v);
         } else {
-            this.gl.getExtension('OES_vertex_array_object')?.bindVertexArrayOES(v);
+            gl.getExtension('OES_vertex_array_object')?.bindVertexArrayOES(v);
         }
         this.current = v;
         this.dirty = false;

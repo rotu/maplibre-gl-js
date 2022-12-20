@@ -1,5 +1,3 @@
-/// <reference lib="dom" />
-
 const cache = new WeakMap();
 export function isWebGL2(
     gl: WebGLRenderingContext

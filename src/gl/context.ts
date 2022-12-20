@@ -61,24 +61,9 @@ class Context {
     pixelStoreUnpackPremultiplyAlpha: PixelStoreUnpackPremultiplyAlpha;
     pixelStoreUnpackFlipY: PixelStoreUnpackFlipY;
 
-    extTextureFilterAnisotropic: any;
-    extTextureFilterAnisotropicMax: any;
-
-    get HALF_FLOAT(): GLenum | null {
-        return isWebGL2(this.gl) ? this.gl.HALF_FLOAT : this.gl.getExtension('OES_texture_half_float')?.HALF_FLOAT_OES;
-    }
-
-    createVertexArray(): WebGLVertexArrayObject | WebGLVertexArrayObjectOES | undefined {
-        if (isWebGL2(this.gl))
-            return this.gl.createVertexArray();
-        return this.gl.getExtension('OES_vertex_array_object')?.createVertexArrayOES();
-    }
-
-    deleteVertexArray(x: WebGLVertexArrayObject | WebGLVertexArrayObjectOES | undefined) {
-        if (isWebGL2(this.gl))
-            return this.gl.deleteVertexArray(x);
-        return this.gl.getExtension('OES_vertex_array_object')?.deleteVertexArrayOES(x);
-    }
+    extTextureFilterAnisotropic;
+    extTextureFilterAnisotropicMax?: GLfloat;
+    HALF_FLOAT?: GLenum;
 
     constructor(gl: WebGLRenderingContext) {
         this.gl = gl;
@@ -114,16 +99,13 @@ class Context {
         this.pixelStoreUnpackPremultiplyAlpha = new PixelStoreUnpackPremultiplyAlpha(this);
         this.pixelStoreUnpackFlipY = new PixelStoreUnpackFlipY(this);
 
-        this.extTextureFilterAnisotropic = (
-            gl.getExtension('EXT_texture_filter_anisotropic') ||
-            gl.getExtension('MOZ_EXT_texture_filter_anisotropic') ||
-            gl.getExtension('WEBKIT_EXT_texture_filter_anisotropic')
-        );
+        this.extTextureFilterAnisotropic = gl.getExtension('EXT_texture_filter_anisotropic');
         if (this.extTextureFilterAnisotropic) {
             this.extTextureFilterAnisotropicMax = gl.getParameter(this.extTextureFilterAnisotropic.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
         }
 
         this.maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+        this.HALF_FLOAT = isWebGL2(gl) ? gl.HALF_FLOAT : gl.getExtension('OES_texture_half_float')?.HALF_FLOAT_OES;
     }
 
     setDefault() {
@@ -293,6 +275,18 @@ class Context {
         }
 
         this.colorMask.set(colorMode.mask);
+    }
+
+    createVertexArray(): WebGLVertexArrayObject | undefined {
+        if (isWebGL2(this.gl))
+            return this.gl.createVertexArray();
+        return this.gl.getExtension('OES_vertex_array_object')?.createVertexArrayOES();
+    }
+
+    deleteVertexArray(x: WebGLVertexArrayObject | undefined) {
+        if (isWebGL2(this.gl))
+            return this.gl.deleteVertexArray(x);
+        return this.gl.getExtension('OES_vertex_array_object')?.deleteVertexArrayOES(x);
     }
 
     unbindVAO() {
