@@ -75,7 +75,7 @@ class Coercion implements Expression {
                         error = validateRGBA(input[0], input[1], input[2], input[3]);
                     }
                     if (!error) {
-                        return new Color((input[0] as any) / 255, (input[1] as any) / 255, (input[2] as any) / 255, (input[3] as any));
+                        return new Color((input[0]) / 255, (input[1]) / 255, (input[2]) / 255, (input[3]));
                     }
                 }
             }

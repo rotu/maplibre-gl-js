@@ -47,7 +47,7 @@ describe('ScaleControl', () => {
         map.addControl(scale);
         map.setZoom(12.5);
 
-        const el = map.getContainer().querySelector(selector) as HTMLElement;
+        const el = map.getContainer().querySelector(selector);
         expect(parseFloat(el.style.width) <= maxWidth).toBeTruthy();
     });
 });

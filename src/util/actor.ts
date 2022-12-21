@@ -198,7 +198,7 @@ class Actor {
             } else if (this.parent.getWorkerSource) {
                 // task.type == sourcetype.method
                 const keys = task.type.split('.');
-                const scope = (this.parent as any).getWorkerSource(task.sourceMapId, keys[0], params.source);
+                const scope = (this.parent).getWorkerSource(task.sourceMapId, keys[0], params.source);
                 callback = scope[keys[1]](params, done);
             } else {
                 // No function was found.

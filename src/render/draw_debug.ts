@@ -8,7 +8,7 @@ import ColorMode from '../gl/color_mode';
 import type Painter from './painter';
 import type SourceCache from '../source/source_cache';
 import type {OverscaledTileID} from '../source/tile_id';
-import Style from '../style/style';
+import type Style from '../style/style';
 
 export default drawDebug;
 

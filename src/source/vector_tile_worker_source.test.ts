@@ -4,10 +4,11 @@ import vt from '@mapbox/vector-tile';
 import Protobuf from 'pbf';
 import VectorTileWorkerSource from '../source/vector_tile_worker_source';
 import StyleLayerIndex from '../style/style_layer_index';
-import {fakeServer, FakeServer} from 'nise';
-import Actor from '../util/actor';
-import {TileParameters, WorkerTileParameters} from './worker_source';
-import WorkerTile from './worker_tile';
+import type {FakeServer} from 'nise';
+import {fakeServer} from 'nise';
+import type Actor from '../util/actor';
+import type {TileParameters, WorkerTileParameters} from './worker_source';
+import type WorkerTile from './worker_tile';
 import {setPerformance} from '../util/test/util';
 
 describe('vector tile worker source', () => {

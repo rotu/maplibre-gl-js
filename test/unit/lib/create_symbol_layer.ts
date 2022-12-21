@@ -1,9 +1,9 @@
 import SymbolBucket from '../../../src/data/bucket/symbol_bucket';
 import SymbolStyleLayer from '../../../src/style/style_layer/symbol_style_layer';
 import featureFilter from '../../../src/style-spec/feature_filter';
-import {LayerSpecification} from '../../../src/style-spec/types.g';
-import EvaluationParameters from '../../../src/style/evaluation_parameters';
-import {BucketParameters} from '../../../src/data/bucket';
+import type {LayerSpecification} from '../../../src/style-spec/types.g';
+import type EvaluationParameters from '../../../src/style/evaluation_parameters';
+import type {BucketParameters} from '../../../src/data/bucket';
 
 export function createSymbolBucket(layerId, font, text, collisionBoxArray) {
     const layer = new SymbolStyleLayer({

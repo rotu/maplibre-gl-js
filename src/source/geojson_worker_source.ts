@@ -21,7 +21,8 @@ import type {LoadVectorDataCallback} from './vector_tile_worker_source';
 import type {RequestParameters, ResponseCallback} from '../util/ajax';
 import type {Callback} from '../types/callback';
 import type {Cancelable} from '../types/cancelable';
-import {isUpdateableGeoJSON, type GeoJSONSourceDiff, applySourceDiff, toUpdateable, GeoJSONFeatureId} from './geojson_source_diff';
+import type {GeoJSONFeatureId} from './geojson_source_diff';
+import {isUpdateableGeoJSON, type GeoJSONSourceDiff, applySourceDiff, toUpdateable} from './geojson_source_diff';
 
 export type LoadGeoJSONParameters = {
     request?: RequestParameters;

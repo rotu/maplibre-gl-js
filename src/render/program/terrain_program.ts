@@ -6,7 +6,7 @@ import {
 } from '../uniform_binding';
 import type Context from '../../gl/context';
 import type {UniformValues, UniformLocations} from '../../render/uniform_binding';
-import {mat4} from 'gl-matrix';
+import type {mat4} from 'gl-matrix';
 
 export type TerrainPreludeUniformsType = {
     'u_depth': Uniform1i;

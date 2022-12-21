@@ -8,8 +8,8 @@ import Point from '@mapbox/point-geometry';
 import {Event, ErrorEvent, Evented} from '../util/evented';
 import {extend} from '../util/util';
 import browser from '../util/browser';
-import Dispatcher from '../util/dispatcher';
-import {Callback} from '../types/callback';
+import type Dispatcher from '../util/dispatcher';
+import type {Callback} from '../types/callback';
 
 class SourceMock extends Evented {
     id: string;

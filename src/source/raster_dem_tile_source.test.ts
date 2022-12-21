@@ -1,9 +1,10 @@
-import {fakeServer, FakeServer} from 'nise';
+import type {FakeServer} from 'nise';
+import {fakeServer} from 'nise';
 import RasterDEMTileSource from './raster_dem_tile_source';
 import {OverscaledTileID} from './tile_id';
 import {RequestManager} from '../util/request_manager';
-import Dispatcher from '../util/dispatcher';
-import Tile from './tile';
+import type Dispatcher from '../util/dispatcher';
+import type Tile from './tile';
 
 function createSource(options, transformCallback?) {
     const source = new RasterDEMTileSource('id', options, {send() {}} as any as Dispatcher, options.eventedParent);

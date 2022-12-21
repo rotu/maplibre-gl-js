@@ -1,14 +1,17 @@
+import type {
+    AJAXError
+} from './ajax';
 import {
     getArrayBuffer,
     getJSON,
     postData,
     getImage,
-    resetImageRequestQueue,
-    AJAXError
+    resetImageRequestQueue
 } from './ajax';
 import config from './config';
 import webpSupported from './webp_supported';
-import {fakeServer, FakeServer} from 'nise';
+import type {FakeServer} from 'nise';
+import {fakeServer} from 'nise';
 import {stubAjaxGetImage} from './test/util';
 
 function readAsText(blob) {

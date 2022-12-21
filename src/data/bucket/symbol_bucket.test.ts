@@ -7,17 +7,18 @@ import {CollisionBoxArray} from '../../data/array_types.g';
 import {performSymbolLayout} from '../../symbol/symbol_layout';
 import {Placement} from '../../symbol/placement';
 import Transform from '../../geo/transform';
-import {CanonicalTileID, OverscaledTileID} from '../../source/tile_id';
+import type {CanonicalTileID} from '../../source/tile_id';
+import {OverscaledTileID} from '../../source/tile_id';
 import Tile from '../../source/tile';
 import CrossTileSymbolIndex from '../../symbol/cross_tile_symbol_index';
 import FeatureIndex from '../../data/feature_index';
 import {createSymbolBucket, createSymbolIconBucket} from '../../../test/unit/lib/create_symbol_layer';
 import {RGBAImage} from '../../util/image';
 import {ImagePosition} from '../../render/image_atlas';
-import {IndexedFeature, PopulateParameters} from '../bucket';
-import {StyleImage} from '../../style/style_image';
+import type {IndexedFeature, PopulateParameters} from '../bucket';
+import type {StyleImage} from '../../style/style_image';
 import glyphs from '../../../test/unit/assets/fontstack-glyphs.json' assert {type: 'json'};
-import {StyleGlyph} from '../../style/style_glyph';
+import type {StyleGlyph} from '../../style/style_glyph';
 
 // Load a point feature from fixture tile.
 const vt = new VectorTile(new Protobuf(fs.readFileSync(path.resolve(__dirname, '../../../test/unit/assets/mbsv5-6-18-23.vector.pbf'))));

@@ -1,5 +1,6 @@
 import {Aabb, Frustum} from './primitives';
-import {mat4, vec3, vec4} from 'gl-matrix';
+import type {vec4} from 'gl-matrix';
+import {mat4, vec3} from 'gl-matrix';
 
 describe('primitives', () => {
     test('Create an aabb', () => {

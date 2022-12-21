@@ -10,7 +10,7 @@ import Texture from '../render/texture';
 import browser from '../util/browser';
 import toEvaluationFeature from '../data/evaluation_feature';
 import EvaluationParameters from '../style/evaluation_parameters';
-import SourceFeatureState from '../source/source_state';
+import type SourceFeatureState from '../source/source_state';
 import {lazyLoadRTLTextPlugin} from './rtl_text_plugin';
 
 const CLOCK_SKEW_RETRY_TIMEOUT = 30000;
@@ -31,9 +31,9 @@ import type {LayerFeatureStates} from './source_state';
 import type {Cancelable} from '../types/cancelable';
 import type {FilterSpecification} from '../style-spec/types.g';
 import type Point from '@mapbox/point-geometry';
-import {mat4} from 'gl-matrix';
+import type {mat4} from 'gl-matrix';
 import type {VectorTileLayer} from '@mapbox/vector-tile';
-import {ExpiryData} from '../util/ajax';
+import type {ExpiryData} from '../util/ajax';
 
 export type TileState = // Tile data is in the process of loading.
 'loading' | // Tile data has been loaded. Tile can be rendered.

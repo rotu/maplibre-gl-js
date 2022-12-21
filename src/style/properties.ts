@@ -1,23 +1,25 @@
 import {clone, extend, easeCubicInOut} from '../util/util';
 import * as interpolate from '../style-spec/util/interpolate';
-import Color from '../style-spec/util/color';
+import type Color from '../style-spec/util/color';
 import {register} from '../util/web_worker_transfer';
 import EvaluationParameters from './evaluation_parameters';
 
-import {CanonicalTileID} from '../source/tile_id';
-import {StylePropertySpecification} from '../style-spec/style-spec';
-import {
+import type {CanonicalTileID} from '../source/tile_id';
+import type {StylePropertySpecification} from '../style-spec/style-spec';
+import type {
     TransitionSpecification,
     PropertyValueSpecification
 } from '../style-spec/types.g';
 
-import {
-    normalizePropertyExpression,
+import type {
     Feature,
     FeatureState,
     StylePropertyExpression,
     SourceExpression,
     CompositeExpression
+} from '../style-spec/expression';
+import {
+    normalizePropertyExpression
 } from '../style-spec/expression';
 
 type TimePoint = number;
@@ -168,7 +170,7 @@ export class Transitionable<Props> {
 
     constructor(properties: Properties<Props>) {
         this._properties = properties;
-        this._values = (Object.create(properties.defaultTransitionablePropertyValues) as any);
+        this._values = (Object.create(properties.defaultTransitionablePropertyValues));
     }
 
     getValue<S extends keyof Props, T>(name: S): PropertyValueSpecification<T> | void {
@@ -305,7 +307,7 @@ export class Transitioning<Props> {
 
     constructor(properties: Properties<Props>) {
         this._properties = properties;
-        this._values = (Object.create(properties.defaultTransitioningPropertyValues) as any);
+        this._values = (Object.create(properties.defaultTransitioningPropertyValues));
     }
 
     possiblyEvaluate(
@@ -349,7 +351,7 @@ export class Layout<Props> {
 
     constructor(properties: Properties<Props>) {
         this._properties = properties;
-        this._values = (Object.create(properties.defaultPropertyValues) as any);
+        this._values = (Object.create(properties.defaultPropertyValues));
     }
 
     getValue<S extends keyof Props>(name: S) {

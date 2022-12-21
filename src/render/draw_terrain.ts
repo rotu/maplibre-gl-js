@@ -6,7 +6,7 @@ import type Tile from '../source/tile';
 import CullFaceMode from '../gl/cull_face_mode';
 import Color from '../style-spec/util/color';
 import ColorMode from '../gl/color_mode';
-import Terrain from './terrain';
+import type Terrain from './terrain';
 
 /**
  * Redraw the Depth Framebuffer

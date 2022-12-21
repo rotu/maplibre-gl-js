@@ -16,7 +16,7 @@ import type {CrossFaded} from '../../style/properties';
 import type {CrossfadeParameters} from '../../style/evaluation_parameters';
 import type {OverscaledTileID} from '../../source/tile_id';
 import type ResolvedImage from '../../style-spec/expression/types/resolved_image';
-import {mat4} from 'gl-matrix';
+import type {mat4} from 'gl-matrix';
 
 export type BackgroundUniformsType = {
     'u_matrix': UniformMatrix4f;

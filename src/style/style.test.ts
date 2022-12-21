@@ -13,11 +13,11 @@ import {
 import browser from '../util/browser';
 import {OverscaledTileID} from '../source/tile_id';
 import {fakeXhr, fakeServer} from 'nise';
-import {WorkerGlobalScopeInterface} from '../util/web_worker';
-import EvaluationParameters from './evaluation_parameters';
-import {LayerSpecification, GeoJSONSourceSpecification, FilterSpecification, SourceSpecification} from '../style-spec/types.g';
-import {SourceClass} from '../source/source';
-import GeoJSONSource from '../source/geojson_source';
+import type {WorkerGlobalScopeInterface} from '../util/web_worker';
+import type EvaluationParameters from './evaluation_parameters';
+import type {LayerSpecification, GeoJSONSourceSpecification, FilterSpecification, SourceSpecification} from '../style-spec/types.g';
+import type {SourceClass} from '../source/source';
+import type GeoJSONSource from '../source/geojson_source';
 
 function createStyleJSON(properties?) {
     return extend({

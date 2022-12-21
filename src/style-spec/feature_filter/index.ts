@@ -1,8 +1,8 @@
 import {createExpression} from '../expression';
 import type {GlobalProperties, Feature} from '../expression';
 import type {CanonicalTileID} from '../../source/tile_id';
-import {StylePropertySpecification} from '../style-spec';
-import {ExpressionFilterSpecification} from '../types.g';
+import type {StylePropertySpecification} from '../style-spec';
+import type {ExpressionFilterSpecification} from '../types.g';
 
 type FilterExpression = (
     globalProperties: GlobalProperties,

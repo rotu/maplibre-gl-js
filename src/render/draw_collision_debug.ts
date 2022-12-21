@@ -12,8 +12,8 @@ import {QuadTriangleArray, CollisionCircleLayoutArray} from '../data/array_types
 import {collisionCircleLayout} from '../data/bucket/symbol_attributes';
 import SegmentVector from '../data/segment';
 import {mat4} from 'gl-matrix';
-import VertexBuffer from '../gl/vertex_buffer';
-import IndexBuffer from '../gl/index_buffer';
+import type VertexBuffer from '../gl/vertex_buffer';
+import type IndexBuffer from '../gl/index_buffer';
 
 export default drawCollisionDebug;
 

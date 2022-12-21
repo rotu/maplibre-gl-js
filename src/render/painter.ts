@@ -1,5 +1,6 @@
 import browser from '../util/browser';
-import {mat4, vec3} from 'gl-matrix';
+import type {vec3} from 'gl-matrix';
+import {mat4} from 'gl-matrix';
 import SourceCache from '../source/source_cache';
 import EXTENT from '../data/extent';
 import pixelsToTileUnits from '../source/pixels_to_tile_units';
@@ -7,7 +8,7 @@ import SegmentVector from '../data/segment';
 import {RasterBoundsArray, PosArray, TriangleIndexArray, LineStripIndexArray} from '../data/array_types.g';
 import rasterBoundsAttributes from '../data/raster_bounds_attributes';
 import posAttributes from '../data/pos_attributes';
-import ProgramConfiguration from '../data/program_configuration';
+import type ProgramConfiguration from '../data/program_configuration';
 import CrossTileSymbolIndex from '../symbol/cross_tile_symbol_index';
 import shaders from '../shaders/shaders';
 import Program from './program';
@@ -32,7 +33,7 @@ import background from './draw_background';
 import debug, {drawDebugPadding, selectDebugSource} from './draw_debug';
 import custom from './draw_custom';
 import {drawDepth, drawCoords} from './draw_terrain';
-import {OverscaledTileID} from '../source/tile_id';
+import type {OverscaledTileID} from '../source/tile_id';
 
 const draw = {
     symbol,
@@ -61,7 +62,7 @@ import type IndexBuffer from '../gl/index_buffer';
 import type {DepthRangeType, DepthMaskType, DepthFuncType} from '../gl/types';
 import type ResolvedImage from '../style-spec/expression/types/resolved_image';
 import type {RGBAImage} from '../util/image';
-import RenderToTexture from './render_to_texture';
+import type RenderToTexture from './render_to_texture';
 
 export type RenderPass = 'offscreen' | 'opaque' | 'translucent';
 

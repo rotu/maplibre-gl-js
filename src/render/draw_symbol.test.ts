@@ -10,10 +10,10 @@ import drawSymbol from './draw_symbol';
 import * as symbolProjection from '../symbol/projection';
 import type ZoomHistory from '../style/zoom_history';
 import type Map from '../ui/map';
-import Transform from '../geo/transform';
+import type Transform from '../geo/transform';
 import type EvaluationParameters from '../style/evaluation_parameters';
 import type {SymbolLayerSpecification} from '../style-spec/types.g';
-import Style from '../style/style';
+import type Style from '../style/style';
 
 jest.mock('./painter');
 jest.mock('./program');

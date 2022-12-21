@@ -2,9 +2,9 @@ import Light from './light';
 import styleSpec from '../style-spec/reference/latest';
 import Color from '../style-spec/util/color';
 import {sphericalToCartesian} from '../util/util';
-import EvaluationParameters from './evaluation_parameters';
-import {LightSpecification} from '../style-spec/types.g';
-import {TransitionParameters} from './properties';
+import type EvaluationParameters from './evaluation_parameters';
+import type {LightSpecification} from '../style-spec/types.g';
+import type {TransitionParameters} from './properties';
 
 const spec = styleSpec.light;
 
@@ -13,7 +13,7 @@ test('Light with defaults', () => {
     light.recalculate({zoom: 0, zoomHistory: {}} as EvaluationParameters);
 
     expect(light.properties.get('anchor')).toEqual(spec.anchor.default);
-    expect(light.properties.get('position')).toEqual(sphericalToCartesian(spec.position.default as any as [number, number, number]));
+    expect(light.properties.get('position')).toEqual(sphericalToCartesian(spec.position.default  as [number, number, number]));
     expect(light.properties.get('intensity')).toEqual(spec.intensity.default);
     expect(light.properties.get('color')).toEqual(Color.parse(spec.color.default));
 });

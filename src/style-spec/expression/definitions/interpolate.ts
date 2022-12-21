@@ -156,7 +156,7 @@ class Interpolate implements Expression {
             return outputs[0].evaluate(ctx);
         }
 
-        const value = (this.input.evaluate(ctx) as any as number);
+        const value = (this.input.evaluate(ctx)  as number);
         if (value <= labels[0]) {
             return outputs[0].evaluate(ctx);
         }

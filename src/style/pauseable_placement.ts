@@ -7,7 +7,7 @@ import type StyleLayer from './style_layer';
 import type SymbolStyleLayer from './style_layer/symbol_style_layer';
 import type Tile from '../source/tile';
 import type {BucketPart} from '../symbol/placement';
-import Terrain from '../render/terrain';
+import type Terrain from '../render/terrain';
 
 class LayerPlacement {
     _sortAcrossTiles: boolean;

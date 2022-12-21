@@ -1,5 +1,5 @@
 import {Event, ErrorEvent, Evented} from '../util/evented';
-import StyleLayer from './style_layer';
+import type StyleLayer from './style_layer';
 import createStyleLayer from './create_style_layer';
 import loadSprite from './load_sprite';
 import ImageManager from '../render/image_manager';
@@ -11,11 +11,11 @@ import {getJSON, getReferrer, makeRequest, ResourceType} from '../util/ajax';
 import browser from '../util/browser';
 import Dispatcher from '../util/dispatcher';
 import {validateStyle, emitValidationErrors as _emitValidationErrors} from './validate_style';
-import {getSourceType, setSourceType, Source} from '../source/source';
-import type {SourceClass} from '../source/source';
+import {getSourceType, setSourceType} from '../source/source';
+import type {SourceClass, Source} from '../source/source';
 import {queryRenderedFeatures, queryRenderedSymbols, querySourceFeatures} from '../source/query_features';
 import SourceCache from '../source/source_cache';
-import GeoJSONSource from '../source/geojson_source';
+import type GeoJSONSource from '../source/geojson_source';
 import styleSpec from '../style-spec/reference/latest';
 import getWorkerPool from '../util/global_worker_pool';
 import deref from '../style-spec/deref';
@@ -84,7 +84,7 @@ const ignoredDiffOperations = pick(diffOperations, [
     'setPitch'
 ]);
 
-const empty = emptyStyle() as StyleSpecification;
+const empty = emptyStyle();
 
 export type FeatureIdentifier = {
     id?: string | number | undefined;
@@ -721,7 +721,7 @@ class Style extends Evented {
             if (typeof (layerObject as any).source === 'object') {
                 this.addSource(id, (layerObject as any).source);
                 layerObject = clone(layerObject);
-                layerObject = (extend(layerObject, {source: id}) as any);
+                layerObject = (extend(layerObject, {source: id}));
             }
 
             // this layer is not in the style.layers array, so we pass an impossible array index

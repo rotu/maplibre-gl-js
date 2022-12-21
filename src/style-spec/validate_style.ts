@@ -1,6 +1,7 @@
 
 import validateStyleMin from './validate_style.min';
-import {v8, ValidationError} from './style-spec';
+import type {ValidationError} from './style-spec';
+import {v8} from './style-spec';
 import readStyle from './read_style';
 import type {StyleSpecification} from './types.g';
 

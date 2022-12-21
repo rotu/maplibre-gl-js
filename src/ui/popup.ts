@@ -1,6 +1,6 @@
 import {extend, bindAll} from '../util/util';
 import {Event, Evented} from '../util/evented';
-import {MapMouseEvent} from '../ui/events';
+import type {MapMouseEvent} from '../ui/events';
 import DOM from '../util/dom';
 import LngLat from '../geo/lng_lat';
 import Point from '@mapbox/point-geometry';
@@ -567,7 +567,7 @@ export default class Popup extends Evented {
             if (anchorComponents.length === 0) {
                 anchor = 'bottom';
             } else {
-                anchor = (anchorComponents.join('-') as any);
+                anchor = (anchorComponents.join('-'));
             }
         }
 
@@ -579,7 +579,7 @@ export default class Popup extends Evented {
     _focusFirstElement() {
         if (!this.options.focusAfterOpen || !this._container) return;
 
-        const firstFocusable = this._container.querySelector(focusQuerySelector) as HTMLElement;
+        const firstFocusable = this._container.querySelector(focusQuerySelector);
 
         if (firstFocusable) firstFocusable.focus();
     }

@@ -10,18 +10,20 @@ import pixelsToTileUnits from '../source/pixels_to_tile_units';
 import Point from '@mapbox/point-geometry';
 import type Transform from '../geo/transform';
 import type StyleLayer from '../style/style_layer';
-import {PossiblyEvaluated} from '../style/properties';
+import type {PossiblyEvaluated} from '../style/properties';
 import type {SymbolLayoutProps, SymbolLayoutPropsPossiblyEvaluated} from '../style/style_layer/symbol_style_layer_properties.g';
-import {getOverlapMode, OverlapMode} from '../style/style_layer/symbol_style_layer';
+import type {OverlapMode} from '../style/style_layer/symbol_style_layer';
+import {getOverlapMode} from '../style/style_layer/symbol_style_layer';
 
 import type Tile from '../source/tile';
-import SymbolBucket, {CollisionArrays, SingleCollisionBox} from '../data/bucket/symbol_bucket';
+import type {CollisionArrays, SingleCollisionBox} from '../data/bucket/symbol_bucket';
+import type SymbolBucket from '../data/bucket/symbol_bucket';
 
 import type {CollisionBoxArray, CollisionVertexArray, SymbolInstance} from '../data/array_types.g';
 import type FeatureIndex from '../data/feature_index';
 import type {OverscaledTileID} from '../source/tile_id';
 import type {TextAnchor} from './symbol_layout';
-import Terrain from '../render/terrain';
+import type Terrain from '../render/terrain';
 import {warnOnce} from '../util/util';
 
 class OpacityState {

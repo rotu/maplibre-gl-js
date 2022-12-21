@@ -91,15 +91,15 @@ class Match implements Expression {
         const otherwise = context.parse(args[args.length - 1], args.length - 1, outputType);
         if (!otherwise) return null;
 
-        if (input.type.kind !== 'value' && context.concat(1).checkSubtype(((inputType as any)), input.type)) {
+        if (input.type.kind !== 'value' && context.concat(1).checkSubtype(((inputType)), input.type)) {
             return null;
         }
 
-        return new Match((inputType as any), (outputType as any), input, cases, outputs, otherwise);
+        return new Match((inputType), (outputType), input, cases, outputs, otherwise);
     }
 
     evaluate(ctx: EvaluationContext) {
-        const input = (this.input.evaluate(ctx) as any);
+        const input = (this.input.evaluate(ctx));
         const output = (typeOf(input) === this.inputType && this.outputs[this.cases[input]]) || this.otherwise;
         return output.evaluate(ctx);
     }

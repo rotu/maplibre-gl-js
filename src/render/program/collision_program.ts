@@ -5,7 +5,7 @@ import type Context from '../../gl/context';
 import type {UniformValues, UniformLocations} from '../uniform_binding';
 import type Transform from '../../geo/transform';
 import type Tile from '../../source/tile';
-import {mat4} from 'gl-matrix';
+import type {mat4} from 'gl-matrix';
 
 export type CollisionUniformsType = {
     'u_matrix': UniformMatrix4f;

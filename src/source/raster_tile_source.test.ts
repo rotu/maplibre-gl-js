@@ -1,9 +1,10 @@
 import RasterTileSource from './raster_tile_source';
 import {OverscaledTileID} from './tile_id';
 import {RequestManager} from '../util/request_manager';
-import Dispatcher from '../util/dispatcher';
-import {fakeServer, FakeServer} from 'nise';
-import Tile from './tile';
+import type Dispatcher from '../util/dispatcher';
+import type {FakeServer} from 'nise';
+import {fakeServer} from 'nise';
+import type Tile from './tile';
 
 function createSource(options, transformCallback?) {
     const source = new RasterTileSource('id', options, {send() {}} as any as Dispatcher, options.eventedParent);

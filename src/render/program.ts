@@ -1,7 +1,7 @@
 import shaders from '../shaders/shaders';
-import ProgramConfiguration from '../data/program_configuration';
+import type ProgramConfiguration from '../data/program_configuration';
 import VertexArrayObject from './vertex_array_object';
-import Context from '../gl/context';
+import type Context from '../gl/context';
 
 import type SegmentVector from '../data/segment';
 import type VertexBuffer from '../gl/vertex_buffer';
@@ -12,9 +12,10 @@ import type ColorMode from '../gl/color_mode';
 import type CullFaceMode from '../gl/cull_face_mode';
 import type {UniformBindings, UniformValues, UniformLocations} from './uniform_binding';
 import type {BinderUniform} from '../data/program_configuration';
-import {terrainPreludeUniforms, TerrainPreludeUniformsType} from './program/terrain_program';
+import type {TerrainPreludeUniformsType} from './program/terrain_program';
+import {terrainPreludeUniforms} from './program/terrain_program';
 import type {TerrainData} from '../render/terrain';
-import Terrain from '../render/terrain';
+import type Terrain from '../render/terrain';
 
 export type DrawMode = WebGLRenderingContext['LINES'] | WebGLRenderingContext['TRIANGLES'] | WebGLRenderingContext['LINE_STRIP'];
 

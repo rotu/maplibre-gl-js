@@ -1,5 +1,5 @@
 import composite from './composite';
-import {LineLayerSpecification} from './types.g';
+import type {LineLayerSpecification} from './types.g';
 
 describe('composite', () => {
     test('composites Mapbox vector sources', () => {

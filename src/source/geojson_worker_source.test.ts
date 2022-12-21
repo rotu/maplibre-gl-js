@@ -1,10 +1,11 @@
-import GeoJSONWorkerSource, {LoadGeoJSONParameters} from './geojson_worker_source';
+import type {LoadGeoJSONParameters} from './geojson_worker_source';
+import GeoJSONWorkerSource from './geojson_worker_source';
 import StyleLayerIndex from '../style/style_layer_index';
 import {OverscaledTileID} from './tile_id';
 import perf from '../util/performance';
-import {LayerSpecification} from '../style-spec/types.g';
-import Actor from '../util/actor';
-import {WorkerTileParameters} from './worker_source';
+import type {LayerSpecification} from '../style-spec/types.g';
+import type Actor from '../util/actor';
+import type {WorkerTileParameters} from './worker_source';
 import {setPerformance} from '../util/test/util';
 import {type FakeServer, fakeServer} from 'nise';
 

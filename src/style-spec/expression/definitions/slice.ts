@@ -53,7 +53,7 @@ class Slice implements Expression {
     }
 
     evaluate(ctx: EvaluationContext) {
-        const input = (this.input.evaluate(ctx) as any);
+        const input = (this.input.evaluate(ctx));
         const beginIndex = (this.beginIndex.evaluate(ctx) as number);
 
         if (!isValidNativeType(input, ['string', 'array'])) {

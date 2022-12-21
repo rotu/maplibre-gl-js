@@ -1,10 +1,10 @@
 import {fakeServer} from 'nise';
 import Worker from './worker';
-import {LayerSpecification} from '../style-spec/types.g';
-import {Cancelable} from '../types/cancelable';
-import {WorkerGlobalScopeInterface} from '../util/web_worker';
-import {CanonicalTileID, OverscaledTileID} from './tile_id';
-import {TileParameters, WorkerSource, WorkerTileCallback, WorkerTileParameters} from './worker_source';
+import type {LayerSpecification} from '../style-spec/types.g';
+import type {Cancelable} from '../types/cancelable';
+import type {WorkerGlobalScopeInterface} from '../util/web_worker';
+import type {CanonicalTileID, OverscaledTileID} from './tile_id';
+import type {TileParameters, WorkerSource, WorkerTileCallback, WorkerTileParameters} from './worker_source';
 import {plugin as globalRTLTextPlugin} from './rtl_text_plugin';
 
 const _self = {

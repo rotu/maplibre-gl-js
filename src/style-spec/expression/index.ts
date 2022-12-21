@@ -349,7 +349,7 @@ export class StylePropertyFunction<T> {
         _parameters: PropertyValueSpecification<T>;
         _specification: StylePropertySpecification;
     }) {
-        return new StylePropertyFunction(serialized._parameters, serialized._specification) as StylePropertyFunction<T>;
+        return new StylePropertyFunction(serialized._parameters, serialized._specification);
     }
 
     static serialize<T>(input: StylePropertyFunction<T>) {

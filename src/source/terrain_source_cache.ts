@@ -1,11 +1,11 @@
-import {OverscaledTileID} from './tile_id';
+import type {OverscaledTileID} from './tile_id';
 import Tile from './tile';
 import EXTENT from '../data/extent';
 import {mat4} from 'gl-matrix';
 import {Evented} from '../util/evented';
 import type Transform from '../geo/transform';
 import type SourceCache from '../source/source_cache';
-import Terrain from '../render/terrain';
+import type Terrain from '../render/terrain';
 
 /**
  * This class is a helper for the Terrain-class, it:

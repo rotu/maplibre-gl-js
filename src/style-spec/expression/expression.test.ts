@@ -1,8 +1,9 @@
-import {createPropertyExpression, Feature, GlobalProperties, StylePropertyExpression} from '../expression';
+import type {Feature, GlobalProperties, StylePropertyExpression} from '../expression';
+import {createPropertyExpression} from '../expression';
 import definitions from './definitions';
 import v8 from '../reference/v8.json' assert {type: 'json'};
-import {StylePropertySpecification} from '../style-spec';
-import ParsingError from './parsing_error';
+import type {StylePropertySpecification} from '../style-spec';
+import type ParsingError from './parsing_error';
 
 // filter out interal "error" and "filter-*" expressions from definition list
 const filterExpressionRegex = /filter-/;

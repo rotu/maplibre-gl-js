@@ -7,19 +7,19 @@ import {
     validateLight,
     emitValidationErrors
 } from './validate_style';
-import Color from '../style-spec/util/color';
+import type Color from '../style-spec/util/color';
 import {number as interpolate} from '../style-spec/util/interpolate';
 
 import type {StylePropertySpecification} from '../style-spec/style-spec';
 import type EvaluationParameters from './evaluation_parameters';
 import type {StyleSetterOptions} from '../style/style';
-import {Properties, Transitionable, Transitioning, PossiblyEvaluated, DataConstantProperty} from './properties';
+import {Properties, Transitionable, DataConstantProperty} from './properties';
 
 import type {
     Property,
     PropertyValue,
     TransitionParameters
-} from './properties';
+    , Transitioning, PossiblyEvaluated} from './properties';
 
 import type {LightSpecification} from '../style-spec/types.g';
 

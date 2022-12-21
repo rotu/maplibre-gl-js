@@ -1,7 +1,7 @@
 import Point from '@mapbox/point-geometry';
 import {indexTouches} from './handler_util';
 import type Map from '../map';
-import {GestureOptions} from '../map';
+import type {GestureOptions} from '../map';
 
 export default class TouchPanHandler {
 

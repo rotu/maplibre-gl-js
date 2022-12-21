@@ -5,13 +5,15 @@ import Point from '@mapbox/point-geometry';
 import {wrap, clamp} from '../util/util';
 import {number as interpolate} from '../style-spec/util/interpolate';
 import EXTENT from '../data/extent';
-import {vec3, vec4, mat4, mat2, vec2} from 'gl-matrix';
+import type {vec3} from 'gl-matrix';
+import {vec4, mat4, mat2, vec2} from 'gl-matrix';
 import {Aabb, Frustum} from '../util/primitives';
 import EdgeInsets from './edge_insets';
 
-import {UnwrappedTileID, OverscaledTileID, CanonicalTileID} from '../source/tile_id';
+import type {CanonicalTileID} from '../source/tile_id';
+import {UnwrappedTileID, OverscaledTileID} from '../source/tile_id';
 import type {PaddingOptions} from './edge_insets';
-import Terrain from '../render/terrain';
+import type Terrain from '../render/terrain';
 
 /**
  * A single transform, generally used for a single tile to be

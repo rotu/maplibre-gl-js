@@ -9,7 +9,7 @@ import {CanonicalTileID} from '../../../src/source/tile_id';
 import {getGeometry} from './lib/geometry';
 import {stringify} from './lib/util';
 import {deepEqual, stripPrecision} from '../lib/json-diff';
-import {ExpressionFixture} from './fixture-types';
+import type {ExpressionFixture} from './fixture-types';
 
 const decimalSigFigs =  6;
 

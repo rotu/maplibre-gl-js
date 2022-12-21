@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import {StyleSpecification} from '../../../src/style-spec/types.g';
+import type {StyleSpecification} from '../../../src/style-spec/types.g';
 
 export default function localizeURLs(style: any, port: number, baseTestsDir: string) {
     localizeStyleURLs(style, port);

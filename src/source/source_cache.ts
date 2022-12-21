@@ -6,7 +6,7 @@ import TileCache from './tile_cache';
 import MercatorCoordinate from '../geo/mercator_coordinate';
 import {keysDifference} from '../util/util';
 import EXTENT from '../data/extent';
-import Context from '../gl/context';
+import type Context from '../gl/context';
 import Point from '@mapbox/point-geometry';
 import browser from '../util/browser';
 import {OverscaledTileID} from './tile_id';
@@ -21,7 +21,7 @@ import type {TileState} from './tile';
 import type {Callback} from '../types/callback';
 import type {SourceSpecification} from '../style-spec/types.g';
 import type {MapSourceDataEvent} from '../ui/events';
-import Terrain from '../render/terrain';
+import type Terrain from '../render/terrain';
 
 /**
  * `SourceCache` is responsible for

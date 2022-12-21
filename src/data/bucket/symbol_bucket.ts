@@ -29,7 +29,7 @@ import toEvaluationFeature from '../evaluation_feature';
 import mvt from '@mapbox/vector-tile';
 const vectorTileFeatureTypes = mvt.VectorTileFeature.types;
 import {verticalizedCharacterMap} from '../../util/verticalize_punctuation';
-import Anchor from '../../symbol/anchor';
+import type Anchor from '../../symbol/anchor';
 import {getSizeData} from '../../symbol/symbol_size';
 import {MAX_PACKED_SIZE} from '../../symbol/symbol_layout';
 import {register} from '../../util/web_worker_transfer';
@@ -48,7 +48,8 @@ import type {
 } from '../bucket';
 import type {CollisionBoxArray, CollisionBox, SymbolInstance} from '../array_types.g';
 import type {StructArray, StructArrayMember, ViewType} from '../../util/struct_array';
-import SymbolStyleLayer, {getOverlapMode} from '../../style/style_layer/symbol_style_layer';
+import type SymbolStyleLayer from '../../style/style_layer/symbol_style_layer';
+import {getOverlapMode} from '../../style/style_layer/symbol_style_layer';
 import type Context from '../../gl/context';
 import type IndexBuffer from '../../gl/index_buffer';
 import type VertexBuffer from '../../gl/vertex_buffer';

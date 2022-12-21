@@ -3,8 +3,8 @@ import {Evented} from '../util/evented';
 import Transform from '../geo/transform';
 import {extend} from '../util/util';
 import {fakeXhr} from 'nise';
-import {RequestManager} from '../util/request_manager';
-import Dispatcher from '../util/dispatcher';
+import type {RequestManager} from '../util/request_manager';
+import type Dispatcher from '../util/dispatcher';
 import {stubAjaxGetImage} from '../util/test/util';
 
 function createSource(options) {
@@ -170,7 +170,7 @@ describe('ImageSource', () => {
 
         source.onAdd(map);
 
-        const request = requests.shift() as any;
+        const request = requests.shift();
         const spy = jest.spyOn(request, 'abort');
 
         source.updateImage({url: '/image2.png'});

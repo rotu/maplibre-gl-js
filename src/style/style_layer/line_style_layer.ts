@@ -1,18 +1,19 @@
-import Point from '@mapbox/point-geometry';
+import type Point from '@mapbox/point-geometry';
 
 import StyleLayer from '../style_layer';
 import LineBucket from '../../data/bucket/line_bucket';
 import {polygonIntersectsBufferedMultiLine} from '../../util/intersection_tests';
 import {getMaximumPaintValue, translateDistance, translate, offsetLine} from '../query_utils';
-import properties, {LineLayoutPropsPossiblyEvaluated, LinePaintPropsPossiblyEvaluated} from './line_style_layer_properties.g';
+import properties from './line_style_layer_properties.g';
 import {extend} from '../../util/util';
 import EvaluationParameters from '../evaluation_parameters';
-import {Transitionable, Transitioning, Layout, PossiblyEvaluated, DataDrivenProperty} from '../properties';
+import type {Transitionable, Transitioning, Layout, PossiblyEvaluated} from '../properties';
+import {DataDrivenProperty} from '../properties';
 
 import Step from '../../style-spec/expression/definitions/step';
 import type {FeatureState, ZoomConstantExpression} from '../../style-spec/expression';
 import type {Bucket, BucketParameters} from '../../data/bucket';
-import type {LineLayoutProps, LinePaintProps} from './line_style_layer_properties.g';
+import type {LineLayoutProps, LinePaintProps, LineLayoutPropsPossiblyEvaluated, LinePaintPropsPossiblyEvaluated} from './line_style_layer_properties.g';
 import type Transform from '../../geo/transform';
 import type {LayerSpecification} from '../../style-spec/types.g';
 import type {VectorTileFeature} from '@mapbox/vector-tile';

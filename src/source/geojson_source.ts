@@ -265,7 +265,7 @@ class GeoJSONSource extends Evented implements Source {
         if (diff) {
             options.dataDiff = diff;
         } else if (typeof this._data === 'string') {
-            options.request = this.map._requestManager.transformRequest(browser.resolveURL(this._data as string), ResourceType.Source);
+            options.request = this.map._requestManager.transformRequest(browser.resolveURL(this._data), ResourceType.Source);
             options.request.collectResourceTiming = this._collectResourceTiming;
         } else {
             options.data = JSON.stringify(this._data);

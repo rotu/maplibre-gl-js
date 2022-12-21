@@ -28,9 +28,10 @@ import type {ImagePosition} from '../render/image_atlas';
 import type {GlyphPosition} from '../render/glyph_atlas';
 import type {PossiblyEvaluatedPropertyValue} from '../style/properties';
 
-import Point from '@mapbox/point-geometry';
+import type Point from '@mapbox/point-geometry';
 import murmur3 from 'murmurhash-js';
-import {getIconPadding, SymbolPadding} from '../style/style_layer/symbol_style_layer';
+import type {SymbolPadding} from '../style/style_layer/symbol_style_layer';
+import {getIconPadding} from '../style/style_layer/symbol_style_layer';
 
 // The symbol layout process needs `text-size` evaluated at up to five different zoom levels, and
 // `icon-size` at up to three:

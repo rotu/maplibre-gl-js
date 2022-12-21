@@ -56,7 +56,7 @@ export function eachProperty(
     callback: PropertyCallback
 ) {
     function inner(layer, propertyType: 'paint' | 'layout') {
-        const properties = (layer[propertyType] as any);
+        const properties = (layer[propertyType]);
         if (!properties) return;
         Object.keys(properties).forEach((key) => {
             callback({

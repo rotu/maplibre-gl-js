@@ -1,7 +1,8 @@
 
 // fixtures.json is automatically generated before this file gets built
 // refer build/generate-query-test-fixtures.ts
-import {Browser, chromium, Page} from 'playwright';
+import type {Browser, Page} from 'playwright';
+import {chromium} from 'playwright';
 
 import fixtures from './dist/fixtures.json' assert {type: 'json'};
 import {deepEqual} from '../lib/json-diff';

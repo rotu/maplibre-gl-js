@@ -1,7 +1,8 @@
 import type Point from '@mapbox/point-geometry';
 
 import DOM from '../../util/dom';
-import {DragMoveHandler, DragPanResult, DragRotateResult, DragPitchResult, DragHandler} from './drag_handler';
+import type {DragMoveHandler, DragPanResult, DragRotateResult, DragPitchResult} from './drag_handler';
+import {DragHandler} from './drag_handler';
 import {MouseMoveStateManager} from './drag_move_state_manager';
 
 export interface MousePanHandler extends DragMoveHandler<DragPanResult, MouseEvent> {}

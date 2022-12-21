@@ -46,8 +46,8 @@ class In implements Expression {
     }
 
     evaluate(ctx: EvaluationContext) {
-        const needle = (this.needle.evaluate(ctx) as any);
-        const haystack = (this.haystack.evaluate(ctx) as any);
+        const needle = (this.needle.evaluate(ctx));
+        const haystack = (this.haystack.evaluate(ctx));
 
         if (!haystack) return false;
 

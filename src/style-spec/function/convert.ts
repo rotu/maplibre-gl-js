@@ -235,7 +235,7 @@ function getFunctionType(parameters, propertySpec) {
     if (parameters.type) {
         return parameters.type;
     } else {
-        return (propertySpec.expression as any).interpolated ? 'exponential' : 'interval';
+        return (propertySpec.expression).interpolated ? 'exponential' : 'interval';
     }
 }
 

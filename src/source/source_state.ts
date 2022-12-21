@@ -1,5 +1,5 @@
 import {extend} from '../util/util';
-import Tile from './tile';
+import type Tile from './tile';
 import type {FeatureState} from '../style-spec/expression';
 
 export type FeatureStates = {[featureId: string]: FeatureState};

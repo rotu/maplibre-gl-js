@@ -4,7 +4,8 @@ import drawCollisionDebug from './draw_collision_debug';
 import SegmentVector from '../data/segment';
 import pixelsToTileUnits from '../source/pixels_to_tile_units';
 import * as symbolProjection from '../symbol/projection';
-import {EvaluatedZoomSize, evaluateSizeForFeature, evaluateSizeForZoom} from '../symbol/symbol_size';
+import type {EvaluatedZoomSize} from '../symbol/symbol_size';
+import {evaluateSizeForFeature, evaluateSizeForZoom} from '../symbol/symbol_size';
 import {mat4} from 'gl-matrix';
 import StencilMode from '../gl/stencil_mode';
 import DepthMode from '../gl/depth_mode';
@@ -13,10 +14,12 @@ import {addDynamicAttributes} from '../data/bucket/symbol_bucket';
 
 import {getAnchorAlignment, WritingMode} from '../symbol/shaping';
 import ONE_EM from '../symbol/one_em';
-import {evaluateVariableOffset, TextAnchor} from '../symbol/symbol_layout';
+import type {TextAnchor} from '../symbol/symbol_layout';
+import {evaluateVariableOffset} from '../symbol/symbol_layout';
 
+import type {
+    SymbolIconUniformsType, SymbolSDFUniformsType} from './program/symbol_program';
 import {
-    SymbolIconUniformsType,
     symbolIconUniformValues,
     symbolSDFUniformValues,
     symbolTextAndIconUniformValues
@@ -29,7 +32,6 @@ import type SymbolStyleLayer from '../style/style_layer/symbol_style_layer';
 import type Texture from '../render/texture';
 import type {OverscaledTileID} from '../source/tile_id';
 import type {UniformValues} from './uniform_binding';
-import type {SymbolSDFUniformsType} from '../render/program/symbol_program';
 import type {CrossTileID, VariableOffset} from '../symbol/placement';
 import type SymbolBucket from '../data/bucket/symbol_bucket';
 import type {SymbolBuffers} from '../data/bucket/symbol_bucket';

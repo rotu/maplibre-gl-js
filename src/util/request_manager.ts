@@ -1,6 +1,4 @@
-import {IResourceType} from './ajax';
-
-import type {RequestParameters} from './ajax';
+import type {IResourceType, RequestParameters} from './ajax';
 
 type ResourceTypeEnum = keyof IResourceType;
 export type RequestTransformFunction = (url: string, resourceType?: ResourceTypeEnum) => RequestParameters;

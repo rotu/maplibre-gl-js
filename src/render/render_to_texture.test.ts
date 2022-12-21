@@ -6,16 +6,16 @@ import Context from '../gl/context';
 import gl from 'gl';
 import ColorMode from '../gl/color_mode';
 import Terrain from './terrain';
-import Style from '../style/style';
+import type Style from '../style/style';
 import Tile from '../source/tile';
-import Map from '../ui/map';
+import type Map from '../ui/map';
 import {OverscaledTileID} from '../source/tile_id';
-import SourceCache from '../source/source_cache';
-import {TerrainSpecification} from '../style-spec/types.g';
-import FillStyleLayer from '../style/style_layer/fill_style_layer';
-import RasterStyleLayer from '../style/style_layer/raster_style_layer';
-import HillshadeStyleLayer from '../style/style_layer/hillshade_style_layer';
-import BackgroundStyleLayer from '../style/style_layer/background_style_layer';
+import type SourceCache from '../source/source_cache';
+import type {TerrainSpecification} from '../style-spec/types.g';
+import type FillStyleLayer from '../style/style_layer/fill_style_layer';
+import type RasterStyleLayer from '../style/style_layer/raster_style_layer';
+import type HillshadeStyleLayer from '../style/style_layer/hillshade_style_layer';
+import type BackgroundStyleLayer from '../style/style_layer/background_style_layer';
 
 describe('render to texture', () => {
     const backgroundLayer = {

@@ -53,8 +53,8 @@ class IndexOf implements Expression {
     }
 
     evaluate(ctx: EvaluationContext) {
-        const needle = (this.needle.evaluate(ctx) as any);
-        const haystack = (this.haystack.evaluate(ctx) as any);
+        const needle = (this.needle.evaluate(ctx));
+        const haystack = (this.haystack.evaluate(ctx));
 
         if (!isValidNativeType(needle, ['boolean', 'string', 'number', 'null'])) {
             throw new RuntimeError(`Expected first argument to be of type boolean, string, number or null, but found ${toString(typeOf(needle))} instead.`);

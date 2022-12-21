@@ -1,6 +1,6 @@
 import UnitBezier from '@mapbox/unitbezier';
 
-import Point from '@mapbox/point-geometry';
+import type Point from '@mapbox/point-geometry';
 
 import type {Callback} from '../types/callback';
 
@@ -268,7 +268,7 @@ export function clone<T>(input: T): T {
     if (Array.isArray(input)) {
         return input.map(clone) as any as T;
     } else if (typeof input === 'object' && input) {
-        return mapObject(input, clone) as any as T;
+        return mapObject(input, clone)  as T;
     } else {
         return input;
     }

@@ -1,17 +1,18 @@
 import TerrainSourceCache from './terrain_source_cache';
 import Style from '../style/style';
 import {RequestManager} from '../util/request_manager';
-import Dispatcher from '../util/dispatcher';
-import {fakeServer, FakeServer} from 'nise';
+import type Dispatcher from '../util/dispatcher';
+import type {FakeServer} from 'nise';
+import {fakeServer} from 'nise';
 import Transform from '../geo/transform';
 import {Evented} from '../util/evented';
-import Painter from '../render/painter';
+import type Painter from '../render/painter';
 import Context from '../gl/context';
 import gl from 'gl';
 import RasterDEMTileSource from './raster_dem_tile_source';
 import {OverscaledTileID} from './tile_id';
 import Tile from './tile';
-import DEMData from '../data/dem_data';
+import type DEMData from '../data/dem_data';
 
 const context = new Context(gl(10, 10) as any);
 const transform = new Transform();

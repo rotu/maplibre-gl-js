@@ -242,7 +242,7 @@ export function deserialize(input: Serialized): unknown {
 
         for (const key of Object.keys(input)) {
             if (key === '$name') continue;
-            const value = (input as SerializedObject)[key];
+            const value = (input)[key];
             result[key] = registry[name].shallow.indexOf(key) >= 0 ? value : deserialize(value);
         }
 

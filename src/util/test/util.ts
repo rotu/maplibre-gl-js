@@ -1,6 +1,6 @@
 import Map from '../../ui/map';
 import {extend} from '../../util/util';
-import Dispatcher from '../../util/dispatcher';
+import type Dispatcher from '../../util/dispatcher';
 import gl from 'gl';
 
 export function createMap(options?, callback?) {

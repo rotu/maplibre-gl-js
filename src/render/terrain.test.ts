@@ -9,7 +9,7 @@ import {OverscaledTileID} from '../source/tile_id';
 import type {TerrainSpecification} from '../style-spec/types.g';
 import type DEMData from '../data/dem_data';
 import Tile from '../source/tile';
-import Painter from './painter';
+import type Painter from './painter';
 
 describe('Terrain', () => {
     test('pointCoordiate should not return null', () => {
@@ -35,7 +35,7 @@ describe('Terrain', () => {
         };
         const terrain = new Terrain(painter, sourceCache, {} as any as TerrainSpecification);
         terrain.sourceCache.getTileByID = getTileByID;
-        const context = painter.context as Context;
+        const context = painter.context;
         const pixels = new Uint8Array([0, 0, 255, 255]);
         const image = new RGBAImage({width: 1, height: 1}, pixels);
         const imageTexture = new Texture(context, image, context.gl.RGBA);

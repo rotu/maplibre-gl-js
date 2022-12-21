@@ -27,7 +27,7 @@ export default function classifyRings(rings: Array<Array<Point>>, maxRings: numb
             polygon = [rings[i]];
 
         } else {
-            (polygon as any).push(rings[i]);
+            (polygon).push(rings[i]);
         }
     }
     if (polygon) polygons.push(polygon);

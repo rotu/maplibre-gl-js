@@ -1,5 +1,5 @@
 import latest from './reference/latest';
-import {StyleSpecification} from './types.g';
+import type {StyleSpecification} from './types.g';
 
 export default function emptyStyle(): StyleSpecification {
     const style = {};

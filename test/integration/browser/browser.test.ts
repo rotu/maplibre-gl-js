@@ -1,4 +1,5 @@
-import {Browser, BrowserContext, BrowserType, chromium, Page} from 'playwright';
+import type {Browser, BrowserContext, BrowserType, Page} from 'playwright';
+import {chromium} from 'playwright';
 import address from 'address';
 import st from 'st';
 import http from 'http';

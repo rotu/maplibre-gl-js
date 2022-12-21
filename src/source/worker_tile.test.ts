@@ -1,10 +1,11 @@
 import WorkerTile from '../source/worker_tile';
-import Wrapper, {Feature} from '../source/geojson_wrapper';
+import type {Feature} from '../source/geojson_wrapper';
+import Wrapper from '../source/geojson_wrapper';
 import {OverscaledTileID} from '../source/tile_id';
 import StyleLayerIndex from '../style/style_layer_index';
-import {WorkerTileParameters} from './worker_source';
-import Actor from '../util/actor';
-import {VectorTile} from '@mapbox/vector-tile';
+import type {WorkerTileParameters} from './worker_source';
+import type Actor from '../util/actor';
+import type {VectorTile} from '@mapbox/vector-tile';
 
 function createWorkerTile() {
     return new WorkerTile({
