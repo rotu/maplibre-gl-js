@@ -64,7 +64,8 @@ class Context {
     extTextureFilterAnisotropic;
     extTextureFilterAnisotropicMax?: GLfloat;
     HALF_FLOAT?: GLenum;
-
+    extColorBufferHalfFloat;
+    RGBA16F?: GLenum;
     constructor(gl: WebGLRenderingContext) {
         this.gl = gl;
         this.clearColor = new ClearColor(this);
@@ -108,7 +109,8 @@ class Context {
         this.HALF_FLOAT = isWebGL2(gl) ? gl.HALF_FLOAT : gl.getExtension('OES_texture_half_float')?.HALF_FLOAT_OES;
 
         gl.getExtension('OES_texture_half_float_linear');
-        gl.getExtension('EXT_color_buffer_half_float');
+        this.extColorBufferHalfFloat = gl.getExtension('EXT_color_buffer_half_float');
+        this.RGBA16F = isWebGL2(gl) ? gl.RGBA16F : this.extColorBufferHalfFloat?.RGBA16F_EXT;
     }
 
     setDefault() {
