@@ -1,5 +1,4 @@
 import fs from 'fs';
-import sourcemaps from 'rollup-plugin-sourcemaps';
 import replace from '@rollup/plugin-replace';
 import {plugins, nodeResolve} from '../../build/rollup_plugins';
 import commonjs from '@rollup/plugin-commonjs';
@@ -49,7 +48,6 @@ const splitConfig = (name: string): RollupOptions[] => [{
         intro
     },
     treeshake: false,
-    plugins: [sourcemaps()],
 }];
 
 const viewConfig: RollupOptions = {
