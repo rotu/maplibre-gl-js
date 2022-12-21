@@ -10,7 +10,8 @@
   "parserOptions": {
     "sourceType": "module",
     "project": [
-      "tsconfig.json"
+      "tsconfig.test.json",
+      "tsconfig.worker.json"
     ]
   },
   "plugins": [
@@ -54,8 +55,6 @@
     "consistent-return": "off",
     "global-require": "off",
     "import/no-commonjs": "error",
-    // TSC throws an error on unresolved imports; eslint doesn't understand .js extension in import statement
-    "import/no-unresolved": "off",
     "key-spacing": "error",
     "no-eq-null": "off",
     "no-lonely-if": "off",

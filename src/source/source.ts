@@ -4,9 +4,8 @@ import type Dispatcher from '../util/dispatcher';
 import type {Event, Evented} from '../util/evented';
 import type Map from '../ui/map';
 import type Tile from './tile';
-import type {OverscaledTileID} from './tile_id';
+import type {CanonicalTileID, OverscaledTileID} from './tile_id';
 import type {Callback} from '../types/callback';
-import {CanonicalTileID} from './tile_id';
 
 /**
  * The `Source` interface must be implemented by each source type, including "core" types (`vector`, `raster`,
@@ -93,7 +92,7 @@ const sourceTypes = {
     video,
     image,
     canvas
-};
+} as Record<string, SourceClass>;
 
 /*
  * Creates a tiled data source instance given an options object.
@@ -106,7 +105,7 @@ const sourceTypes = {
  * @returns {Source}
  */
 export const create = function(id: string, specification: SourceSpecification, dispatcher: Dispatcher, eventedParent: Evented) {
-    const source = new sourceTypes[specification.type](id, (specification as any), dispatcher, eventedParent);
+    const source = new sourceTypes[specification.type](id, specification, dispatcher, eventedParent);
 
     if (source.id !== id) {
         throw new Error(`Expected Source id to be ${id} instead of ${source.id}`);

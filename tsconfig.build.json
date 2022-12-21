@@ -1,0 +1,25 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "lib": [
+      "ES2021",
+    ],
+    "types": []
+  },
+  "include": [
+    "jest.config.e2e.ts",
+    "jest.config.builds.ts",
+    "jest.config.ts",
+  ],
+  "exclude": [
+    "postinstall.js",
+    "rollup/build/maplibregl/index.js",
+    "rollup/benchmarks_styles.js",
+    "rollup/benchmarks_versions.js",
+    "postcss.config.js",
+    "build/release-notes.js",
+    "build/check-bundle-size.js",
+    "test/build",
+    "dist",
+  ],
+}

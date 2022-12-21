@@ -1,7 +1,7 @@
-import type {JestConfigWithTsJest} from 'ts-jest';
+import type {InitialOptionsTsJest} from 'ts-jest';
 import {defaults as tsjPreset} from 'ts-jest/presets';
 
-const config: JestConfigWithTsJest = {
+const config: InitialOptionsTsJest = {
     roots: [
         '<rootDir>/src',
         '<rootDir>/test',

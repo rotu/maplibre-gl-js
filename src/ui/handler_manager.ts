@@ -1,6 +1,7 @@
 import {Event} from '../util/evented';
 import DOM from '../util/dom';
-import Map, {CompleteMapOptions} from './map';
+import type {CompleteMapOptions} from './map';
+import type Map from './map';
 import HandlerInertia from './handler_inertia';
 import {MapEventHandler, BlockableMapEventHandler} from './handler/map_event';
 import BoxZoomHandler from './handler/box_zoom';
@@ -18,7 +19,7 @@ import DragRotateHandler from './handler/shim/drag_rotate';
 import TouchZoomRotateHandler from './handler/shim/two_fingers_touch';
 import {bindAll, extend} from '../util/util';
 import Point from '@mapbox/point-geometry';
-import LngLat from '../geo/lng_lat';
+import type LngLat from '../geo/lng_lat';
 
 export type InputEvent = MouseEvent | TouchEvent | KeyboardEvent | WheelEvent;
 
@@ -282,15 +283,15 @@ class HandlerManager {
         this.handleEvent(e, `${e.type}Window`);
     }
 
-    _getMapTouches(touches: TouchList) {
-        const mapTouches = [];
+    _getMapTouches(touches: Iterable<Touch>) {
+        const mapTouches:Touch[] = [];
         for (const t of touches) {
-            const target = (t.target as any as Node);
+            const target = (t.target as Node);
             if (this._el.contains(target)) {
                 mapTouches.push(t);
             }
         }
-        return mapTouches as any as TouchList;
+        return mapTouches;
     }
 
     handleEvent(e: InputEvent | RenderFrameEvent, eventName?: string) {
@@ -312,7 +313,7 @@ class HandlerManager {
         const mergedHandlerResult: HandlerResult = {needsRenderFrame: false};
         const eventsInProgress = {};
         const activeHandlers = {};
-        const eventTouches = (e as any as TouchEvent).touches;
+        const eventTouches = (e as TouchEvent).touches;
 
         const mapTouches = eventTouches ? this._getMapTouches(eventTouches) : undefined;
         const points = mapTouches ? DOM.touchPos(this._el, mapTouches) : DOM.mousePos(this._el, ((e as any as MouseEvent)));
@@ -320,7 +321,7 @@ class HandlerManager {
         for (const {handlerName, handler, allowed} of this._handlers) {
             if (!handler.isEnabled()) continue;
 
-            let data: HandlerResult;
+            let data: HandlerResult | undefined;
             if (this._blockedByActive(activeHandlers, allowed, handlerName)) {
                 handler.reset();
 

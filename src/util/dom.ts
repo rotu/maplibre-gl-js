@@ -48,7 +48,7 @@ export default class DOM {
         el.style[DOM.transformProp] = value;
     }
 
-    public static addEventListener(target: any, type: any, callback: any, options: {
+    public static addEventListener(target: EventTarget, type: string, callback: EventListenerOrEventListenerObject, options: {
         passive?: boolean;
         capture?: boolean;
     } = {}) {
@@ -59,7 +59,7 @@ export default class DOM {
         }
     }
 
-    public static removeEventListener(target: any, type: any, callback: any, options: {
+    public static removeEventListener(target: EventTarget, type: string, callback: EventListenerOrEventListenerObject, options: {
         passive?: boolean;
         capture?: boolean;
     } = {}) {
@@ -71,7 +71,7 @@ export default class DOM {
     }
 
     // Suppress the next click, but only if it's immediate.
-    private static suppressClickInternal(e) {
+    private static suppressClickInternal(e: Event) {
         e.preventDefault();
         e.stopPropagation();
         window.removeEventListener('click', DOM.suppressClickInternal, true);
@@ -92,7 +92,7 @@ export default class DOM {
         );
     }
 
-    public static touchPos(el: HTMLElement, touches: TouchList) {
+    public static touchPos(el: HTMLElement, touches: ArrayLike<Touch>) {
         const rect = el.getBoundingClientRect();
         const points: Point[] = [];
         for (let i = 0; i < touches.length; i++) {

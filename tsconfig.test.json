@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": [
+      "jest",
+      "geojson",
+      "offscreencanvas"
+    ],
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable",
+    ],
+    "skipLibCheck": true
+  },
+  "include": [
+    "**/*.test.ts"
+  ],
+  "exclude": [
+    "test/build"
+  ]
+}
