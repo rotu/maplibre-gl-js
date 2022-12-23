@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import pixelmatch from 'pixelmatch';
 import {PNG} from 'pngjs';
+import exp from 'constants';
 
 const ip = address.ip();
 const port = 9968;
@@ -50,7 +51,6 @@ let page: Page;
 let map: any;
 
 describe('browser tests', () => {
-
     // start server
     beforeAll((done) => {
         server = http.createServer(
@@ -60,6 +60,8 @@ describe('browser tests', () => {
         });
     });
 
+    page.setContent('')
+
     [chromium].forEach((impl) => {
 
         test(`${impl.name()} - Drag to the left`, async () => {
@@ -67,6 +69,12 @@ describe('browser tests', () => {
             await newTest(impl);
 
             const canvas = await page.$('.maplibregl-canvas');
+            page.setContent(`
+            
+            `)
+            expect(canvas).toHaveCount(1)
+                        expect(canvas).toHaveCount(1)
+
             const canvasBB = await canvas.boundingBox();
 
             // Perform drag action, wait a bit the end to avoid the momentum mode.
@@ -88,6 +96,7 @@ describe('browser tests', () => {
 
             await newTest(impl);
             const canvas = await page.$('.maplibregl-canvas');
+            
             const canvasBB = await canvas.boundingBox();
             await page.mouse.dblclick(canvasBB.x, canvasBB.y);
 

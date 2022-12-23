@@ -16,7 +16,6 @@ const config: JestConfigWithTsJest = {
         }],
     },
     transformIgnorePatterns: [],
-    setupFiles: ['jest-canvas-mock'],
 };
 
 export default config;
