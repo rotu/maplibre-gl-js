@@ -10,13 +10,9 @@
     "sourceType": "module",
     "createDefaultProgram": true
   },
-  "plugins": [
-    "@typescript-eslint",
-    "import",
-    "jsdoc",
-    "jest"
-  ],
+  "plugins": ["@typescript-eslint", "import", "jsdoc", "jest", "tree-shaking"],
   "rules": {
+    "tree-shaking/no-side-effects-in-initialization": "warn",
     "no-dupe-class-members": "off",
     "@typescript-eslint/no-dupe-class-members": ["error"],
     "@typescript-eslint/no-unused-vars": [
@@ -55,15 +51,18 @@
     "no-eq-null": "off",
     "no-lonely-if": "off",
     "no-new": "off",
-    "no-restricted-properties": [2, {
+    "no-restricted-properties": [
+      2,
+      {
         "object": "Object",
         "property": "assign"
-    }],
+      }
+    ],
     "no-unused-vars": "off",
     "no-warning-comments": "error",
     "object-curly-spacing": ["error", "never"],
     "prefer-arrow-callback": "error",
-    "prefer-const": ["error", {"destructuring": "all"}],
+    "prefer-const": ["error", { "destructuring": "all" }],
     "prefer-template": "error",
     // @typescript-eslint/quotes requires standard quotes rule to be turned off
     "quotes": "off",
@@ -76,10 +75,13 @@
     // @typescript-eslint/indent requires standard indent rule to be turned off
     "indent": "off",
     "@typescript-eslint/indent": ["error"],
-    "no-multiple-empty-lines": [ "error", {
+    "no-multiple-empty-lines": [
+      "error",
+      {
         "max": 1
-    }],
-    "import/no-anonymous-default-export": ["error", {"allowLiteral": true} ],
+      }
+    ],
+    "import/no-anonymous-default-export": ["error", { "allowLiteral": true }],
     "jsdoc/check-param-names": "warn",
     "jsdoc/require-param": "warn",
     "jsdoc/require-param-description": "warn",

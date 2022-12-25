@@ -8,6 +8,7 @@ import minifyStyleSpec from './rollup_plugin_minify_style_spec';
 import strip from '@rollup/plugin-strip';
 import {Plugin} from 'rollup';
 import json from '@rollup/plugin-json';
+import sourcemaps from 'rollup-plugin-sourcemaps';
 
 // Common set of plugins/transformations shared across different rollup
 // builds (main maplibre bundle, style-spec package, benchmarks bundle)
@@ -42,6 +43,7 @@ export const plugins = (production: boolean): Plugin[] => [
     }),
     nodeResolve,
     typescript(),
+    sourcemaps(),
     commonjs({
         // global keyword handling causes Webpack compatibility issues, so we disabled it:
         // https://github.com/mapbox/mapbox-gl-js/pull/6956
