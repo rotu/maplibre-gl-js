@@ -1,0 +1,144 @@
+name: Workflow
+on: [pull_request]
+env:
+  nodeversions: '["latest", "current", "lts"]'
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: npm ci
+      - run: |
+          npm run lint
+          npm run lint-docs
+          npm run lint-css
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: |
+          npm ci
+          npm run typecheck
+  build:
+    name: Build
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [current]
+        platform: [ubuntu-latest] # todo: , windows-latest, macos-11, macos-12]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+      - name: INSTALL HEADLESS GL (oy)
+        run: npm install gl
+      - name: build
+        run: |
+          npm ci
+          npm run build-dist
+          npm run codegen
+          npm run test-build
+      - name: pack
+        run: echo "file=$(npm pack)\n" >> $GITHUB_OUTPUT
+      - uses: actions/upload-artifact@v3
+        with:
+          path: ${{steps.pack.outputs.file}}
+  unit:
+    name: Unit
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [latest, current, lts/*]
+        platform: [ubuntu-latest] # todo:, windows-latest, macos-11, macos-12]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Node
+        uses: actions/setup-node@v3
+        with: { node-version: "${{ matrix.node }}" }
+      - name: build
+        run: |
+          npm ci
+          npm run test-unit-ci
+  browser:
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [current, latest, lts/*]
+        platform: [ubuntu-latest] # todo:, windows-latest, macos-11, macos-12]
+        browser: [firefox, edge, chrome]
+        include:
+          - platform: macos-11
+            browser: safari
+          - platform: macos-12
+            browser: safari
+    name: Browser (${{matrix.browser}} / ${{matrix.platform}})  
+    runs-on: ${{ matrix.platform }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v3
+      - name: Node
+        uses: actions/setup-node@v3
+        with: { node-version: "${{ matrix.node }}" }
+      - name: Headless-GL dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get install -y build-essential libxi-dev libglu1-mesa-dev libglew-dev pkg-config
+      
+      # need Headless-GL deps for chromedriver and geckodriver
+      - if: matrix.browser == 'firefox'
+        run: npm install geckodriver
+      - if: matrix.browser == 'chrome'
+        run: npm install chromedriver
+
+      - name: Install fonts-noto-cjk (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install fonts-noto-cjk
+      - run: |
+          npm ci
+          npm run build-dev
+      - if: runner.os == 'Linux'
+        run: xvfb-run -s "-ac -screen 0 1280x1024x24" npm run test-browser
+        env:
+          SELENIUM_BROWSER: ${{matrix.browser}}
+      - run: npm run test-browser
+        env:
+          SELENIUM_BROWSER: ${{matrix.browser}}
+  check-size:
+    needs: build
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: |
+          npm ci
+          npm run generate-typings
+          npm run build-prod
+          npm run build-csp
+          npm run build-dev
+          npm run build-css
+          npm run build-style-spec
+          npm run test-build
+      - run: npx source-map-explorer before/maplibre-gl.js --gzip --json before.json
+      - run: npx source-map-explorer after/maplibre-gl.js --gzip --json after.json
+      - name: Build bundle size report
+        run: |
+          node build/check-bundle-size.js > comment-body.txt
+          cat comment-body.txt
+      - if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          path: comment-body.txt
+          header: bundle-size-report
+          number: ${{github.event.number}}
