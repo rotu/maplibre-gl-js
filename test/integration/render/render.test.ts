@@ -1,6 +1,10 @@
-/* eslint-disable no-process-exit */
-import './mock_browser_for_node';
-import canvas from 'canvas';
+import {assert, afterAll, beforeAll, describe, test} from 'vitest';
+import {preview, createServer} from 'vite';
+import type {PreviewServer, ViteDevServer} from 'vite';
+import {JSHandle, chromium} from 'playwright';
+import type {Browser, Page} from 'playwright';
+import {createRequire} from 'module';
+
 import path, {dirname} from 'path';
 import fs from 'fs';
 import {PNG} from 'pngjs';
@@ -8,80 +12,37 @@ import pixelmatch from 'pixelmatch';
 import {fileURLToPath} from 'url';
 import glob from 'glob';
 import nise, {FakeXMLHttpRequest} from 'nise';
-import {createRequire} from 'module';
 import rtlText from '@mapbox/mapbox-gl-rtl-text';
 import localizeURLs from '../lib/localize-urls';
-import maplibregl from '../../../src/index';
+// import maplibregl from '../../../src/index';
 import browser from '../../../src/util/browser';
 import * as rtlTextPluginModule from '../../../src/source/rtl_text_plugin';
-import CanvasSource from '../../../src/source/canvas_source';
-import customLayerImplementations from './custom_layer_implementations';
-import type Map from '../../../src/ui/map';
-import type {StyleSpecification} from '../../../src/style-spec/types.g';
-import type {PointLike} from '../../../src/ui/camera';
+import {StyleWithTestData, TestData} from './render_test_case';
+import {runTestDataInBrowser} from './browser_test_driver';
+
+// import CanvasSource from '../../../src/source/canvas_source';
+// import customLayerImplementations from './custom_layer_implementations';
+// import type Map from '../../../src/ui/map';
+// import type {PointLike} from '../../../src/ui/camera';
+// import DOM from '../../../src/util/dom';
+// import {strict} from 'assert';
 
 const {fakeXhr} = nise;
 const {plugin: rtlTextPlugin} = rtlTextPluginModule;
-const {registerFont} = canvas;
 
-// @ts-ignore
-const __dirname = dirname(fileURLToPath(import.meta.url));
-// @ts-ignore
-const require = createRequire(import.meta.url);
-registerFont('./node_modules/npm-font-open-sans/fonts/Bold/OpenSans-Bold.ttf', {family: 'Open Sans', weight: 'bold'});
+const thisDir = fileURLToPath(new URL('.', import.meta.url));
 
 rtlTextPlugin['applyArabicShaping'] = rtlText.applyArabicShaping;
 rtlTextPlugin['processBidirectionalText'] = rtlText.processBidirectionalText;
 rtlTextPlugin['processStyledBidirectionalText'] = rtlText.processStyledBidirectionalText;
 
-let now = 0;
-
-type TestData = {
-    id: string;
-    width: number;
-    height: number;
-    pixelRatio: number;
-    recycleMap: boolean;
-    allowed: number;
-    ok: boolean;
-    difference: number;
-    timeout: number;
-    addFakeCanvas: {
-        id: string;
-        image: string;
-    };
-    axonometric: boolean;
-    skew: [number, number];
-    fadeDuration: number;
-    debug: boolean;
-    showOverdrawInspector: boolean;
-    showPadding: boolean;
-    collisionDebug: boolean;
-    localIdeographFontFamily: string;
-    crossSourceCollisions: boolean;
-    operations: any[];
-    queryGeometry: PointLike;
-    queryOptions: any;
-    error: Error;
-    maxPitch: number;
-
-    // base64-encoded content of the PNG results
-    actual: string;
-    diff: string;
-    expected: string;
-}
+const now = 0;
 
 type RenderOptions = {
     tests: any[];
     recycleMap: boolean;
     report: boolean;
     seed: string;
-}
-
-type StyleWithTestData = StyleSpecification & {
-    metadata : {
-        test: TestData;
-    };
 }
 
 // https://stackoverflow.com/a/1349426/229714
@@ -205,38 +166,38 @@ function compareRenderResults(directory: string, testData: TestData, data: Uint8
     testData.diff = diffBuf.toString('base64');
 }
 
-/**
- * Mocks XHR request and simply pulls file from the file system.
- */
-function mockXhr() {
-    global.XMLHttpRequest = fakeXhr.useFakeXMLHttpRequest() as any;
-    // @ts-ignore
-    XMLHttpRequest.onCreate = (req: FakeXMLHttpRequest & XMLHttpRequest & { response: any }) => {
-        setTimeout(() => {
-            if (req.readyState === 0) return; // aborted...
-            const relativePath = req.url.replace(/^http:\/\/localhost:(\d+)\//, '').replace(/\?.*/, '');
+// /**
+//  * Mocks XHR request and simply pulls file from the file system.
+//  */
+// function mockXhr() {
+//     global.XMLHttpRequest = fakeXhr.useFakeXMLHttpRequest() as any;
+//     // @ts-ignore
+//     XMLHttpRequest.onCreate = (req: FakeXMLHttpRequest & XMLHttpRequest & { response: any }) => {
+//         setTimeout(() => {
+//             if (req.readyState === 0) return; // aborted...
+//             const relativePath = req.url.replace(/^http:\/\/localhost:(\d+)\//, '').replace(/\?.*/, '');
 
-            let body: Buffer | null = null;
-            try {
-                if (relativePath.startsWith('mvt-fixtures')) {
-                    body = fs.readFileSync(path.join(path.dirname(require.resolve('@mapbox/mvt-fixtures')), '..', relativePath));
-                } else {
-                    body = fs.readFileSync(path.join(__dirname, '../assets', relativePath));
-                }
-                if (req.responseType !== 'arraybuffer') {
-                    req.response = body.toString('utf8');
-                } else {
-                    req.response = body;
-                }
-                req.setStatus(req.response.length > 0 ? 200 : 204);
-                req.onload(undefined as any);
-            } catch (ex) {
-                req.status = 404; // file not found
-                req.onload(undefined as any);
-            }
-        }, 0);
-    };
-}
+//             let body: Buffer | null = null;
+//             try {
+//                 if (relativePath.startsWith('mvt-fixtures')) {
+//                     const body = createRequire('@mapbox/mvt-fixtures').resolve(path.join('..', relativePath));
+//                 } else {
+//                     body = fs.readFileSync(path.join(thisDir, '../assets', relativePath));
+//                 }
+//                 if (req.responseType !== 'arraybuffer') {
+//                     req.response = body.toString('utf8');
+//                 } else {
+//                     req.response = body;
+//                 }
+//                 req.setStatus(req.response.length > 0 ? 200 : 204);
+//                 req.onload(undefined as any);
+//             } catch (ex) {
+//                 req.status = 404; // file not found
+//                 req.onload(undefined as any);
+//             }
+//         }, 0);
+//     };
+// }
 
 /**
  * Gets all the tests from the file system looking for style.json files.
@@ -277,214 +238,10 @@ function getTestStyles(options: RenderOptions, directory: string): StyleWithTest
                 console.log(`* skipped ${test.id}`);
                 return false;
             }
-            localizeURLs(style, 2900, path.join(__dirname, '../'));
+            localizeURLs(style, 2900, path.join(thisDir, '../'));
             return true;
         });
     return sequence;
-}
-
-// replacing the browser method of get image in order to avoid usage of context and canvas 2d with Image object...
-// @ts-ignore
-browser.getImageData = (img, padding = 0) => {
-    // @ts-ignore
-    if (!img.data) {
-        return {width: 1, height: 1, data: new Uint8Array(1)};
-    }
-    const width = img.width as number;
-    const height = img.height as number;
-    // @ts-ignore
-    const data = img.data;
-    const source = new Uint8Array(data);
-    const dest = new Uint8Array((2 * padding + width) * (2 * padding + height) * 4);
-
-    const offset = (2 * padding + width) * padding + padding;
-    for (let i = 0; i < height; i++) {
-        dest.set(source.slice(i * width * 4, (i + 1) * width * 4), 4 * (offset + (width + 2 * padding) * i));
-    }
-    return {width: width + 2 * padding, height: height + 2 * padding, data: dest};
-};
-
-function createFakeCanvas(document: Document, id: string, imagePath: string): HTMLCanvasElement {
-    const fakeCanvas = document.createElement('canvas');
-    const image = PNG.sync.read(fs.readFileSync(path.join(__dirname, '../assets', imagePath)));
-    fakeCanvas.id = id;
-    (fakeCanvas as any).data = image.data;
-    fakeCanvas.width = image.width;
-    fakeCanvas.height = image.height;
-    return fakeCanvas;
-}
-
-function updateFakeCanvas(document: Document, id: string, imagePath: string) {
-    const fakeCanvas = document.getElementById(id);
-    const image = PNG.sync.read(fs.readFileSync(path.join(__dirname, '../assets', imagePath)));
-    (fakeCanvas as any).data = image.data;
-}
-
-/**
- * Executes the operations in the test data
- *
- * @param testData The test data to operate upon
- * @param map The Map
- * @param operations The operations
- * @param callback The callback to use when all the operations are executed
- */
-function applyOperations(testData: TestData, map: Map & { _render: () => void}, operations: any[], callback: Function) {
-    const operation = operations && operations[0];
-    if (!operations || operations.length === 0) {
-        callback();
-
-    } else if (operation[0] === 'wait') {
-        if (operation.length > 1) {
-            now += operation[1];
-            map._render();
-            applyOperations(testData, map, operations.slice(1), callback);
-
-        } else {
-            const wait = function() {
-                if (map.loaded()) {
-                    applyOperations(testData, map, operations.slice(1), callback);
-                } else {
-                    map.once('render', wait);
-                }
-            };
-            wait();
-        }
-
-    } else if (operation[0] === 'sleep') {
-        // Prefer "wait", which renders until the map is loaded
-        // Use "sleep" when you need to test something that sidesteps the "loaded" logic
-        setTimeout(() => {
-            applyOperations(testData, map, operations.slice(1), callback);
-        }, operation[1]);
-    } else if (operation[0] === 'addImage') {
-        const {data, width, height} = PNG.sync.read(fs.readFileSync(path.join(__dirname, '../assets', operation[2])));
-        map.addImage(operation[1], {width, height, data: new Uint8Array(data)}, operation[3] || {});
-        applyOperations(testData, map, operations.slice(1), callback);
-    } else if (operation[0] === 'addCustomLayer') {
-        map.addLayer(new customLayerImplementations[operation[1]](), operation[2]);
-        map._render();
-        applyOperations(testData, map, operations.slice(1), callback);
-    } else if (operation[0] === 'updateFakeCanvas') {
-        const canvasSource = map.getSource(operation[1]) as CanvasSource;
-        canvasSource.play();
-        // update before pause should be rendered
-        updateFakeCanvas(window.document, testData.addFakeCanvas.id, operation[2]);
-        canvasSource.pause();
-        // update after pause should not be rendered
-        updateFakeCanvas(window.document, testData.addFakeCanvas.id, operation[3]);
-        map._render();
-        applyOperations(testData, map, operations.slice(1), callback);
-    } else if (operation[0] === 'setStyle') {
-        // Disable local ideograph generation (enabled by default) for
-        // consistent local ideograph rendering using fixtures in all runs of the test suite.
-        map.setStyle(operation[1], {localIdeographFontFamily: false as any});
-        applyOperations(testData, map, operations.slice(1), callback);
-    } else if (operation[0] === 'pauseSource') {
-        map.style.sourceCaches[operation[1]].pause();
-        applyOperations(testData, map, operations.slice(1), callback);
-    } else {
-        if (typeof map[operation[0]] === 'function') {
-            map[operation[0]](...operation.slice(1));
-        }
-        applyOperations(testData, map, operations.slice(1), callback);
-    }
-}
-/**
- * It creates the map and applies the operations to create an image
- * and returns it as a Uint8Array
- *
- * @param style The style to use
- * @returns an image byte array promise
- */
-function getImageFromStyle(style: StyleWithTestData): Promise<Uint8Array> {
-    return new Promise((resolve, reject) => {
-        const options = style.metadata.test;
-
-        setTimeout(() => {
-            reject(new Error('Test timed out'));
-        }, options.timeout || 20000);
-
-        if (options.addFakeCanvas) {
-            const fakeCanvas = createFakeCanvas(window.document, options.addFakeCanvas.id, options.addFakeCanvas.image);
-            window.document.body.appendChild(fakeCanvas);
-        }
-
-        const container = window.document.createElement('div');
-        Object.defineProperty(container, 'clientWidth', {value: options.width});
-        Object.defineProperty(container, 'clientHeight', {value: options.height});
-
-        const map = new maplibregl.Map({
-            container,
-            style,
-
-            // @ts-ignore
-            classes: options.classes,
-            interactive: false,
-            attributionControl: false,
-            maxPitch: options.maxPitch,
-            pixelRatio: options.pixelRatio,
-            preserveDrawingBuffer: true,
-            axonometric: options.axonometric || false,
-            skew: options.skew || [0, 0],
-            fadeDuration: options.fadeDuration || 0,
-            localIdeographFontFamily: options.localIdeographFontFamily || false as any,
-            crossSourceCollisions: typeof options.crossSourceCollisions === 'undefined' ? true : options.crossSourceCollisions
-        });
-
-        // Configure the map to never stop the render loop
-        map.repaint = true;
-        now = 0;
-        browser.now = () => {
-            return now;
-        };
-
-        if (options.debug) map.showTileBoundaries = true;
-        if (options.showOverdrawInspector) map.showOverdrawInspector = true;
-        if (options.showPadding) map.showPadding = true;
-
-        const gl = map.painter.context.gl;
-
-        map.once('load', () => {
-            if (options.collisionDebug) {
-                map.showCollisionBoxes = true;
-                if (options.operations) {
-                    options.operations.push(['wait']);
-                } else {
-                    options.operations = [['wait']];
-                }
-            }
-            applyOperations(options, map as any, options.operations, () => {
-                const viewport = gl.getParameter(gl.VIEWPORT);
-                const w = viewport[2];
-                const h = viewport[3];
-
-                const data = new Uint8Array(w * h * 4);
-                gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, data);
-
-                // Flip the scanlines.
-                const stride = w * 4;
-                const tmp = new Uint8Array(stride);
-                for (let i = 0, j = h - 1; i < j; i++, j--) {
-                    const start = i * stride;
-                    const end = j * stride;
-                    tmp.set(data.slice(start, start + stride), 0);
-                    data.set(data.slice(end, end + stride), start);
-                    data.set(tmp, end);
-                }
-
-                map.remove();
-                gl.getExtension('STACKGL_destroy_context').destroy();
-                delete map.painter.context.gl;
-
-                if (options.addFakeCanvas) {
-                    const fakeCanvas = window.document.getElementById(options.addFakeCanvas.id);
-                    fakeCanvas.parentNode.removeChild(fakeCanvas);
-                }
-
-                resolve(data);
-            });
-        });
-    });
 }
 
 /**
@@ -558,97 +315,158 @@ if (process.argv.length > 2) {
     options.seed = checkValueParameter(options, options.seed, '--seed');
 }
 
-mockXhr();
+describe('render tests', async () => {
+    let server: PreviewServer;
+    // let server: ViteDevServer | PreviewServer;
+    let browser: Browser | null = null;
 
-const directory = path.join(__dirname);
-const testStyles = getTestStyles(options, directory);
-let index = 0;
-for (const style of testStyles) {
-    try {
-        //@ts-ignore
-        const data = await getImageFromStyle(style);
-        compareRenderResults(directory, style.metadata.test, data);
-    } catch (ex) {
-        style.metadata.test.error = ex;
-    }
-    printProgress(style.metadata.test, testStyles.length, ++index);
-}
+    beforeAll(async (ct) => {
+        server = await preview({
+            mode: 'development',
+            publicDir: path.join(thisDir, '../assets'),
+            root: thisDir,
+            appType: 'custom',
+        });
+        // server = await createServer({
+        //     mode: 'development',
+        //     publicDir: path.join(thisDir, '../assets'),
+        //     root: thisDir
+        // });
+        // await server.listen();
+        browser = await chromium.launch({headless: false, devtools: true});
+    });
 
-const tests = testStyles.map(s => s.metadata.test).filter(t => !!t);
-const testStats: TestStats = {
-    total: tests.length,
-    errored: tests.filter(t => t.error),
-    failed: tests.filter(t => !t.error && !t.ok),
-    passed: tests.filter(t => !t.error && t.ok)
-};
+    afterAll(async () => {
+        await browser?.close();
+        await new Promise<void>((resolve, reject) => {
+            server.httpServer?.close(error => error ? reject(error) : resolve());
+        });
+    });
 
-if (process.env.UPDATE) {
-    console.log(`Updated ${testStyles.length} tests.`);
-    process.exit(0);
-}
+    //todo: only first 10
+    for (const style of getTestStyles(options, directory).slice(0, 10)) {
+        const testinfo = style.metadata.test;
 
-const success = printStatistics(testStats);
+        test(testinfo.id, async () => {
+            const b2 = browser!;
+            const s2 = server!;
+            const serverUrl = s2.resolvedUrls.local[0];
 
-function getReportItem(test: TestData) {
-    let status: 'errored' | 'failed';
+            if (!b2) {
+                throw new Error();
+            }
+            let data;
+            const cxt = await b2.newContext({viewport: {width: style.metadata.test.width, height: style.metadata.test.height}});
+            try {
+                const page = await cxt.newPage();
+                const address = new URL('render_test_page.html', serverUrl).toString();
+                await page.goto(address);
 
-    if (test.error) {
-        status = 'errored';
-    } else {
-        status = 'failed';
-    }
+                await page.evaluate((style) => { debugger; }, style);
 
-    return `<div class="test">
-    <h2>${test.id}</h2>
-    ${status !== 'errored' ? `
-        <img width="${test.width}" height="${test.height}" src="data:image/png;base64,${test.actual}" data-alt-src="data:image/png;base64,${test.expected}">
-        <img style="width: ${test.width}; height: ${test.height}" src="data:image/png;base64,${test.diff}">` : ''
-}
-    ${test.error ? `<p style="color: red"><strong>Error:</strong> ${test.error.message}</p>` : ''}
-    ${test.difference ? `<p class="diff"><strong>Diff:</strong> ${test.difference}</p>` : ''}
-</div>`;
-}
+                data =  await page.screenshot();
+            } finally {
+                cxt.close();
+            }
+            compareRenderResults(directory, style.metadata.test, data);
+        }, {
+            timeout: 60000
 
-if (options.report) {
-    const erroredItems = testStats.errored.map(t => getReportItem(t));
-    const failedItems = testStats.failed.map(t => getReportItem(t));
-
-    // write HTML reports
-    let resultData: string;
-    if (erroredItems.length || failedItems.length) {
-        const resultItemTemplate = fs.readFileSync(path.join(__dirname, 'result_item_template.html')).toString();
-        resultData = resultItemTemplate
-            .replace('${failedItemsLength}', failedItems.length.toString())
-            .replace('${failedItems}', failedItems.join('\n'))
-            .replace('${erroredItemsLength}', failedItems.length.toString())
-            .replace('${erroredItems}', erroredItems.join('\n'));
-    } else {
-        resultData = '<h1 style="color: green">All tests passed!</h1>';
+            //testinfo.timeout ?? 20000
+        }
+        );
     }
 
-    const reportTemplate = fs.readFileSync(path.join(__dirname, 'report_template.html')).toString();
-    const resultsContent = reportTemplate.replace('${resultData}', resultData);
+    // test('should change count when button clicked', async () => {
+    //     const baseUrl = server.resolvedUrls.local[0];
+    //     await page.goto('http://localhost:3000');
+    //     const button = page.getByRole('button', {name: /Clicked/});
+    //     await expect(button).toBeVisible();
 
-    const p = path.join(__dirname, options.recycleMap ? 'results-recycle-map.html' : 'results.html');
-    fs.writeFileSync(p, resultsContent, 'utf8');
-    console.log(`\nFull html report is logged to '${p}'`);
+    //     await expect(button).toHaveText('Clicked 0 time(s)');
 
-    // write text report of just the error/failed id
-    if (testStats.errored?.length > 0) {
-        const erroredItemIds = testStats.errored.map(t => t.id);
-        const caseIdFileName = path.join(__dirname, 'results-errored-caseIds.txt');
-        fs.writeFileSync(caseIdFileName, erroredItemIds.join('\n'), 'utf8');
+    //     await button.click();
+    //     await expect(button).toHaveText('Clicked 1 time(s)');
+    // }, 60_000);
+});
 
-        console.log(`\n${testStats.errored?.length} errored test case IDs are logged to '${caseIdFileName}'`);
-    }
+const directory = path.join(thisDir);
 
-    if (testStats.failed?.length > 0) {
-        const failedItemIds = testStats.failed.map(t => t.id);
-        const caseIdFileName = path.join(__dirname, 'results-failed-caseIds.txt');
-        fs.writeFileSync(caseIdFileName, failedItemIds.join('\n'), 'utf8');
+// const tests = testStyles.map(s => s.metadata.test).filter(t => !!t);
+// const testStats: TestStats = {
+//     total: tests.length,
+//     errored: tests.filter(t => t.error),
+//     failed: tests.filter(t => !t.error && !t.ok),
+//     passed: tests.filter(t => !t.error && t.ok)
+// };
 
-        console.log(`\n${testStats.failed?.length} failed test case IDs are logged to '${caseIdFileName}'`);
-    }
-}
+// if (process.env.UPDATE) {
+//     console.log(`Updated ${testStyles.length} tests.`);
+//     process.exit(0);
+// }
 
-process.exit(success ? 0 : 1);
+// const success = printStatistics(testStats);
+
+// function getReportItem(test: TestData) {
+//     let status: 'errored' | 'failed';
+
+//     if (test.error) {
+//         status = 'errored';
+//     } else {
+//         status = 'failed';
+//     }
+
+//     return `<div class="test">
+//     <h2>${test.id}</h2>
+//     ${status !== 'errored' ? `
+//         <img width="${test.width}" height="${test.height}" src="data:image/png;base64,${test.actual}" data-alt-src="data:image/png;base64,${test.expected}">
+//         <img style="width: ${test.width}; height: ${test.height}" src="data:image/png;base64,${test.diff}">` : ''
+// }
+//     ${test.error ? `<p style="color: red"><strong>Error:</strong> ${test.error.message}</p>` : ''}
+//     ${test.difference ? `<p class="diff"><strong>Diff:</strong> ${test.difference}</p>` : ''}
+// </div>`;
+// }
+
+// if (options.report) {
+//     const erroredItems = testStats.errored.map(t => getReportItem(t));
+//     const failedItems = testStats.failed.map(t => getReportItem(t));
+
+//     // write HTML reports
+//     let resultData: string;
+//     if (erroredItems.length || failedItems.length) {
+//         const resultItemTemplate = fs.readFileSync(path.join(thisDir, 'result_item_template.html')).toString();
+//         resultData = resultItemTemplate
+//             .replace('${failedItemsLength}', failedItems.length.toString())
+//             .replace('${failedItems}', failedItems.join('\n'))
+//             .replace('${erroredItemsLength}', failedItems.length.toString())
+//             .replace('${erroredItems}', erroredItems.join('\n'));
+//     } else {
+//         resultData = '<h1 style="color: green">All tests passed!</h1>';
+//     }
+
+//     const reportTemplate = fs.readFileSync(path.join(thisDir, 'report_template.html')).toString();
+//     const resultsContent = reportTemplate.replace('${resultData}', resultData);
+
+//     const p = path.join(thisDir, options.recycleMap ? 'results-recycle-map.html' : 'results.html');
+//     fs.writeFileSync(p, resultsContent, 'utf8');
+//     console.log(`\nFull html report is logged to '${p}'`);
+
+//     // write text report of just the error/failed id
+//     if (testStats.errored?.length > 0) {
+//         const erroredItemIds = testStats.errored.map(t => t.id);
+//         const caseIdFileName = path.join(thisDir, 'results-errored-caseIds.txt');
+//         fs.writeFileSync(caseIdFileName, erroredItemIds.join('\n'), 'utf8');
+
+//         console.log(`\n${testStats.errored?.length} errored test case IDs are logged to '${caseIdFileName}'`);
+//     }
+
+//     if (testStats.failed?.length > 0) {
+//         const failedItemIds = testStats.failed.map(t => t.id);
+//         const caseIdFileName = path.join(thisDir, 'results-failed-caseIds.txt');
+//         fs.writeFileSync(caseIdFileName, failedItemIds.join('\n'), 'utf8');
+
+//         console.log(`\n${testStats.failed?.length} failed test case IDs are logged to '${caseIdFileName}'`);
+//     }
+// }
+
+// process.exit(success ? 0 : 1);

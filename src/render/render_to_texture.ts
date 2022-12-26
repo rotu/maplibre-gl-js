@@ -10,7 +10,7 @@ import Texture from './texture';
 import type StyleLayer from '../style/style_layer';
 
 // lookup table which layers should rendered to texture
-const LAYERS: { [keyof in StyleLayer['type']]?: boolean } = {
+const LAYERS = {
     background: true,
     fill: true,
     line: true,
