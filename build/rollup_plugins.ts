@@ -20,15 +20,6 @@ export const nodeResolve = resolve({
 export const plugins = (production: boolean): Plugin[] => [
     minifyStyleSpec(),
     json(),
-    // https://github.com/zaach/jison/issues/351
-    replace({
-        preventAssignment: true,
-        include: /\/jsonlint-lines-primitives\/lib\/jsonlint.js/,
-        delimiters: ['', ''],
-        values: {
-            '_token_stack:': ''
-        }
-    }),
     production && strip({
         sourceMap: true,
         functions: ['PerformanceUtils.*', 'Debug.*']
