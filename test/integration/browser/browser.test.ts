@@ -1,26 +1,14 @@
-import {Browser, BrowserContext, BrowserType, chromium, Page} from 'playwright';
+import {chromium, firefox, webkit} from 'playwright';
 import st from 'st';
 import http from 'http';
-import fs from 'fs';
-import path from 'path';
-import pixelmatch from 'pixelmatch';
-import {PNG} from 'pngjs';
 import {fileURLToPath} from 'node:url';
-import {after} from 'node:test';
 
-const testWidth = 800;
-const testHeight = 600;
-
-const thisurl = import.meta.url;
 const projectRoot = fileURLToPath(new URL('../../..', import.meta.url));
 
-// async function newTest(impl: BrowserType) {
-
-//     page = await context.newPage();
-// }
+import {toMatchImageSnapshot} from 'jest-image-snapshot';
+expect.extend({toMatchImageSnapshot});
 
 describe('browser tests', () => {
-    let serverurl;
     let port: number;
     let browser;
     let server;
@@ -38,9 +26,10 @@ describe('browser tests', () => {
                 resolve(server.address().port);
             });
         });
-        browser = await chromium.launch({headless: false, devtools: true});
+        browser = await chromium.launch();
 
     });
+
     afterAll(async () => {
         await Promise.allSettled([
             new Promise((resolve) => server.close(resolve)),
@@ -52,7 +41,6 @@ describe('browser tests', () => {
         page = await browser.newPage({});
         await page.goto(`http://localhost:${port}/test/integration/browser/fixtures/land.html`);
         canvas = await page.evaluateHandle(() => new Promise((resolve, reject) => {
-            debugger;
             setTimeout(reject, 1000);
             if (map.loaded()) {
                 resolve(map.getCanvas());
@@ -60,41 +48,9 @@ describe('browser tests', () => {
                 map.once('load', () => resolve(map.getCanvas()));
             }
         }));
-
-        // async function getMapCanvas(url, page: Page) {
-        //     // await page.setContent(landHTML);
-        //     const x = await page.evaluate(
-        //         `() => {
-        //             return new Promise((resolve, reject) => {
-        //                 setTimeout(reject, 1000)
-        //                 if (map.loaded()) {
-        //                     resolve();
-        //                 } else {
-        //                     map.once('load', () => resolve());
-        //                 }
-        //             });
-        //         }`);
-        //     const d = await page.locator('#map');
-        //     const dc = await d.count();
-        //     const y = await page.evaluateHandle('map');
-        //     return x as any;
-        // }
-
     });
 
     test('Drag to the left', async () => {
-        // browser.newPage();
-        // const context = browser.newContext({
-        //     viewport: {width: testWidth, height: testHeight},
-        //     deviceScaleFactor: 2,
-        // });
-        // const page = await browser.newPage({
-        //     viewport: {width: testWidth, height: testHeight},
-        //     deviceScaleFactor: 2,
-        // });
-
-        // canvas = {} as any;
-        // const canvas = await page.$('.maplibregl-canvas');
         const canvasBB = await canvas.boundingBox();
 
         // Perform drag action, wait a bit the end to avoid the momentum mode.
@@ -110,88 +66,93 @@ describe('browser tests', () => {
 
         expect(center.lng).toBeCloseTo(-35.15625, 4);
         expect(center.lat).toBeCloseTo(0, 7);
-    }, 2000000);
+        expect(await page.screenshot()).toMatchImageSnapshot();
+
+    }, 20000);
+
+    test('Zoom: Double click at the center', async () => {
+        expect(await page.screenshot()).toMatchImageSnapshot();
+
+        const canvasBB = await canvas.boundingBox();
+
+        await page.mouse.dblclick(canvasBB.x, canvasBB.y);
+
+        // Wait until the map has settled, then report the zoom level back.
+        const zoom = await page.evaluate(() => {
+            return new Promise((resolve, _reject) => {
+                map.once('idle', () => resolve(map.getZoom()));
+            });
+        });
+
+        expect(zoom).toBe(2);
+        expect(await page.screenshot()).toMatchImageSnapshot();
+
+    }, 20000);
+
+    // test(`${impl.name()} - CJK Characters`, async () => {
+    //     await newTest(impl);
+    //     await page.evaluate(() => {
+
+    //         map.setStyle({
+    //             version: 8,
+    //             glyphs: 'https://mierune.github.io/fonts/{fontstack}/{range}.pbf',
+    //             sources: {
+    //                 sample: {
+    //                     type: 'geojson',
+    //                     data: {
+    //                         type: 'Feature',
+    //                         geometry: {
+    //                             type: 'Point',
+    //                             coordinates: [0, 0]
+    //                         },
+    //                         properties: {
+    //                             'name_en': 'abcde',
+    //                             'name_ja': 'あいうえお',
+    //                             'name_ch': '阿衣乌唉哦',
+    //                             'name_kr': '아이우'
+    //                         }
+    //                     }
+    //                 },
+    //             },
+    //             'layers': [
+    //                 {
+    //                     'id': 'sample-text-left',
+    //                     'type': 'symbol',
+    //                     'source': 'sample',
+    //                     'layout': {
+    //                         'text-anchor': 'top',
+    //                         'text-field': '{name_ja}{name_en}',
+    //                         'text-font': ['Open Sans Regular'],
+    //                         'text-offset': [-10, 0],
+    //                     }
+    //                 },
+    //                 {
+    //                     'id': 'sample-text-center',
+    //                     'type': 'symbol',
+    //                     'source': 'sample',
+    //                     'layout': {
+    //                         'text-anchor': 'top',
+    //                         'text-field': '{name_ch}{name_kr}',
+    //                         'text-font': ['Open Sans Regular'],
+    //                         'text-offset': [0, 0],
+    //                     }
+    //                 },
+    //                 {
+    //                     'id': 'sample-text-right',
+    //                     'type': 'symbol',
+    //                     'source': 'sample',
+    //                     'layout': {
+    //                         'text-anchor': 'top',
+    //                         'text-field': '{name_en}{name_ja}',
+    //                         'text-font': ['Open Sans Regular'],
+    //                         'text-offset': [10, 0],
+    //                     }
+    //                 },
+    //             ]
+    //         });
+    //     });
+
 });
-
-// test(`${impl.name()} Zoom: Double click at the center`, async () => {
-
-//     await newTest(impl);
-//     const canvas = await page.$('.maplibregl-canvas');
-//     const canvasBB = await canvas.boundingBox();
-//     await page.mouse.dblclick(canvasBB.x, canvasBB.y);
-
-//     // Wait until the map has settled, then report the zoom level back.
-//     const zoom = await page.evaluate(() => {
-//         return new Promise((resolve, _reject) => {
-//             map.once('idle', () => resolve(map.getZoom()));
-//         });
-//     });
-
-//     expect(zoom).toBe(2);
-// }, 20000);
-
-// test(`${impl.name()} - CJK Characters`, async () => {
-//     await newTest(impl);
-//     await page.evaluate(() => {
-
-//         map.setStyle({
-//             version: 8,
-//             glyphs: 'https://mierune.github.io/fonts/{fontstack}/{range}.pbf',
-//             sources: {
-//                 sample: {
-//                     type: 'geojson',
-//                     data: {
-//                         type: 'Feature',
-//                         geometry: {
-//                             type: 'Point',
-//                             coordinates: [0, 0]
-//                         },
-//                         properties: {
-//                             'name_en': 'abcde',
-//                             'name_ja': 'あいうえお',
-//                             'name_ch': '阿衣乌唉哦',
-//                             'name_kr': '아이우'
-//                         }
-//                     }
-//                 },
-//             },
-//             'layers': [
-//                 {
-//                     'id': 'sample-text-left',
-//                     'type': 'symbol',
-//                     'source': 'sample',
-//                     'layout': {
-//                         'text-anchor': 'top',
-//                         'text-field': '{name_ja}{name_en}',
-//                         'text-font': ['Open Sans Regular'],
-//                         'text-offset': [-10, 0],
-//                     }
-//                 },
-//                 {
-//                     'id': 'sample-text-center',
-//                     'type': 'symbol',
-//                     'source': 'sample',
-//                     'layout': {
-//                         'text-anchor': 'top',
-//                         'text-field': '{name_ch}{name_kr}',
-//                         'text-font': ['Open Sans Regular'],
-//                         'text-offset': [0, 0],
-//                     }
-//                 },
-//                 {
-//                     'id': 'sample-text-right',
-//                     'type': 'symbol',
-//                     'source': 'sample',
-//                     'layout': {
-//                         'text-anchor': 'top',
-//                         'text-field': '{name_en}{name_ja}',
-//                         'text-font': ['Open Sans Regular'],
-//                         'text-offset': [10, 0],
-//                     }
-//                 },
-//             ]
-//         });
-//     });
 
 //     const image = await page.evaluate(() => {
 //         return new Promise((resolve, _) => {

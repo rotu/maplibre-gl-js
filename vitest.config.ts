@@ -3,6 +3,10 @@ import {defineConfig} from 'vite';
 
 export default defineConfig({
     test: {
-        include: ['test/integration/render/render.test.ts'],
+        globals: true,
+        include: [
+            'test/integration/browser/browser.test.ts'
+            // 'test/integration/render/render.test.ts'
+        ],
     },
 });
