@@ -1,5 +1,4 @@
 import {Browser, BrowserContext, BrowserType, chromium, Page} from 'playwright';
-import address from 'address';
 import st from 'st';
 import http from 'http';
 import fs from 'fs';
@@ -7,26 +6,32 @@ import path from 'path';
 import pixelmatch from 'pixelmatch';
 import {PNG} from 'pngjs';
 
-const ip = address.ip();
 const port = 9968;
-const basePath = `http://${ip}:${port}`;
+const rootUrl = `http://localhost:${port}`;
 const testWidth = 800;
 const testHeight = 600;
 
-async function getMapCanvas(url, page: Page) {
+const projectRoot = path.resolve('../../..', import.meta.url);
 
+async function getMapCanvas(url, page: Page) {
+    // await page.setContent(landHTML);
     await page.goto(url);
 
-    await page.evaluate(() => {
-        new Promise<void>((resolve, _reject) => {
-            if (map.loaded()) {
-                resolve();
-            } else {
-                map.once('load', () => resolve());
-            }
-        });
-    });
-
+    const x = await page.evaluate(`
+        document.location
+    //     new Promise<void>((resolve, _reject) => {
+    //         if (map.loaded()) {
+    //             resolve();
+    //         } else {
+    //             map.once('load', () => resolve());
+    //         }
+    //     });
+    // }
+    `);
+    const d = await page.locator("#map")
+    const dc = await d.count()
+    const y = await page.evaluateHandle("map")
+debugger
 }
 
 async function newTest(impl: BrowserType) {
@@ -40,22 +45,22 @@ async function newTest(impl: BrowserType) {
     });
 
     page = await context.newPage();
-    await getMapCanvas(`${basePath}/test/integration/browser/fixtures/land.html`, page);
+    await getMapCanvas(`${rootUrl}/test/integration/browser/fixtures/land.html`, page);
 }
 
-let server = null;
+let server;
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 let map: any;
 
 describe('browser tests', () => {
-
+    // const thisDir = path.resolve(import.meta.url);
     // start server
     beforeAll((done) => {
         server = http.createServer(
-            st(process.cwd())
-        ).listen(port, ip, () => {
+            st(projectRoot)
+        ).listen(port, () => {
             done();
         });
     });

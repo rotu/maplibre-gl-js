@@ -27,6 +27,7 @@
     "@types/pbf": "^3.0.2",
     "csscolorparser": "~1.0.3",
     "earcut": "^2.2.4",
+    "geckodriver": "^3.2.0",
     "geojson-vt": "^3.2.1",
     "gl-matrix": "^3.4.3",
     "global-prefix": "^3.0.0",
@@ -97,7 +98,6 @@
     "jest": "^29.3.1",
     "jest-canvas-mock": "^2.4.0",
     "jest-environment-jsdom": "^29.3.1",
-    "jest-playwright-preset": "^3.0.1",
     "jsdom": "^20.0.2",
     "json-stringify-pretty-compact": "^4.0.0",
     "minimist": "^1.2.7",
@@ -131,6 +131,7 @@
     "vitest": "^0.26.2"
   },
   "scripts": {
+    "test2": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "generate-shaders": "ts-node build/generate-shaders.ts",
     "generate-struct-arrays": "ts-node build/generate-struct-arrays.ts",
     "generate-style-code": "ts-node build/generate-style-code.ts",
