@@ -1,6 +1,7 @@
 ## main
 
 ### ✨ Features and improvements
+- Resize map when container element is resized.  ([#2013](https://github.com/maplibre/maplibre-gl-js/pull/2013))
 - *...Add new stuff here...*
 
 ### 🐞 Bug fixes
