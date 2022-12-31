@@ -6,6 +6,7 @@ export default defineConfig({
         name: 'Browser',
         globals: true,
         include: [
+            'test/integration/render/render.test.ts',
             'test/integration/browser/browser.test.ts'
         ],
     },
