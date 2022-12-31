@@ -1,10 +1,8 @@
 /// <reference lib="dom" />
-
-import {StyleWithTestData} from './render_test_case';
-import maplibregl from '../../../src/index';
+import type MapLibre from '../../../src/ui/map';
+import type {StyleWithTestData, TestData} from './render_test_case';
 
 export async function runTestDataInBrowser (style:StyleWithTestData) {
-    'use strict';
     const options = style.metadata.test;
 
     async function createFakeCanvas(document: Document, id: string, imagePath: string) {
@@ -36,14 +34,14 @@ export async function runTestDataInBrowser (style:StyleWithTestData) {
      * @param operations The operations
      * @param callback The callback to use when all the operations are executed
      */
-    function applyOperations(testData: TestData, map: Map & { _render: () => void}, operations: any[], callback: Function) {
+    function applyOperations(testData: TestData, map: MapLibre & { _render: () => void}, operations: any[], callback: Function) {
         const operation = operations && operations[0];
         if (!operations || operations.length === 0) {
             callback();
 
         } else if (operation[0] === 'wait') {
             if (operation.length > 1) {
-                now += operation[1];
+                // now += operation[1];
                 map._render();
                 applyOperations(testData, map, operations.slice(1), callback);
             } else {
@@ -121,47 +119,23 @@ export async function runTestDataInBrowser (style:StyleWithTestData) {
 
     // Configure the map to never stop the render loop
     map.repaint = true;
-    now = 0;
-    browser.now = () => {
-        return now;
-    };
 
     if (options.debug) map.showTileBoundaries = true;
     if (options.showOverdrawInspector) map.showOverdrawInspector = true;
     if (options.showPadding) map.showPadding = true;
 
-    const gl = map.painter.context.gl;
-
-    map.once('load', () => {
-        if (options.collisionDebug) {
-            map.showCollisionBoxes = true;
-            if (options.operations) {
-                options.operations.push(['wait']);
-            } else {
-                options.operations = [['wait']];
+    return new Promise(resolve => {
+        map.once('load', () => {
+            if (options.collisionDebug) {
+                map.showCollisionBoxes = true;
+                if (options.operations) {
+                    options.operations.push(['wait']);
+                } else {
+                    options.operations = [['wait']];
+                }
             }
-        }
-        applyOperations(options, map as any, options.operations, () => {
-            const viewport = gl.getParameter(gl.VIEWPORT);
-            const w = viewport[2];
-            const h = viewport[3];
-
-            const data = new Uint8Array(w * h * 4);
-            gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, data);
-
-            // Flip the scanlines.
-            const stride = w * 4;
-            const tmp = new Uint8Array(stride);
-            for (let i = 0, j = h - 1; i < j; i++, j--) {
-                const start = i * stride;
-                const end = j * stride;
-                tmp.set(data.slice(start, start + stride), 0);
-                data.set(data.slice(end, end + stride), start);
-                data.set(tmp, end);
-            }
-
-            map.remove();
-            gl.getExtension('STACKGL_destroy_context').destroy();
+            applyOperations(options, map as any, options.operations, resolve
+            );
         });
     });
 }

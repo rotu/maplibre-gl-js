@@ -104,7 +104,7 @@ function pngToBase64Str(filePath) {
 
 function processStyle(testName, style) {
     const clone = JSON.parse(JSON.stringify(style));
-    localizeURLs(clone, 7357, path.join(__dirname, '../test/integration'));
+    localizeURLs(clone, path.join(__dirname, '../test/integration'));
 
     clone.metadata = clone.metadata || {};
 
