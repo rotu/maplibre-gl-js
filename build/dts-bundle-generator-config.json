@@ -1,0 +1,37 @@
+{
+  "compilationOptions": {
+    "preferredConfigPath": "../tsconfig.json"
+  },
+  "entries": [
+    {
+      "filePath": "../src/index.ts",
+      "outFile": "../dist/maplibre-gl.d.ts",
+      "libraries": {
+        "inlinedLibraries": [
+          "@mapbox/tiny-sdf",
+          "@types/geojson",
+          "@types/kdbush",
+          "@types/mapbox__point-geometry",
+          "@types/mapbox__vector-tile",
+          "@types/pbf",
+          "gl-matrix",
+          "potpack"
+        ]
+      },
+      "output": {
+        "umdModuleName": "maplibregl",
+        "exportReferencedTypes": true
+      }
+    },
+    {
+      "filePath": "../src/style-spec/style-spec.ts",
+      "outFile": "../dist/style-spec/index.d.ts",
+      "libraries": {
+        "inlinedLibraries": ["@types/mapbox__point-geometry"]
+      },
+      "output": {
+        "exportReferencedTypes": true
+      }
+    }
+  ]
+}

@@ -134,7 +134,7 @@
     "generate-struct-arrays": "ts-node build/generate-struct-arrays.ts",
     "generate-style-code": "ts-node build/generate-style-code.ts",
     "generate-style-spec": "ts-node build/generate-style-spec.ts",
-    "generate-typings": "ts-node build/generate-typings.ts",
+    "generate-typings": "dts-bundle-generator --config build/dts-bundle-generator-config.json",
     "generate-query-test-fixtures": "ts-node build/generate-query-test-fixtures.ts",
     "build-dist": "npm run generate-typings && npm run build-dev && npm run build-prod && npm run build-csp && npm run build-csp-dev && npm run build-css",
     "build-dev": "rollup --configPlugin @rollup/plugin-typescript -c --environment BUILD:dev --bundleConfigAsCjs",
