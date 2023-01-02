@@ -31,5 +31,11 @@
     "test/bench/**/*.tsx",
     "build/**/*.ts"
   ],
-  "exclude": ["lib", "dist", "test/bench/**/*generated*", "src/**/*.test.ts"]
+  "exclude": [
+    "node_modules",
+    "lib",
+    "dist",
+    "test/bench/**/*generated*",
+    "src/**/*.test.ts"
+  ]
 }

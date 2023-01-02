@@ -8,6 +8,8 @@
       "outFile": "../dist/maplibre-gl.d.ts",
       "libraries": {
         "inlinedLibraries": [
+          "@mapbox/point-geometry",
+          "@mapbox/vector-tile",
           "@mapbox/tiny-sdf",
           "@types/geojson",
           "@types/kdbush",

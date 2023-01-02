@@ -240,7 +240,7 @@ export default class Marker extends Evented {
      *   .setLngLat([30.5, 50.5])
      *   .addTo(map); // add the marker to the map
      */
-    addTo(map: Map) {
+    addTo(map: Map): Marker {
         this.remove();
         this._map = map;
         map.getCanvasContainer().appendChild(this._element);
@@ -264,7 +264,7 @@ export default class Marker extends Evented {
      * marker.remove();
      * @returns {Marker} `this`
      */
-    remove() {
+    remove(): Marker {
         if (this._opacityTimeout) {
             clearTimeout(this._opacityTimeout);
             delete this._opacityTimeout;
@@ -301,14 +301,14 @@ export default class Marker extends Evented {
      * console.log('Longitude: ' + lngLat.lng + ', Latitude: ' + lngLat.lat )
      * @see [Create a draggable Marker](https://maplibre.org/maplibre-gl-js-docs/example/drag-a-marker/)
      */
-    getLngLat() {
+    getLngLat(): LngLat {
         return this._lngLat;
     }
 
     /**
      * Set the marker's geographical position and move it.
-     * @param {LngLat} lnglat A {@link LngLat} describing where the marker should be located.
-     * @returns {Marker} `this`
+     * @param lnglat A {@link LngLat} describing where the marker should be located.
+     * @returns `this`
      * @example
      * // Create a new marker, set the longitude and latitude, and add it to the map
      * new maplibregl.Marker()
@@ -317,7 +317,7 @@ export default class Marker extends Evented {
      * @see [Add custom icons with Markers](https://maplibre.org/maplibre-gl-js-docs/example/custom-marker-icons/)
      * @see [Create a draggable Marker](https://maplibre.org/maplibre-gl-js-docs/example/drag-a-marker/)
      */
-    setLngLat(lnglat: LngLatLike) {
+    setLngLat(lnglat: LngLatLike): Marker {
         this._lngLat = LngLat.convert(lnglat);
         this._pos = null;
         if (this._popup) this._popup.setLngLat(this._lngLat);
@@ -329,7 +329,7 @@ export default class Marker extends Evented {
      * Returns the `Marker`'s HTML element.
      * @returns {HTMLElement} element
      */
-    getElement() {
+    getElement(): HTMLElement {
         return this._element;
     }
 
@@ -337,7 +337,7 @@ export default class Marker extends Evented {
      * Binds a {@link Popup} to the {@link Marker}.
      * @param popup An instance of the {@link Popup} class. If undefined or null, any popup
      * set on this {@link Marker} instance is unset.
-     * @returns {Marker} `this`
+     * @returns `this`
      * @example
      * var marker = new maplibregl.Marker()
      *  .setLngLat([0, 0])
@@ -345,7 +345,7 @@ export default class Marker extends Evented {
      *  .addTo(map);
      * @see [Attach a popup to a marker instance](https://maplibre.org/maplibre-gl-js-docs/example/set-popup/)
      */
-    setPopup(popup?: Popup | null) {
+    setPopup(popup?: Popup | null): Marker {
         if (this._popup) {
             this._popup.remove();
             this._popup = null;
@@ -417,13 +417,13 @@ export default class Marker extends Evented {
      *
      * console.log(marker.getPopup()); // return the popup instance
      */
-    getPopup() {
+    getPopup(): Popup {
         return this._popup;
     }
 
     /**
      * Opens or closes the {@link Popup} instance that is bound to the {@link Marker}, depending on the current state of the {@link Popup}.
-     * @returns {Marker} `this`
+     * @returns `this`
      * @example
      * var marker = new maplibregl.Marker()
      *  .setLngLat([0, 0])
@@ -432,7 +432,7 @@ export default class Marker extends Evented {
      *
      * marker.togglePopup(); // toggle popup open or closed
      */
-    togglePopup() {
+    togglePopup(): Marker {
         const popup = this._popup;
 
         if (!popup) return this;
@@ -489,7 +489,7 @@ export default class Marker extends Evented {
      * Get the marker's offset.
      * @returns {Point} The marker's screen coordinates in pixels.
      */
-    getOffset() {
+    getOffset(): Point {
         return this._offset;
     }
 
@@ -498,7 +498,7 @@ export default class Marker extends Evented {
      * @param {PointLike} offset The offset in pixels as a {@link PointLike} object to apply relative to the element's center. Negatives indicate left and up.
      * @returns {Marker} `this`
      */
-    setOffset(offset: PointLike) {
+    setOffset(offset: PointLike): Marker {
         this._offset = Point.convert(offset);
         this._update();
         return this;
@@ -600,7 +600,7 @@ export default class Marker extends Evented {
      * @param {boolean} [shouldBeDraggable=false] Turns drag functionality on/off
      * @returns {Marker} `this`
      */
-    setDraggable(shouldBeDraggable: boolean) {
+    setDraggable(shouldBeDraggable: boolean): Marker {
         this._draggable = !!shouldBeDraggable; // convert possible undefined value to false
 
         // handle case where map may not exist yet
@@ -622,7 +622,7 @@ export default class Marker extends Evented {
      * Returns true if the marker can be dragged
      * @returns {boolean} True if the marker is draggable.
      */
-    isDraggable() {
+    isDraggable(): boolean {
         return this._draggable;
     }
 
@@ -631,7 +631,7 @@ export default class Marker extends Evented {
      * @param {number} [rotation=0] The rotation angle of the marker (clockwise, in degrees), relative to its respective {@link Marker#setRotationAlignment} setting.
      * @returns {Marker} `this`
      */
-    setRotation(rotation: number) {
+    setRotation(rotation: number): Marker {
         this._rotation = rotation || 0;
         this._update();
         return this;
@@ -641,7 +641,7 @@ export default class Marker extends Evented {
      * Returns the current rotation angle of the marker (in degrees).
      * @returns {number} The current rotation angle of the marker.
      */
-    getRotation() {
+    getRotation(): number {
         return this._rotation;
     }
 
@@ -650,7 +650,7 @@ export default class Marker extends Evented {
      * @param {string} [alignment='auto'] Sets the `rotationAlignment` property of the marker.
      * @returns {Marker} `this`
      */
-    setRotationAlignment(alignment: string) {
+    setRotationAlignment(alignment: string): Marker {
         this._rotationAlignment = alignment || 'auto';
         this._update();
         return this;
@@ -660,7 +660,7 @@ export default class Marker extends Evented {
      * Returns the current `rotationAlignment` property of the marker.
      * @returns {string} The current rotational alignment of the marker.
      */
-    getRotationAlignment() {
+    getRotationAlignment(): string {
         return this._rotationAlignment;
     }
 
@@ -669,7 +669,7 @@ export default class Marker extends Evented {
      * @param {string} [alignment] Sets the `pitchAlignment` property of the marker. If alignment is 'auto', it will automatically match `rotationAlignment`.
      * @returns {Marker} `this`
      */
-    setPitchAlignment(alignment: string) {
+    setPitchAlignment(alignment: string): Marker {
         this._pitchAlignment = alignment && alignment !== 'auto' ? alignment : this._rotationAlignment;
         this._update();
         return this;
@@ -679,7 +679,7 @@ export default class Marker extends Evented {
      * Returns the current `pitchAlignment` property of the marker.
      * @returns {string} The current pitch alignment of the marker in degrees.
      */
-    getPitchAlignment() {
+    getPitchAlignment(): string {
         return this._pitchAlignment;
     }
 }
