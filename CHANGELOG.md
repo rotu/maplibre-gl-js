@@ -3,6 +3,7 @@
 ### ✨ Features and improvements
 
 - Use WebGL2 context when available ([#1891](https://github.com/maplibre/maplibre-gl-js/pull/1891))
+- Resize map when container element is resized. ([#2013](https://github.com/maplibre/maplibre-gl-js/pull/2013))
 - _...Add new stuff here..._
 
 ### 🐞 Bug fixes
