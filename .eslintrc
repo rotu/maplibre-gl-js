@@ -10,9 +10,8 @@
     "sourceType": "module",
     "createDefaultProgram": true
   },
-  "plugins": ["@typescript-eslint", "import", "jsdoc", "jest", "tree-shaking"],
+  "plugins": ["@typescript-eslint", "import", "jsdoc", "jest"],
   "rules": {
-    "tree-shaking/no-side-effects-in-initialization": "warn",
     "no-dupe-class-members": "off",
     "@typescript-eslint/no-dupe-class-members": ["error"],
     "@typescript-eslint/no-unused-vars": [
@@ -105,7 +104,7 @@
     "jest/no-deprecated-functions": "warn"
   },
   "settings": {
-    "jsdoc":{
+    "jsdoc": {
       "ignorePrivate": true
     }
   },

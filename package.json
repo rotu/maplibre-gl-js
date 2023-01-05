@@ -17,6 +17,9 @@
       "types": "./dist/maplibre-gl.d.ts",
       "import": "./dist/maplibre-gl.js",
       "require": "./dist/maplibre-gl.mjs"
+    },
+    "./worker": {
+      "default": "./dist/maplibre-gl-worker-dev.js"
     }
   },
   "dependencies": {
@@ -98,7 +101,6 @@
     "eslint-plugin-jest": "^27.2.0",
     "eslint-plugin-jsdoc": "^39.6.4",
     "eslint-plugin-react": "^7.31.11",
-    "eslint-plugin-tree-shaking": "^1.10.0",
     "gl": "^6.0.2",
     "glob": "^8.0.3",
     "is-builtin-module": "^3.2.0",
@@ -153,7 +155,7 @@
     "build-style-spec": "rollup --configPlugin @rollup/plugin-typescript -c rollup.config.style-spec.ts",
     "build-diagrams": "cd docs/diagrams; ls *.plantuml | xargs -I {} puml generate --svg {} -o {}.svg",
     "watch-css": "postcss --watch -o dist/maplibre-gl.css src/css/maplibre-gl.css",
-    "build-benchmarks": "npm run build-dev && rollup --configPlugin @rollup/plugin-typescript -c test/bench/rollup_config_benchmarks.ts",
+    "build-benchmarks": "rollup --configPlugin @rollup/plugin-typescript -c test/bench/rollup_config_benchmarks.ts",
     "watch-benchmarks": "rollup --configPlugin @rollup/plugin-typescript -c test/bench/rollup_config_benchmarks.ts --watch",
     "start-server": "st --no-cache -H 0.0.0.0 --port 9966 .",
     "start": "run-p watch-css watch-dev start-server",

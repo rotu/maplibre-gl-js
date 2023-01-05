@@ -2,6 +2,7 @@
 import Benchmark from '../lib/benchmark';
 import createMap from '../lib/create_map';
 import style from '../data/empty.json' assert {type: 'json'};
+import naturalEarthLandJson from "../data/naturalearth-land.json" assert {type:"json"}
 
 const width = 1024;
 const height = 768;
@@ -111,13 +112,11 @@ export class LayerFillExtrusion extends LayerBenchmark {
 
 export class LayerHeatmap extends LayerBenchmark {
     async setup() {
-        const response = await fetch('/bench/data/naturalearth-land.json');
-        const data = await response.json();
         this.layerStyle = Object.assign({}, style, {
             sources: {
                 'heatmap': {
                     'type': 'geojson',
-                    data,
+                    naturalEarthLandJson,
                     'maxzoom': 23
                 }
             },

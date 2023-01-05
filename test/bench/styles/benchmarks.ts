@@ -40,5 +40,3 @@ Promise.resolve().then(() => {
     // URL has been set up, which happens after this module is executed.
     getWorkerPool().acquire(-1);
 });
-
-export default maplibregl;

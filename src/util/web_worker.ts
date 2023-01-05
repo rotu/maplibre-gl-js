@@ -31,5 +31,12 @@ export interface WorkerGlobalScopeInterface {
 export default function workerFactory() {
     // The worker may or may not use modules.
     // but this does allow <link type=modulepreload>
-    return new Worker(maplibregl.workerUrl, {type: 'module'});
+    const workerUrl = maplibregl.workerUrl ?? 'worker.js';
+    const resolvedWorkerUrl = (() => {
+        try { return import.meta.resolve(workerUrl, import.meta.url); } catch {  }
+        try { return new URL(workerUrl, import.meta.url); } catch { }
+        return workerUrl;
+    })();
+
+    return new Worker(resolvedWorkerUrl, {type: 'module', name: 'Maplibre Worker'});
 }

@@ -164,7 +164,7 @@ const exported = {
         clearTileCache(callback);
     },
 
-    workerUrl: new URL('maplibre-gl-worker.js', import.meta.url).href,
+    workerUrl: 'maplibre-gl-worker.js',
 
     /**
      * Sets a custom load tile function that will be called when using a source that starts with a custom url schema.

@@ -10,10 +10,10 @@
 
 <body>
     <div id="benchmarks"></div>
-    <script src="/test/bench/styles/benchmarks_generated.js"></script>
-    <script src="/test/bench/benchmarks_view_generated.js"></script>
-    <script>
-        window.Benchmarks.run(benchmarks);
+    <script type="module">
+        import "/test/bench/styles/benchmarks_generated.js";
+        import run from "/test/bench/benchmarks_view_generated.js";
+        run(benchmarks);
     </script>
 </body>
 
