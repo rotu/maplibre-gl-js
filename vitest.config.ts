@@ -7,6 +7,7 @@ export default defineConfig({
         include: [
             'src/data/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
             'src/geo/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
+            'src/gl/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
         ],
         setupFiles: ['./vitest_setup.ts'],
         globals: true,

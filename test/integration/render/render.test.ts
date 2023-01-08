@@ -1,6 +1,6 @@
 /* eslint-disable no-process-exit */
 import './mock_browser_for_node';
-import canvas from 'canvas';
+// import canvas from 'canvas';
 import path, {dirname} from 'path';
 import fs from 'fs';
 import {PNG} from 'pngjs';

@@ -136,7 +136,7 @@ export function serialize(input: unknown, transferables?: Array<Transferable> | 
         return view;
     }
 
-    if (input instanceof ImageData) {
+    if (typeof ImageData !== 'undefined' && input instanceof ImageData) {
         if (transferables) {
             transferables.push(input.data.buffer);
         }
@@ -216,7 +216,7 @@ export function deserialize(input: Serialized): unknown {
         isArrayBuffer(input) ||
         isImageBitmap(input) ||
         ArrayBuffer.isView(input) ||
-        input instanceof ImageData) {
+        (typeof ImageData !== 'undefined' && input instanceof ImageData)) {
         return input;
     }
 
