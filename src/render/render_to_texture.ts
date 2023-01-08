@@ -9,14 +9,14 @@ import RenderPool from '../gl/render_pool';
 import Texture from './texture';
 import type StyleLayer from '../style/style_layer';
 
-// lookup table which layers should rendered to texture
-const LAYERS: { [keyof in StyleLayer['type']]?: boolean } = {
-    background: true,
-    fill: true,
-    line: true,
-    raster: true,
-    hillshade: true
-};
+// // lookup table which layers should rendered to texture
+// const LAYERS: { [keyof in StyleLayer['type']]?: boolean } = {
+//     background: true,
+//     fill: true,
+//     line: true,
+//     raster: true,
+//     hillshade: true
+// };
 
 /**
  * RenderToTexture

@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "allowSyntheticDefaultImports": true,
     "checkJs": true,
     "isolatedModules": true,
     "noEmit": true,
@@ -15,21 +14,10 @@
     "sourceMap": true,
     "strict": false,
     "target": "ES2019",
-    "lib": [
-      "ESNext",
-      "DOM",
-      "DOM.Iterable"
-    ],
-    "types": [
-      "node",
-      "jest",
-      "geojson",
-      "offscreencanvas"
-    ],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "types": ["node", "jest", "geojson", "offscreencanvas"],
     "paths": {
-      "@maplibre/maplibre-gl-style-spec": [
-        "./src/style-spec/style-spec.ts"
-    ]
+      "@maplibre/maplibre-gl-style-spec": ["./src/style-spec/style-spec.ts"]
     }
   },
   "ts-node": {
