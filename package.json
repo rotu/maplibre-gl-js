@@ -43,6 +43,7 @@
   "devDependencies": {
     "@mapbox/mapbox-gl-rtl-text": "^0.2.3",
     "@mapbox/mvt-fixtures": "^3.10.0",
+    "@maplibre/maplibre-gl-style-spec": "file:src/style-spec",
     "@rollup/plugin-commonjs": "^24.0.0",
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.0.1",

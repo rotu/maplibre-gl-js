@@ -51,6 +51,7 @@
     "import/no-commonjs": "error",
     // TSC throws an error on unresolved imports; eslint doesn't understand .js extension in import statement
     "import/no-unresolved": "off",
+    "import/no-relative-packages": "error",
     "key-spacing": "error",
     "no-eq-null": "off",
     "no-lonely-if": "off",
