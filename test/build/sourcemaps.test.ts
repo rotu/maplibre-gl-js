@@ -53,8 +53,7 @@ describe('main sourcemap', () => {
         const sourcemap = await getSourceMapForFile(pathToFileURL(packageJson.main));
         const sourceFiles = await promisify(glob)('src/**/*.ts');
         const sourcemapDir = path.relative('.', dirname(packageJson.main));
-        const sourcemapFiles = sourcemap.sources.map(f => path.join(sourcemapDir, f));
-
+        const sourcemapFiles = sourcemap.sources.map(f => path.posix.join(sourcemapDir, f));
         const sourceFilesExpectedInMap = sourceFiles.filter(f => {
             if (f.endsWith('.test.ts'))
                 return false;
@@ -79,8 +78,8 @@ describe('main sourcemap', () => {
         }
 
         const s1 = setMinus(mapFilesExpectedInSource, sourceFilesExpectedInMap);
-        expect(s1.length).toBeLessThan(5);
+        expect(s1).toMatchSnapshot('sourcemap files not in source');
         const s2 = setMinus(sourceFilesExpectedInMap, mapFilesExpectedInSource);
-        expect(s2.length).toBeLessThan(15);
+        expect(s2).toMatchSnapshot('source files not in source map');
     });
 });

@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`main sourcemap should match source files: source files not in source map 1`] = `
+[
+  "src/data/index_array_type.ts",
+  "src/gl/types.ts",
+  "src/source/worker_source.ts",
+  "src/style/style_glyph.ts",
+  "src/style/style_layer/typed_style_layer.ts",
+  "src/symbol/opacity_state.ts",
+  "src/types/callback.ts",
+  "src/types/cancelable.ts",
+  "src/types/tilejson.ts",
+  "src/types/transferable.ts",
+  "src/ui/control/control.ts",
+  "src/util/test/util.ts",
+]
+`;
+
+exports[`main sourcemap should match source files: sourcemap files not in source 1`] = `
+[
+  "build/rollup/maplibregl.js",
+]
+`;

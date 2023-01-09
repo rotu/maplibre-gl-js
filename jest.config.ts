@@ -2,11 +2,13 @@ import {Config} from 'jest';
 
 const sharedConfig = {
     transform: {
-        '[.](m|)(ts|js)x?$': ['ts-jest', {
+        // use typescript to convert from esm to cjs
+        '[.](m|c)?(ts|js)(x)?$': ['ts-jest', {
             'isolatedModules': true,
         }],
     },
-    transformIgnorePatterns: []
+    // in build-tests, we might want to import these files
+    transformIgnorePatterns: ['<rootDir>/dist']
 } as Partial<Config>;
 
 const config: Config = {
@@ -16,7 +18,6 @@ const config: Config = {
             testMatch: [
                 '<rootDir>/test/integration/query/query.test.ts',
             ],
-            preset: 'jest-playwright-preset',
             ...sharedConfig,
         },
         {
