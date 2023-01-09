@@ -2,7 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import {RequestManager} from '../util/request_manager';
 import loadSprite from './load_sprite';
-import {fakeXhr} from 'nise';
+import nise from 'nise';
+const {fakeXhr} = nise;
+
 import {RGBAImage} from '../util/image';
 import * as util from '../util/util';
 
@@ -45,12 +47,12 @@ describe('loadSprite', () => {
 
         expect(requests[0].url).toBe('http://localhost:9966/test/unit/assets/sprite1.json');
         requests[0].setStatus(200);
-        requests[0].response = fs.readFileSync(path.join(__dirname, '../../test/unit/assets/sprite1.json'));
+        requests[0].response = fs.readFileSync('test/unit/assets/sprite1.json');
         requests[0].onload();
 
         expect(requests[1].url).toBe('http://localhost:9966/test/unit/assets/sprite1.png');
         requests[1].setStatus(200);
-        requests[1].response = fs.readFileSync(path.join(__dirname, '../../test/unit/assets/sprite1.png')).buffer;
+        requests[1].response = fs.readFileSync('test/unit/assets/sprite1.png').buffer;
         requests[1].onload();
     });
 
@@ -90,22 +92,22 @@ describe('loadSprite', () => {
 
         expect(requests[0].url).toBe('http://localhost:9966/test/unit/assets/sprite1.json');
         requests[0].setStatus(200);
-        requests[0].response = fs.readFileSync(path.join(__dirname, '../../test/unit/assets/sprite1.json'));
+        requests[0].response = fs.readFileSync('test/unit/assets/sprite1.json');
         requests[0].onload();
 
         expect(requests[1].url).toBe('http://localhost:9966/test/unit/assets/sprite1.png');
         requests[1].setStatus(200);
-        requests[1].response = fs.readFileSync(path.join(__dirname, '../../test/unit/assets/sprite1.png')).buffer;
+        requests[1].response = fs.readFileSync('test/unit/assets/sprite1.png').buffer;
         requests[1].onload();
 
         expect(requests[2].url).toBe('http://localhost:9966/test/unit/assets/sprite2.json');
         requests[2].setStatus(200);
-        requests[2].response = fs.readFileSync(path.join(__dirname, '../../test/unit/assets/sprite2.json'));
+        requests[2].response = fs.readFileSync('test/unit/assets/sprite2.json');
         requests[2].onload();
 
         expect(requests[3].url).toBe('http://localhost:9966/test/unit/assets/sprite2.png');
         requests[3].setStatus(200);
-        requests[3].response = fs.readFileSync(path.join(__dirname, '../../test/unit/assets/sprite2.png')).buffer;
+        requests[3].response = fs.readFileSync('test/unit/assets/sprite2.png').buffer;
         requests[3].onload();
     });
 
@@ -156,12 +158,12 @@ describe('loadSprite', () => {
         setTimeout(() => {
             expect(requests[0].url).toBe('http://localhost:9966/test/unit/assets/sprite1.json');
             requests[0].setStatus(200);
-            requests[0].response = fs.readFileSync(path.join(__dirname, '../../test/unit/assets/sprite1.json'));
+            requests[0].response = fs.readFileSync('test/unit/assets/sprite1.json');
             requests[0].onload();
 
             expect(requests[1].url).toBe('http://localhost:9966/test/unit/assets/sprite1.png');
             requests[1].setStatus(200);
-            requests[1].response = fs.readFileSync(path.join(__dirname, '../../test/unit/assets/sprite1.png')).buffer;
+            requests[1].response = fs.readFileSync('test/unit/assets/sprite1.png').buffer;
             requests[1].onload();
         }, 10);
     });
@@ -195,12 +197,12 @@ describe('loadSprite', () => {
 
         expect(requests[0].url).toBe('http://localhost:9966/test/unit/assets/sprite1@2x.json');
         requests[0].setStatus(200);
-        requests[0].response = fs.readFileSync(path.join(__dirname, '../../test/unit/assets/sprite1.json'));
+        requests[0].response = fs.readFileSync('test/unit/assets/sprite1.json');
         requests[0].onload();
 
         expect(requests[1].url).toBe('http://localhost:9966/test/unit/assets/sprite1@2x.png');
         requests[1].setStatus(200);
-        requests[1].response = fs.readFileSync(path.join(__dirname, '../../test/unit/assets/sprite1.png')).buffer;
+        requests[1].response = fs.readFileSync('test/unit/assets/sprite1.png').buffer;
         requests[1].onload();
     });
 });

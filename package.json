@@ -130,6 +130,7 @@
     "typescript": "^4.9.4"
   },
   "scripts": {
+    "test-all": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" jest --no-cache",
     "generate-dist-package": "ts-node build/generate-dist-package",
     "generate-shaders": "ts-node build/generate-shaders.ts",
     "generate-struct-arrays": "ts-node build/generate-struct-arrays.ts",
