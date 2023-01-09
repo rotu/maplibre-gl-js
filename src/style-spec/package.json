@@ -16,8 +16,6 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "type": "module",
-  "scripts": {
-  },
   "repository": {
     "type": "git",
     "url": "git@github.com:maplibre/maplibre-gl-js.git"
@@ -27,14 +25,13 @@
     "gl-style-validate": "bin/gl-style-validate.js",
     "gl-style-format": "bin/gl-style-format.js"
   },
-  "dependencies": {
+  "sideEffects": false,
+  "devDependencies": {
     "@mapbox/jsonlint-lines-primitives": "~2.0.2",
-    "@mapbox/unitbezier": "^0.0.0",
+    "@mapbox/unitbezier": "^0.0.1",
     "csscolorparser": "~1.0.2",
-    "json-stringify-pretty-compact": "^2.0.0",
+    "json-stringify-pretty-compact": "^4.0.0",
     "minimist": "^1.2.5",
-    "rw": "^1.3.3",
-    "sort-object": "^0.3.2"
-  },
-  "sideEffects": false
+    "rw": "^1.3.3"
+  }
 }
