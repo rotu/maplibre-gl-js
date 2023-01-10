@@ -1,7 +1,7 @@
-import type {StyleSpecification} from '../../../src/style-spec/types.g';
+import type {StyleSpecification} from '@maplibre/maplibre-gl-style-spec/types.g';
 import Benchmark from '../lib/benchmark';
 import createStyleLayer from '../../../src/style/create_style_layer';
-import deref from '../../../src/style-spec/deref';
+import deref from '@maplibre/maplibre-gl-style-spec/deref';
 import fetchStyle from '../lib/fetch_style';
 
 export default class StyleLayerCreate extends Benchmark {

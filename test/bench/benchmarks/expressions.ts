@@ -1,14 +1,14 @@
 import Benchmark from '../lib/benchmark';
 
-import spec from '../../../src/style-spec/reference/latest';
-import convertFunction from '../../../src/style-spec/function/convert';
-import {isFunction, createFunction} from '../../../src/style-spec/function';
-import {createPropertyExpression} from '../../../src/style-spec/expression';
+import spec from '@maplibre/maplibre-gl-style-spec/reference/latest';
+import convertFunction from '@maplibre/maplibre-gl-style-spec/function/convert';
+import {isFunction, createFunction} from '@maplibre/maplibre-gl-style-spec/function/function';
+import {createPropertyExpression} from '@maplibre/maplibre-gl-style-spec/expression/expression';
 import fetchStyle from '../lib/fetch_style';
 
-import type {StyleSpecification} from '../../../src/style-spec/types.g';
-import type {StylePropertySpecification} from '../../../src/style-spec/style-spec';
-import type {StylePropertyExpression} from '../../../src/style-spec/expression';
+import type {StyleSpecification} from '@maplibre/maplibre-gl-style-spec/types.g';
+import type {StylePropertySpecification} from '@maplibre/maplibre-gl-style-spec';
+import type {StylePropertyExpression} from '@maplibre/maplibre-gl-style-spec/expression/expression';
 
 interface DataT {
     propertySpec: StylePropertySpecification;

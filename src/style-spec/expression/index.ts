@@ -23,7 +23,7 @@ import type {InterpolationType} from './definitions/interpolate';
 import type {PropertyValueSpecification} from '../types.g';
 import type {FormattedSection} from './types/formatted';
 import type Point from '@mapbox/point-geometry';
-import type {CanonicalTileID} from '../../source/tile_id';
+import type {CanonicalTileID} from 'maplibre-gl/src/source/tile_id';
 
 export type Feature = {
     readonly type: 1 | 2 | 3 | 'Unknown' | 'Point' | 'MultiPoint' | 'LineString' | 'MultiLineString' | 'Polygon' | 'MultiPolygon';

@@ -2,9 +2,9 @@ import {default as createFilter, isExpressionFilter} from '.';
 
 import convertFilter from './convert';
 import Point from '@mapbox/point-geometry';
-import MercatorCoordinate from '../../geo/mercator_coordinate';
-import EXTENT from '../../data/extent';
-import {CanonicalTileID} from '../../source/tile_id';
+import MercatorCoordinate from 'maplibre-gl/src/geo/mercator_coordinate';
+import EXTENT from 'maplibre-gl/src/data/extent';
+import {CanonicalTileID} from 'maplibre-gl/src/source/tile_id';
 import {ExpressionFilterSpecification, ExpressionInputType, ExpressionSpecification, FilterSpecification} from '../types.g';
 import {Feature} from '../expression';
 

@@ -1,7 +1,7 @@
 import * as fs from 'fs';
-import * as properties from '../src/style-spec/util/properties';
+import * as properties from '@maplibre/maplibre-gl-style-spec/util/properties';
 
-import spec from '../src/style-spec/reference/v8.json' assert {type: 'json'};
+import spec from '@maplibre/maplibre-gl-style-spec/reference/v8.json' assert {type: 'json'};
 
 function unionType(values) {
     if (Array.isArray(values)) {

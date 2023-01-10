@@ -4,7 +4,7 @@ import {BooleanType} from '../types';
 import type {Expression} from '../expression';
 import type ParsingContext from '../parsing_context';
 import type EvaluationContext from '../evaluation_context';
-import type {CanonicalTileID} from '../../../source/tile_id';
+import type {CanonicalTileID} from 'maplibre-gl/src/source/tile_id';
 
 type GeoJSONPolygons = GeoJSON.Polygon | GeoJSON.MultiPolygon;
 

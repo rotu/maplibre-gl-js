@@ -1,10 +1,10 @@
-import {number as interpolate} from '../style-spec/util/interpolate';
-import Interpolate from '../style-spec/expression/definitions/interpolate';
+import {number as interpolate} from '@maplibre/maplibre-gl-style-spec/util/interpolate';
+import Interpolate from '@maplibre/maplibre-gl-style-spec/expression/definitions/interpolate';
 import {clamp} from '../util/util';
 import EvaluationParameters from '../style/evaluation_parameters';
 
 import type {PropertyValue, PossiblyEvaluatedPropertyValue} from '../style/properties';
-import type {InterpolationType} from '../style-spec/expression/definitions/interpolate';
+import type {InterpolationType} from '@maplibre/maplibre-gl-style-spec/expression/definitions/interpolate';
 
 const SIZE_PACK_FACTOR = 128;
 

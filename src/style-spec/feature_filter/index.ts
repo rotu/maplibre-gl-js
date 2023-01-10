@@ -1,6 +1,6 @@
 import {createExpression} from '../expression';
 import type {GlobalProperties, Feature} from '../expression';
-import type {CanonicalTileID} from '../../source/tile_id';
+import type {CanonicalTileID} from 'maplibre-gl/src/source/tile_id';
 import {StylePropertySpecification} from '../style-spec';
 import {ExpressionFilterSpecification} from '../types.g';
 

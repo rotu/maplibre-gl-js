@@ -1,8 +1,8 @@
 import glob from 'glob';
 import fs from 'fs';
 import path from 'path';
-import validate from '../../../src/style-spec/validate_style';
-import reference from '../../../src/style-spec/reference/latest';
+import validate from '@maplibre/maplibre-gl-style-spec/validate_style';
+import reference from '@maplibre/maplibre-gl-style-spec/reference/latest';
 
 const UPDATE = !!process.env.UPDATE;
 

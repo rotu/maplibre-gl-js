@@ -254,7 +254,7 @@ export function filterObject(input: any, iterator: Function, context?: any): any
     return output;
 }
 
-import deepEqual from '../style-spec/util/deep_equal';
+import deepEqual from '@maplibre/maplibre-gl-style-spec/util/deep_equal';
 export {deepEqual};
 
 /**

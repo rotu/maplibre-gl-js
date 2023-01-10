@@ -5,12 +5,12 @@ import rasterBoundsAttributes from '../data/raster_bounds_attributes';
 import SegmentVector from '../data/segment';
 import Texture from '../render/texture';
 import {ErrorEvent} from '../util/evented';
-import ValidationError from '../style-spec/error/validation_error';
+import ValidationError from '@maplibre/maplibre-gl-style-spec/error/validation_error';
 
 import type Map from '../ui/map';
 import type Dispatcher from '../util/dispatcher';
 import type {Evented} from '../util/evented';
-import type {VideoSourceSpecification} from '../style-spec/types.g';
+import type {VideoSourceSpecification} from '@maplibre/maplibre-gl-style-spec/types.g';
 
 /**
  * A data source containing video.
