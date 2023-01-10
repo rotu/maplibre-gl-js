@@ -18,9 +18,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node_version }}
-      - run: npm install jest-github-actions-reporter
       - run: npm ci
-      - run: npx jest --reporters default jest-github-actions-reporter --testPathIgnorePatterns test/build src/gl
+      - run: npx jest --reporters github-actions --testPathIgnorePatterns test/build src/gl
   post-build-tests:
     strategy:
       matrix:
@@ -32,11 +31,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node_version }}
-      - run: npm install jest-github-actions-reporter
       - run: |
           npm ci
           npm run build-dist
-      - run: npx jest --reporters default jest-github-actions-reporter --testPathPattern test/build
+      - run: npx jest --reporters github-actions --testPathPattern test/build
   render-tests:
     strategy:
       matrix:
@@ -49,7 +47,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node_version }}
-      - run: npm install jest-github-actions-reporter
       - run: |
           npm ci
           npm run build-dev
