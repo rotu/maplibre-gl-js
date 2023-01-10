@@ -10,10 +10,8 @@ jobs:
   pre-build-tests:
     strategy:
       matrix:
-        os:
-          - ubuntu-latest
-        node_version:
-          - lts
+        os: [ubuntu-latest]
+        node_version: [latest, current]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -22,14 +20,12 @@ jobs:
           node-version: ${{ matrix.node_version }}
       - run: npm install jest-github-actions-reporter
       - run: npm ci
-      - run: npx jest --reporters=default --reporters=jest-github-actions-reporter  --testPathIgnorePatterns test/build
+      - run: npx jest --reporters default jest-github-actions-reporter --testPathIgnorePatterns test/build src/gl
   post-build-tests:
     strategy:
       matrix:
-        os:
-          - ubuntu-latest
-        node_version:
-          - lts
+        os: [ubuntu-latest]
+        node_version: [latest, current]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -40,14 +36,12 @@ jobs:
       - run: |
           npm ci
           npm run build-dist
-      - run: npx jest --reporters=default --reporters=jest-github-actions-reporter --testPathPatterns test/build
+      - run: npx jest --reporters default jest-github-actions-reporter --testPathPatterns test/build
   render-tests:
     strategy:
       matrix:
-        os:
-          - ubuntu-latest
-        node_version:
-          - lts
+        os: [ubuntu-latest]
+        node_version: [latest, current]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     steps:
@@ -55,6 +49,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node_version }}
+      - run: npm install jest-github-actions-reporter
       - run: |
           npm ci
           npm run build-dev
