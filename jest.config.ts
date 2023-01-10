@@ -7,7 +7,7 @@ const sharedConfig = {
             'isolatedModules': true,
         }],
     },
-    // in build-tests, we might want to import these files
+    // any tests that operate on dist files shouldn't compile them again.
     transformIgnorePatterns: ['<rootDir>/dist']
 } as Partial<Config>;
 
@@ -72,12 +72,6 @@ const config: Config = {
             ],
             ...sharedConfig,
         },
-        {
-            displayName: 'lint-script',
-            testMatch: ['<rootDir>/**/*.{ts,tsx,js,html}'],
-            testPathIgnorePatterns: ['/dist/', '/staging/', '/node_modules/', '.*_generated.js'],
-            runner: 'jest-runner-eslint',
-        }
     ]
 };
 
