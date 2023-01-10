@@ -52,7 +52,7 @@
     // TSC throws an error on unresolved imports; eslint doesn't understand .js extension in import statement
     "import/no-unresolved": "off",
     "key-spacing": "error",
-    "no-eq-null": "error",
+    "no-eq-null": "off",
     "no-lonely-if": "off",
     "no-new": "off",
     "no-restricted-properties": [2, {
