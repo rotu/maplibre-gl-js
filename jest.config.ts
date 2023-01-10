@@ -25,7 +25,7 @@ const config: Config = {
                 'terrain[.]test[.]ts$',
                 'terrain_source_cache[.]test[.]ts$',
                 'render_to_texture.test.ts$'
-                ],
+            ],
             setupFiles: [
                 'jest-canvas-mock',
                 './test/unit/lib/web_worker_mock.ts'
