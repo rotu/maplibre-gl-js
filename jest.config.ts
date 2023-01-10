@@ -44,6 +44,19 @@ const config: Config = {
             ],
             setupFiles: [],
             ...sharedConfig,
+        },
+        {
+            displayName: 'stylelint',
+            runner: 'jest-runner-stylelint',
+            testMatch: ['stylelint src/css/maplibre-gl.css'],
+        },
+        {
+            displayName: 'eslint',
+            testMatch: ['<rootDir>/**/*.{ts,tsx,js,html}'],
+            cliOptions: {
+                ignorePath: '.gitignore',
+            },
+            runner: 'jest-runner-eslint',
         }
     ]
 
