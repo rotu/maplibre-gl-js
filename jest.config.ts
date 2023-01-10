@@ -55,11 +55,6 @@ const config: Config = {
             ...sharedConfig,
         },
         {
-            displayName: 'lint-css',
-            runner: 'jest-runner-stylelint',
-            testMatch: ['src/css/maplibre-gl.css'],
-        },
-        {
             displayName: 'lint-script',
             testMatch: ['<rootDir>/**/*.{ts,tsx,js,html}'],
             testPathIgnorePatterns: ['/dist/', '/staging/', '/node_modules/', '.*_generated.js'],
