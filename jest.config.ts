@@ -48,13 +48,12 @@ const config: Config = {
         {
             displayName: 'stylelint',
             runner: 'jest-runner-stylelint',
-            testMatch: ['stylelint src/css/maplibre-gl.css'],
+            testMatch: ['src/css/maplibre-gl.css'],
         },
         {
             displayName: 'eslint',
             testMatch: ['<rootDir>/**/*.{ts,tsx,js,html}'],
-            testPathIgnorePatterns: ['/dist/', '/staging/', '/node_modules/', '*_generated.js'],
-
+            testPathIgnorePatterns: ['/dist/', '/staging/', '/node_modules/', '.*_generated.js'],
             runner: 'jest-runner-eslint',
         }
     ]
