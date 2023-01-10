@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  jest: npx jest --reporters default github-actions
+  jest: npx jest --reporters default --reporters github-actions
   enable-gl: xvfb-run -s "-ac -screen 0 1280x1024x24"
 
 permissions:
