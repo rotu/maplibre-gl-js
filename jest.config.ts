@@ -23,7 +23,9 @@ const config: Config = {
                 'src/gl',
                 'src/ui/',
                 'terrain[.]test[.]ts$',
-                'terrain_source_cache[.]test[.]ts$'],
+                'terrain_source_cache[.]test[.]ts$',
+                'render_to_texture.test.ts$'
+                ],
             setupFiles: [
                 'jest-canvas-mock',
                 './test/unit/lib/web_worker_mock.ts'
@@ -37,6 +39,7 @@ const config: Config = {
                 '<rootDir>/src/ui/**/*.test.{ts,mts,js}',
                 '<rootDir>/src/**/terrain.test.ts',
                 '<rootDir>/src/**/terrain_source_cache.test.ts',
+                '<rootDir>/src/**/render_to_texture.test.ts'
             ],
             testEnvironment: 'jsdom',
             setupFiles: [
