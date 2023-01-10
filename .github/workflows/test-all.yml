@@ -1,0 +1,61 @@
+name: Combined tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  pre-build-tests:
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+        node_version:
+          - lts
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node_version }}
+      - run: npm install jest-github-actions-reporter
+      - run: npm ci
+      - run: npx jest --reporters=default --reporters=jest-github-actions-reporter  --testPathIgnorePatterns test/build
+  post-build-tests:
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+        node_version:
+          - lts
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node_version }}
+      - run: npm install jest-github-actions-reporter
+      - run: |
+          npm ci
+          npm run build-dist
+      - run: npx jest --reporters=default --reporters=jest-github-actions-reporter --testPathPatterns test/build
+  render-tests:
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+        node_version:
+          - lts
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node_version }}
+      - run: |
+          npm ci
+          npm run build-dev
+      - run: xvfb-run -s "-ac -screen 0 1280x1024x24" npm run test-render

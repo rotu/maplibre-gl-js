@@ -6,6 +6,7 @@ describe('@maplibre/maplibre-gl-style-spec npm package', () => {
 [
   "index.cjs",
   "index.cjs.map",
+  "index.d.ts",
   "index.mjs",
   "index.mjs.map",
 ]
