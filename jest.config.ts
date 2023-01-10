@@ -14,20 +14,11 @@ const sharedConfig = {
 const config: Config = {
     projects: [
         {
-            displayName: 'e2e',
-            testMatch: [
-                '<rootDir>/test/integration/query/query.test.ts',
-            ],
-            ...sharedConfig,
-        },
-        {
-            displayName: 'jsdom',
-            testMatch: [
-                '<rootDir>/src/**/*.test.{ts,mts,js}',
-                '<rootDir>/test/integration/expression/expression.test.ts',
-                '<rootDir>/test/integration/symbol-shaping/shaping.test.ts',
-            ],
+            displayName: 'unit-nogl',
             testEnvironment: 'jsdom',
+            testMatch: [
+                '<rootDir>/src/!(ui|gl)/**/*.test.{ts,mts,js}',
+            ],
             setupFiles: [
                 'jest-canvas-mock',
                 './test/unit/lib/web_worker_mock.ts'
@@ -35,23 +26,41 @@ const config: Config = {
             ...sharedConfig,
         },
         {
-            displayName: 'bare',
+            displayName: 'unit-gl',
+            testMatch: [
+                '<rootDir>/src/gl/*.test.{ts,mts,js}',
+                '<rootDir>/src/ui/*.test.{ts,mts,js}'
+            ],
+            testEnvironment: 'jsdom',
+            setupFiles: [
+                'jest-canvas-mock',
+                './test/unit/lib/web_worker_mock.ts'
+            ],
+            ...sharedConfig
+        },
+        {
+            displayName: 'integration',
             testEnvironment: 'node',
             testMatch: [
-                '<rootDir>/test/integration/browser/browser.test.ts',
-                '<rootDir>/test/integration/style-spec/validate_spec.test.ts',
-                '<rootDir>/test/build/**/*.test.{ts,mts,js}',
+                '<rootDir>/test/integration/**/*.test.ts',
             ],
-            setupFiles: [],
             ...sharedConfig,
         },
         {
-            displayName: 'stylelint',
+            displayName: 'build',
+            testEnvironment: 'node',
+            testMatch: [
+                '<rootDir>/test/build/**/*.test.{ts,mts,js}',
+            ],
+            ...sharedConfig,
+        },
+        {
+            displayName: 'lint-css',
             runner: 'jest-runner-stylelint',
             testMatch: ['src/css/maplibre-gl.css'],
         },
         {
-            displayName: 'eslint',
+            displayName: 'lint-script',
             testMatch: ['<rootDir>/**/*.{ts,tsx,js,html}'],
             testPathIgnorePatterns: ['/dist/', '/staging/', '/node_modules/', '.*_generated.js'],
             runner: 'jest-runner-eslint',

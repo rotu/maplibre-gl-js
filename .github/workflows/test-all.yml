@@ -6,6 +6,14 @@ on:
   pull_request:
   workflow_dispatch:
 
+env:
+  jest: "npx jest --reporters github-actions"
+
+permissions:
+  checks: write
+  pull-requests: write
+  contents: write
+
 jobs:
   pre-build-tests:
     strategy:
@@ -18,8 +26,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node_version }}
-      - run: npm ci
-      - run: npx jest --reporters github-actions --testPathIgnorePatterns test/build src/gl
+      - run: |
+        npm ci
+        ${{ env.jest }} --selectProjects lint-css
+        ${{ env.jest }} --selectProjects lint-script
+        ${{ env.jest }} --selectProjects unit-nogl
+        ${{ env.jest }} --selectProjects integration
   post-build-tests:
     strategy:
       matrix:
@@ -34,7 +46,7 @@ jobs:
       - run: |
           npm ci
           npm run build-dist
-      - run: npx jest --reporters github-actions --testPathPattern test/build
+          ${{ env.jest }} --selectProjects build
   render-tests:
     strategy:
       matrix:
@@ -50,4 +62,5 @@ jobs:
       - run: |
           npm ci
           npm run build-dev
-      - run: xvfb-run -s "-ac -screen 0 1280x1024x24" npm run test-render
+          xvfb-run -s "-ac -screen 0 1280x1024x24" npm run test-render
+          xvfb-run -s "-ac -screen 0 1280x1024x24" ${{ env.jest }} --selectProjects jsdom-gl

@@ -147,42 +147,36 @@ describe('query tests', () => {
         server.close();
     });
 
-    Object.keys(fixtures).forEach((testName, testindex) => {
+    test.each(Object.keys(fixtures))('%s', async  (testName) => {
+        await page.goto(`file:${path.join(__dirname, 'assets/loadMap.html')}`);
 
-        test(testName, async () => {
-            console.log(`${testindex + 1} / ${Object.keys(fixtures).length}: ${testName}`);
+        const currentTestName = testName;
+        const fixture = fixtures[currentTestName];
 
-            await page.goto(`file:${path.join(__dirname, 'assets/loadMap.html')}`);
+        const style = fixture.style;
+        const options = style.metadata.test;
 
-            const currentTestName = testName;
-            const fixture = fixtures[currentTestName];
+        await page.evaluate((options) => {
+            const container: HTMLDivElement = document.querySelector('#map');
+            container.style.position = 'fixed';
+            container.style.bottom = '10px';
+            container.style.right = '10px';
+            container.style.width = `${options.width}px`;
+            container.style.height = `${options.height}px`;
+        }, options);
 
-            const style = fixture.style;
-            const options = style.metadata.test;
+        const actual = await page.evaluate(performQueryOnFixture, fixture);
 
-            await page.evaluate((options) => {
-                const container: HTMLDivElement = document.querySelector('#map');
-                container.style.position = 'fixed';
-                container.style.bottom = '10px';
-                container.style.right = '10px';
-                container.style.width = `${options.width}px`;
-                container.style.height = `${options.height}px`;
-            }, options);
+        const isEqual = deepEqual(actual, fixture.expected);
+        // update expected.json if UPDATE=true is passed and the test fails
+        if (process.env.UPDATE && !isEqual) {
+            const expecedPath = path.join('test/integration/query/', testName, 'expected.json');
+            console.log('updating', expecedPath);
+            fs.writeFileSync(expecedPath, JSON.stringify(actual, null, 2));
+        }
+        expect(isEqual).toBeTruthy();
 
-            const actual = await page.evaluate(performQueryOnFixture, fixture);
-
-            const isEqual = deepEqual(actual, fixture.expected);
-            // update expected.json if UPDATE=true is passed and the test fails
-            if (process.env.UPDATE && !isEqual) {
-                const expecedPath = path.join('test/integration/query/', testName, 'expected.json');
-                console.log('updating', expecedPath);
-                fs.writeFileSync(expecedPath, JSON.stringify(actual, null, 2));
-            }
-            expect(isEqual).toBeTruthy();
-
-        }, 10000);
-
-    });
+    }, 10000);
 
 });
 
