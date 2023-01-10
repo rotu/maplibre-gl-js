@@ -14,7 +14,7 @@ describe('@maplibre/maplibre-gl-style-spec npm package', () => {
     });
 
     test('exports components directly, not behind `default` - https://github.com/mapbox/mapbox-gl-js/issues/6601', async  () => {
-        // eslint-disable-next-line import/no-relative-packages
+
         expect(await import('../../dist/style-spec/index.cjs')).toHaveProperty('validate');
     });
 });
