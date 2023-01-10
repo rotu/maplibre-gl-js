@@ -53,11 +53,9 @@ const config: Config = {
         {
             displayName: 'eslint',
             testMatch: ['<rootDir>/**/*.{ts,tsx,js,html}'],
-            cliOptions: {
-                ignorePath: '.gitignore',
-            },
+            testPathIgnorePatterns: ['/dist/', '/staging/', '/node_modules/', '*_generated.js'],
+            
             runner: 'jest-runner-eslint',
-        }
     ]
 
 };
