@@ -54,10 +54,10 @@ const config: Config = {
             displayName: 'eslint',
             testMatch: ['<rootDir>/**/*.{ts,tsx,js,html}'],
             testPathIgnorePatterns: ['/dist/', '/staging/', '/node_modules/', '*_generated.js'],
-            
-            runner: 'jest-runner-eslint',
-    ]
 
+            runner: 'jest-runner-eslint',
+        }
+    ]
 };
 
 export default config;
