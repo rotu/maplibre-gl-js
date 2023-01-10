@@ -18,13 +18,14 @@ import {
     StyleExpression,
     ZoomConstantExpression,
     ZoomDependentExpression
-} from '@maplibre/maplibre-gl-style-spec/expression/expression';
+} from '@maplibre/maplibre-gl-style-spec/expression';
 
 import type {BucketParameters} from '../../data/bucket';
 import type {SymbolLayoutProps, SymbolPaintProps} from './symbol_style_layer_properties.g';
 import type EvaluationParameters from '../evaluation_parameters';
 import type {LayerSpecification} from '@maplibre/maplibre-gl-style-spec/types.g';
-import type {Feature, SourceExpression, Expression} from '@maplibre/maplibre-gl-style-spec/expression/expression';
+import type {Expression} from '@maplibre/maplibre-gl-style-spec/expression/expression';
+import type {Feature, SourceExpression} from '@maplibre/maplibre-gl-style-spec/expression';
 import type {CanonicalTileID} from '../../source/tile_id';
 import {FormattedType} from '@maplibre/maplibre-gl-style-spec/expression/types';
 import {typeOf} from '@maplibre/maplibre-gl-style-spec/expression/values';

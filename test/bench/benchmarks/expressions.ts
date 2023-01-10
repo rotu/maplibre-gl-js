@@ -3,12 +3,12 @@ import Benchmark from '../lib/benchmark';
 import spec from '@maplibre/maplibre-gl-style-spec/reference/latest';
 import convertFunction from '@maplibre/maplibre-gl-style-spec/function/convert';
 import {isFunction, createFunction} from '@maplibre/maplibre-gl-style-spec/function/function';
-import {createPropertyExpression} from '@maplibre/maplibre-gl-style-spec/expression/expression';
+import {createPropertyExpression} from '@maplibre/maplibre-gl-style-spec/expression';
 import fetchStyle from '../lib/fetch_style';
 
 import type {StyleSpecification} from '@maplibre/maplibre-gl-style-spec/types.g';
 import type {StylePropertySpecification} from '@maplibre/maplibre-gl-style-spec';
-import type {StylePropertyExpression} from '@maplibre/maplibre-gl-style-spec/expression/expression';
+import type {StylePropertyExpression} from '@maplibre/maplibre-gl-style-spec/expression';
 
 interface DataT {
     propertySpec: StylePropertySpecification;

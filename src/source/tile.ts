@@ -3,7 +3,7 @@ import {deserialize as deserializeBucket} from '../data/bucket';
 import '../data/feature_index';
 import type FeatureIndex from '../data/feature_index';
 import GeoJSONFeature from '../util/vectortile_to_geojson';
-import featureFilter from '@maplibre/maplibre-gl-style-spec/feature_filter/feature_filter';
+import featureFilter from '@maplibre/maplibre-gl-style-spec/feature_filter';
 import SymbolBucket from '../data/bucket/symbol_bucket';
 import {CollisionBoxArray} from '../data/array_types.g';
 import Texture from '../render/texture';

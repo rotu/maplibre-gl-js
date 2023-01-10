@@ -11,10 +11,10 @@ import {Evented} from '../util/evented';
 import {Layout, Transitionable, Transitioning, Properties, PossiblyEvaluated, PossiblyEvaluatedPropertyValue} from './properties';
 import {supportsPropertyExpression} from '@maplibre/maplibre-gl-style-spec/util/properties';
 
-import type {FeatureState} from '@maplibre/maplibre-gl-style-spec/expression/expression';
+import type {FeatureState} from '@maplibre/maplibre-gl-style-spec/expression';
 import type {Bucket} from '../data/bucket';
 import type Point from '@mapbox/point-geometry';
-import type {FeatureFilter} from '@maplibre/maplibre-gl-style-spec/feature_filter/feature_filter';
+import type {FeatureFilter} from '@maplibre/maplibre-gl-style-spec/feature_filter';
 import type {TransitionParameters, PropertyValue} from './properties';
 import EvaluationParameters from './evaluation_parameters';
 import type {CrossfadeParameters} from './evaluation_parameters';

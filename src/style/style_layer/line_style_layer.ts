@@ -10,7 +10,7 @@ import EvaluationParameters from '../evaluation_parameters';
 import {Transitionable, Transitioning, Layout, PossiblyEvaluated, DataDrivenProperty} from '../properties';
 
 import Step from '@maplibre/maplibre-gl-style-spec/expression/definitions/step';
-import type {FeatureState, ZoomConstantExpression} from '@maplibre/maplibre-gl-style-spec/expression/expression';
+import type {FeatureState, ZoomConstantExpression} from '@maplibre/maplibre-gl-style-spec/expression';
 import type {Bucket, BucketParameters} from '../../data/bucket';
 import type {LineLayoutProps, LinePaintProps} from './line_style_layer_properties.g';
 import type Transform from '../../geo/transform';

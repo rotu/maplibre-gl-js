@@ -18,7 +18,7 @@ import {
     StylePropertyExpression,
     SourceExpression,
     CompositeExpression
-} from '@maplibre/maplibre-gl-style-spec/expression/expression';
+} from '@maplibre/maplibre-gl-style-spec/expression';
 
 type TimePoint = number;
 

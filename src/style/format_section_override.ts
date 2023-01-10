@@ -1,4 +1,5 @@
-import type {Expression, ZoomConstantExpression} from '@maplibre/maplibre-gl-style-spec/expression/expression';
+import type {Expression} from '@maplibre/maplibre-gl-style-spec/expression/expression';
+import type {ZoomConstantExpression} from '@maplibre/maplibre-gl-style-spec/expression';
 import type EvaluationContext from '@maplibre/maplibre-gl-style-spec/expression/evaluation_context';
 import type {Type} from '@maplibre/maplibre-gl-style-spec/expression/types';
 import {NullType} from '@maplibre/maplibre-gl-style-spec/expression/types';

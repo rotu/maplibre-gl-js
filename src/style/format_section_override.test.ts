@@ -1,4 +1,4 @@
-import {createExpression, StyleExpression, ZoomConstantExpression} from '@maplibre/maplibre-gl-style-spec/expression/expression';
+import {createExpression, StyleExpression, ZoomConstantExpression} from '@maplibre/maplibre-gl-style-spec/expression';
 import EvaluationContext from '@maplibre/maplibre-gl-style-spec/expression/evaluation_context';
 import properties from './style_layer/symbol_style_layer_properties.g';
 import {PossiblyEvaluatedPropertyValue} from './properties';

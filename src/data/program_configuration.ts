@@ -25,7 +25,7 @@ import type {
     GlobalProperties,
     SourceExpression,
     CompositeExpression
-} from '@maplibre/maplibre-gl-style-spec/expression/expression';
+} from '@maplibre/maplibre-gl-style-spec/expression';
 import type {FeatureStates} from '../source/source_state';
 import type {FormattedSection} from '@maplibre/maplibre-gl-style-spec/expression/types/formatted';
 import type {VectorTileLayer} from '@mapbox/vector-tile';
