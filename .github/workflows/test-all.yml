@@ -7,7 +7,8 @@ on:
   workflow_dispatch:
 
 env:
-  jest: "npx jest --reporters github-actions"
+  jest: npx jest --reporters default github-actions
+  enable-gl: xvfb-run -s "-ac -screen 0 1280x1024x24"
 
 permissions:
   checks: write
@@ -22,11 +23,14 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: lts/*
-      - run: |
-          npm ci
-          ${{ env.jest }} --selectProjects lint-script
-          npm run lint-css
-          npm run lint-docs
+      - run: npm ci
+      - run: ${{ env.jest }} --selectProjects lint-script
+      - run: npm run lint-css
+        if: success() || failure()
+      - run: npm run lint-docs
+        if: success() || failure()
+      - run: npm run typecheck
+        if: success() || failure()
   non-render-tests:
     runs-on: ubuntu-latest
     steps:
@@ -34,11 +38,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: lts/*
-      - run: |
-          npm ci
-          ${{ env.jest }} --selectProjects unit-nogl
-          npm run build-dev
-          ${{ env.jest }} --selectProjects integration
+      - run: npm ci
+      - run: ${{ env.jest }} --selectProjects unit-nogl
+        if: success() || failure()
+      - run: npm run build-dev
+      - run: ${{ env.jest }} --selectProjects integration-nogl
+        if: success() || failure()
   packaging-tests:
     runs-on: ubuntu-latest
     steps:
@@ -46,10 +51,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: lts/*
-      - run: |
-          npm ci
-          npm run build-dist
-          ${{ env.jest }} --selectProjects build
+      - run: npm ci
+      - run: npm run build-dist
+      - run: npm run build-style-spec
+      - run: ${{ env.jest }} --selectProjects build
+        if: success() || failure()
   render-tests:
     timeout-minutes: 20
     runs-on: ubuntu-latest
@@ -58,8 +64,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: lts/*
-      - run: |
-          npm ci
-          npm run build-dev
-          xvfb-run -s "-ac -screen 0 1280x1024x24" ${{ env.jest }} --selectProjects unit-gl
-          xvfb-run -s "-ac -screen 0 1280x1024x24" npm run test-render
+      - run: npm ci
+      - run: npm run build-dev
+      - run: ${{ env.enable-gl }} ${{ env.jest }} --selectProjects unit-gl
+        if: success() || failure()
+      - run: ${{ env.enable-gl }} ${{ env.jest }} --selectProjects integration-gl
+        if: success() || failure()
+      - run: ${{ env.enable-gl }} npm run test-render
+        if: success() || failure()

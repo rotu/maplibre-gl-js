@@ -17,8 +17,13 @@ const config: Config = {
             displayName: 'unit-nogl',
             testEnvironment: 'jsdom',
             testMatch: [
-                '<rootDir>/src/!(ui|gl)/**/*.test.{ts,mts,js}',
+                '<rootDir>/src/**/*.test.{ts,mts,js}',
             ],
+            testPathIgnorePatterns: [
+                'src/gl',
+                'src/ui/',
+                'terrain[.]test[.]ts$',
+                'terrain_source_cache[.]test[.]ts$'],
             setupFiles: [
                 'jest-canvas-mock',
                 './test/unit/lib/web_worker_mock.ts'
@@ -28,8 +33,10 @@ const config: Config = {
         {
             displayName: 'unit-gl',
             testMatch: [
-                '<rootDir>/src/gl/*.test.{ts,mts,js}',
-                '<rootDir>/src/ui/*.test.{ts,mts,js}'
+                '<rootDir>/src/gl/**/*.test.{ts,mts,js}',
+                '<rootDir>/src/ui/**/*.test.{ts,mts,js}',
+                '<rootDir>/src/**/terrain.test.ts',
+                '<rootDir>/src/**/terrain_source_cache.test.ts',
             ],
             testEnvironment: 'jsdom',
             setupFiles: [
@@ -39,10 +46,18 @@ const config: Config = {
             ...sharedConfig
         },
         {
-            displayName: 'integration',
+            displayName: 'integration-nogl',
             testEnvironment: 'node',
             testMatch: [
-                '<rootDir>/test/integration/**/*.test.ts',
+                '<rootDir>/test/integration/!(query|browser)/**/*.test.ts',
+            ],
+            ...sharedConfig,
+        },
+        {
+            displayName: 'integration-gl',
+            testEnvironment: 'node',
+            testMatch: [
+                '<rootDir>/test/integration/(query|browser)/**/*.test.ts',
             ],
             ...sharedConfig,
         },
