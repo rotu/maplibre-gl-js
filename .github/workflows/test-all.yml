@@ -33,9 +33,10 @@ jobs:
           node-version: lts/*
       - run: |
           sudo apt update
-          sudo apt install weston
+          sudo apt install weston libwayland-egl++0 libwayland-egl1-mesa libwayland-egl1
           mkdir -p -m 700 $XDG_RUNTIME_DIR
-          nohup weston --no-config --width=800 --height=800 --use-gl -B headless-backend.so &
+          nohup weston-simple-egl -width 1920 -height 1080 -surface 10 &
+          # nohup weston --no-config --width=800 --height=800 --use-gl -B headless-backend.so &
       - run: npm ci
       - run: npm run build-dev
       - run: ${{ env.jest }} --selectProjects unit-gl
