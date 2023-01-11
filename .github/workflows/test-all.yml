@@ -11,7 +11,6 @@ env:
   enable-gl: xvfb-run -s "-ac -screen 0 1280x1024x24"
   enable-glx: export DISPLAY=:42 \n nohup Xvfb $DISPLAY &
   DISPLAY: :42
-  XDG_SESSION_TYPE: x11
 
 permissions:
   checks: write
