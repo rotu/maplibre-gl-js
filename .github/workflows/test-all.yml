@@ -12,7 +12,6 @@ env:
   enable-glx: export DISPLAY=:42 \n nohup Xvfb $DISPLAY &
   DISPLAY: :42
   XDG_SESSION_TYPE: x11
-  GDK_BACKEND: wayland,x11
 
 permissions:
   checks: write
