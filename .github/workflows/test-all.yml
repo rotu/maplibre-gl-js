@@ -10,9 +10,10 @@ env:
   jest: npx jest --reporters default --reporters github-actions
   enable-gl: xvfb-run -s "-ac -screen 0 1280x1024x24"
   enable-glx: export DISPLAY=:42 \n nohup Xvfb $DISPLAY &
-  XDG_RUNTIME_DIR: ${{github.workspace}}/weston
+  DISPLAY: :42
+  # XDG_RUNTIME_DIR: ${{github.workspace}}/weston
   WAYLAND_DISPLAY: wayland-42
-  XDG_SESSION_TYPE: wayland
+  XDG_SESSION_TYPE: x11
   GDK_BACKEND: wayland,x11
   enable-glw: export XDG_RUNTIME_DIR=$HOME/weston && mkdir -p -m 700 $XDG_RUNTIME_DIR && weston --width=800 --height=800 --use-gl -B headless-backend.so --no-config &
 
@@ -37,6 +38,9 @@ jobs:
           mkdir -p -m 700 $XDG_RUNTIME_DIR
           nohup weston-simple-egl -width 1920 -height 1080 -surface 10 &
           # nohup weston --no-config --width=800 --height=800 --use-gl -B headless-backend.so &
+        if: false
+      - run: |
+          nohup Xvfb $DISPLAY &
       - run: npm ci
       - run: npm run build-dev
       - run: ${{ env.jest }} --selectProjects unit-gl
