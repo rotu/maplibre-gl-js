@@ -10,6 +10,8 @@ env:
   jest: npx jest --reporters default --reporters github-actions
   enable-gl: xvfb-run -s "-ac -screen 0 1280x1024x24"
   enable-glx: export DISPLAY=:42 \n nohup Xvfb $DISPLAY &
+  XDG_RUNTIME_DIR: $HOME/weston
+  WAYLAND_DISPLAY: wayland-42
   enable-glw: export XDG_RUNTIME_DIR=$HOME/weston && mkdir -p -m 700 $XDG_RUNTIME_DIR && weston --width=800 --height=800 --use-gl -B headless-backend.so --no-config &
 
 permissions:
@@ -29,7 +31,6 @@ jobs:
       - run: |
           sudo apt update
           sudo apt install weston
-          export XDG_RUNTIME_DIR=$HOME/weston
           mkdir -p -m 700 $XDG_RUNTIME_DIR
           nohup weston --no-config --width=800 --height=800 --use-gl -B headless-backend.so &
       - run: npm ci
