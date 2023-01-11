@@ -31,7 +31,7 @@ jobs:
           sudo apt install weston
           export XDG_RUNTIME_DIR=$HOME/weston
           mkdir -p -m 700 $XDG_RUNTIME_DIR
-          nohup weston --no-config --width=800 --height=800 --use-gl -B headless-backend.so
+          nohup weston --no-config --width=800 --height=800 --use-gl -B headless-backend.so &
       - run: npm ci
       - run: npm run build-dev
       - run: ${{ env.jest }} --selectProjects unit-gl
@@ -40,3 +40,5 @@ jobs:
         if: success() || failure()
       - run: npm run test-render
         if: success() || failure()
+      - run: killall weston
+        if: always()
