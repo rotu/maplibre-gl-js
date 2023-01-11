@@ -34,9 +34,9 @@ jobs:
           nohup weston --no-config --width=800 --height=800 --use-gl -B headless-backend.so
       - run: npm ci
       - run: npm run build-dev
-      - run: ${{ env.enable-gl }} ${{ env.jest }} --selectProjects unit-gl
+      - run: ${{ env.jest }} --selectProjects unit-gl
         if: success() || failure()
-      - run: ${{ env.enable-gl }} ${{ env.jest }} --selectProjects integration-gl
+      - run: ${{ env.jest }} --selectProjects integration-gl
         if: success() || failure()
-      - run: ${{ env.enable-gl }} npm run test-render
+      - run: npm run test-render
         if: success() || failure()
