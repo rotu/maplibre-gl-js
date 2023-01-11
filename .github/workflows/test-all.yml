@@ -10,7 +10,7 @@ env:
   jest: npx jest --reporters default --reporters github-actions
   enable-gl: xvfb-run -s "-ac -screen 0 1280x1024x24"
   enable-glx: export DISPLAY=:42 \n nohup Xvfb $DISPLAY &
-  XDG_RUNTIME_DIR: $HOME/weston
+  XDG_RUNTIME_DIR: ${{env.HOME}}/weston
   WAYLAND_DISPLAY: wayland-42
   XDG_SESSION_TYPE: wayland
   GDK_BACKEND: wayland,x11
