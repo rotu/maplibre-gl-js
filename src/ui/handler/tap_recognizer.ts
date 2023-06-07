@@ -1,10 +1,10 @@
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 import {indexTouches} from './handler_util';
 
 function getCentroid(points: Array<Point>) {
-    const sum = new Point(0, 0);
+    let sum = new Point(0, 0);
     for (const point of points) {
-        sum._add(point);
+        sum = sum.add(point);
     }
     return sum.div(points.length);
 }

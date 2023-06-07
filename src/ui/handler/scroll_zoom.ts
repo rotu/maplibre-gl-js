@@ -8,7 +8,7 @@ import TransformProvider from './transform-provider';
 
 import type Map from '../map';
 import type HandlerManager from '../handler_manager';
-import type Point from '@mapbox/point-geometry';
+import type {Point} from '#src/geo/point';
 
 // deltaY value for mouse scroll wheel identification
 const wheelZoomDelta = 4.000244140625;

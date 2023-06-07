@@ -1,4 +1,4 @@
-import type Point from '@mapbox/point-geometry';
+import type {Point} from '#src/geo/point';
 import type Map from '../map';
 import TransformProvider from './transform-provider';
 

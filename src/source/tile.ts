@@ -30,7 +30,7 @@ import type Transform from '../geo/transform';
 import type {LayerFeatureStates} from './source_state';
 import type {Cancelable} from '../types/cancelable';
 import type {FilterSpecification} from '@maplibre/maplibre-gl-style-spec';
-import type Point from '@mapbox/point-geometry';
+import type {Point} from '#src/geo/point';
 import {mat4} from 'gl-matrix';
 import type {VectorTileLayer} from '@mapbox/vector-tile';
 import {ExpiryData} from '../util/ajax';

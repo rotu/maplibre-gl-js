@@ -29,7 +29,7 @@ import type FillExtrusionStyleLayer from '../../style/style_layer/fill_extrusion
 import type Context from '../../gl/context';
 import type IndexBuffer from '../../gl/index_buffer';
 import type VertexBuffer from '../../gl/vertex_buffer';
-import type Point from '@mapbox/point-geometry';
+import type {Point} from '#src/geo/point';
 import type {FeatureStates} from '../../source/source_state';
 import type {ImagePosition} from '../../render/image_atlas';
 import type {VectorTileLayer} from '@mapbox/vector-tile';
@@ -190,7 +190,7 @@ class FillExtrusionBucket implements Bucket {
                                 segment = this.segments.prepareSegment(4, this.layoutVertexArray, this.indexArray);
                             }
 
-                            const perp = p1.sub(p2)._perp()._unit();
+                            const perp = p1.sub(p2).perp().unit();
                             const dist = p2.dist(p1);
                             if (edgeDistance + dist > 32768) edgeDistance = 0;
 

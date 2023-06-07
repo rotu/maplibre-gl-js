@@ -1,4 +1,4 @@
-import Point from '@mapbox/point-geometry';
+import {Point} from './point';
 import Transform from './transform';
 import LngLat from './lng_lat';
 import {OverscaledTileID, CanonicalTileID} from '../source/tile_id';

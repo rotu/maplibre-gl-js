@@ -1,6 +1,6 @@
 import {findOffsetIntersectionPoint, project, projectVertexToViewport, transformToOffsetNormal} from './projection';
 
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 import {mat4} from 'gl-matrix';
 import {SymbolLineVertexArray} from '../data/array_types.g';
 

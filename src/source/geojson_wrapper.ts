@@ -1,4 +1,4 @@
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 
 import mvt from '@mapbox/vector-tile';
 import type {VectorTileFeature, VectorTileLayer, VectorTile} from '@mapbox/vector-tile';

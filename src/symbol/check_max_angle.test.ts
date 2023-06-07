@@ -1,4 +1,4 @@
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 import checkMaxAngle from './check_max_angle';
 import Anchor from './anchor';
 

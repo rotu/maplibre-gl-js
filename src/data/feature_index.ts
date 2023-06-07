@@ -1,4 +1,4 @@
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 import loadGeometry from './load_geometry';
 import toEvaluationFeature from './evaluation_feature';
 import EXTENT from './extent';

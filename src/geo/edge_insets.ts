@@ -1,5 +1,5 @@
 import {interpolates} from '@maplibre/maplibre-gl-style-spec';
-import Point from '@mapbox/point-geometry';
+import {Point} from './point';
 import {clamp} from '../util/util';
 
 /**

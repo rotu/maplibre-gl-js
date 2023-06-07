@@ -1,7 +1,7 @@
 import LngLat from './lng_lat';
 import LngLatBounds from './lng_lat_bounds';
 import MercatorCoordinate, {mercatorXfromLng, mercatorYfromLat, mercatorZfromAltitude} from './mercator_coordinate';
-import Point from '@mapbox/point-geometry';
+import {Point} from './point';
 import {wrap, clamp} from '../util/util';
 import {interpolates} from '@maplibre/maplibre-gl-style-spec';
 import EXTENT from '../data/extent';
@@ -153,7 +153,7 @@ class Transform {
     }
 
     get centerOffset(): Point {
-        return this.centerPoint._sub(this.size._div(2));
+        return this.centerPoint.sub(this.size.div(2));
     }
 
     get size(): Point {

@@ -1,4 +1,4 @@
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 
 import {offsetLine} from './query_utils';
 

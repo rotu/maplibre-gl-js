@@ -1,4 +1,4 @@
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 import PathInterpolator from './path_interpolator';
 
 describe('PathInterpolator', () => {

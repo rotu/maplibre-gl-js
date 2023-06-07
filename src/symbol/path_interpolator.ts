@@ -1,5 +1,5 @@
 import {clamp} from '../util/util';
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 
 class PathInterpolator {
     points: Array<Point>;
@@ -50,7 +50,7 @@ class PathInterpolator {
         const segmentLength = distOfCurrentIdx - distOfPrevIdx;
         const segmentT = segmentLength > 0 ? (distToTarget - distOfPrevIdx) / segmentLength : 0;
 
-        return this.points[idxOfPrevPoint].mult(1.0 - segmentT).add(this.points[currentIndex].mult(segmentT));
+        return this.points[idxOfPrevPoint].mul(1.0 - segmentT).add(this.points[currentIndex].mul(segmentT));
     }
 }
 

@@ -1,5 +1,5 @@
 import type {CollisionBoxArray} from '../data/array_types.g';
-import Point from '@mapbox/point-geometry';
+import { Point } from '#src/geo/point';
 import type Anchor from './anchor';
 import {SymbolPadding} from '../style/style_layer/symbol_style_layer';
 
@@ -79,17 +79,17 @@ class CollisionFeature {
                 // See https://github.com/mapbox/mapbox-gl-js/issues/6075
                 // Doesn't account for icon-text-fit
 
-                const tl = new Point(x1, y1);
-                const tr = new Point(x2, y1);
-                const bl = new Point(x1, y2);
-                const br = new Point(x2, y2);
+                let tl = new Point(x1, y1);
+                let tr = new Point(x2, y1);
+                let bl = new Point(x1, y2);
+                let br = new Point(x2, y2);
 
                 const rotateRadians = rotate * Math.PI / 180;
 
-                tl._rotate(rotateRadians);
-                tr._rotate(rotateRadians);
-                bl._rotate(rotateRadians);
-                br._rotate(rotateRadians);
+                tl = tl.rotate(rotateRadians);
+                tr = tr.rotate(rotateRadians);
+                bl = bl.rotate(rotateRadians);
+                br = br.rotate(rotateRadians);
 
                 // Collision features require an "on-axis" geometry,
                 // so take the envelope of the rotated geometry

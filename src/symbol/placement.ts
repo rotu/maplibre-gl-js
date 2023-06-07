@@ -7,7 +7,7 @@ import {getAnchorJustification, evaluateVariableOffset} from './symbol_layout';
 import {getAnchorAlignment, WritingMode} from './shaping';
 import {mat4} from 'gl-matrix';
 import pixelsToTileUnits from '../source/pixels_to_tile_units';
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 import type Transform from '../geo/transform';
 import type StyleLayer from '../style/style_layer';
 import {PossiblyEvaluated} from '../style/properties';
@@ -159,9 +159,9 @@ function shiftVariableCollisionBox(collisionBox: SingleCollisionBox,
     rotateWithMap: boolean, pitchWithMap: boolean,
     angle: number) {
     const {x1, x2, y1, y2, anchorPointX, anchorPointY} = collisionBox;
-    const rotatedOffset = new Point(shiftX, shiftY);
+    let rotatedOffset = new Point(shiftX, shiftY);
     if (rotateWithMap) {
-        rotatedOffset._rotate(pitchWithMap ? angle : -angle);
+        rotatedOffset = rotatedOffset.rotate(pitchWithMap ? angle : -angle);
     }
     return {
         x1: x1 + rotatedOffset.x,
@@ -1087,7 +1087,7 @@ export class Placement {
                                     variableOffset.textOffset,
                                     variableOffset.textBoxScale);
                                 if (rotateWithMap) {
-                                    shift._rotate(pitchWithMap ? this.transform.angle : -this.transform.angle);
+                                    shift = shift.rotate(pitchWithMap ? this.transform.angle : -this.transform.angle);
                                 }
                             } else {
                                 // No offset -> this symbol hasn't been placed since coming on-screen

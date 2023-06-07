@@ -1,4 +1,4 @@
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 import UnitBezier from '@mapbox/unitbezier';
 import type {Callback} from '../types/callback';
 

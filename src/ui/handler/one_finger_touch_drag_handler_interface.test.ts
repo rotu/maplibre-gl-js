@@ -1,4 +1,4 @@
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 
 import {generateOneFingerTouchPitchHandler, generateOneFingerTouchRotationHandler} from './one_finger_touch_drag';
 

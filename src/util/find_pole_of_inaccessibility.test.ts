@@ -1,4 +1,4 @@
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 import findPoleOfInaccessibility from './find_pole_of_inaccessibility';
 
 test('polygon_poi', () => {

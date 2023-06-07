@@ -7,7 +7,7 @@ import MercatorCoordinate from '../geo/mercator_coordinate';
 import {keysDifference} from '../util/util';
 import EXTENT from '../data/extent';
 import Context from '../gl/context';
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 import browser from '../util/browser';
 import {OverscaledTileID} from './tile_id';
 import SourceFeatureState from './source_state';
@@ -223,8 +223,8 @@ class SourceCache extends Evented {
             return renderables.sort((a_: Tile, b_: Tile) => {
                 const a = a_.tileID;
                 const b = b_.tileID;
-                const rotatedA = (new Point(a.canonical.x, a.canonical.y))._rotate(this.transform.angle);
-                const rotatedB = (new Point(b.canonical.x, b.canonical.y))._rotate(this.transform.angle);
+                const rotatedA = (new Point(a.canonical.x, a.canonical.y)).rotate(this.transform.angle);
+                const rotatedB = (new Point(b.canonical.x, b.canonical.y)).rotate(this.transform.angle);
                 return a.overscaledZ - b.overscaledZ || rotatedB.y - rotatedA.y || rotatedB.x - rotatedA.x;
             }).map(tile => tile.tileID.key);
         }

@@ -1,6 +1,6 @@
 
 import MercatorCoordinate from '../../../../src/geo/mercator_coordinate';
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 import {CanonicalTileID} from '../../../../src/source/tile_id';
 import {LngLatLike} from '../../../../src/geo/lng_lat';
 

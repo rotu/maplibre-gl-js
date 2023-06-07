@@ -1,4 +1,4 @@
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 import {indexTouches} from './handler_util';
 import type Map from '../map';
 import {GestureOptions} from '../map';
@@ -73,16 +73,16 @@ export default class TouchPanHandler {
 
         const touches = indexTouches(mapTouches, points);
 
-        const touchPointSum = new Point(0, 0);
-        const touchDeltaSum = new Point(0, 0);
+        let touchPointSum = new Point(0, 0);
+        let touchDeltaSum = new Point(0, 0);
         let touchDeltaCount = 0;
 
         for (const identifier in touches) {
             const point = touches[identifier];
             const prevPoint = this._touches[identifier];
             if (prevPoint) {
-                touchPointSum._add(point);
-                touchDeltaSum._add(point.sub(prevPoint));
+                touchPointSum = touchPointSum.add(point);
+                touchDeltaSum = touchDeltaSum.add(point.sub(prevPoint));
                 touchDeltaCount++;
                 touches[identifier] = point;
             }
@@ -93,7 +93,7 @@ export default class TouchPanHandler {
         if (touchDeltaCount < this._minTouches || !touchDeltaSum.mag()) return;
 
         const panDelta = touchDeltaSum.div(touchDeltaCount);
-        this._sum._add(panDelta);
+        this._sum = this._sum.add(panDelta);
         if (this._sum.mag() < this._clickTolerance) return;
 
         const around = touchPointSum.div(touchDeltaCount);

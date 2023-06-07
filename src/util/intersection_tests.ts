@@ -1,6 +1,6 @@
 import {isCounterClockwise} from './util';
 
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 
 export {polygonIntersectsBufferedPoint, polygonIntersectsMultiPolygon, polygonIntersectsBufferedMultiLine, polygonIntersectsPolygon, distToSegmentSquared, polygonIntersectsBox};
 
@@ -127,7 +127,7 @@ function distToSegmentSquared(p: Point, v: Point, w: Point) {
     const t = ((p.x - v.x) * (w.x - v.x) + (p.y - v.y) * (w.y - v.y)) / l2;
     if (t < 0) return p.distSqr(v);
     if (t > 1) return p.distSqr(w);
-    return p.distSqr(w.sub(v)._mult(t)._add(v));
+    return p.distSqr(w.sub(v).mul(t).add(v));
 }
 
 // point in polygon ray casting algorithm

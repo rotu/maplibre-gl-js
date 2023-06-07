@@ -2,7 +2,7 @@ import {warnOnce, clamp} from '../util/util';
 
 import EXTENT from './extent';
 
-import type Point from '@mapbox/point-geometry';
+import {Point} from "#src/geo/point";
 import type {VectorTileFeature} from '@mapbox/vector-tile';
 
 // These bounds define the minimum and maximum supported coordinate values.
@@ -22,24 +22,20 @@ const MIN = -MAX - 1;
 export default function loadGeometry(feature: VectorTileFeature): Array<Array<Point>> {
     const scale = EXTENT / feature.extent;
     const geometry = feature.loadGeometry();
-    for (let r = 0; r < geometry.length; r++) {
-        const ring = geometry[r];
-        for (let p = 0; p < ring.length; p++) {
-            const point = ring[p];
-            // round here because mapbox-gl-native uses integers to represent
-            // points and we need to do the same to avoid renering differences.
-            const x = Math.round(point.x * scale);
-            const y = Math.round(point.y * scale);
 
-            point.x = clamp(x, MIN, MAX);
-            point.y = clamp(y, MIN, MAX);
-
-            if (x < point.x || x > point.x + 1 || y < point.y || y > point.y + 1) {
-                // warn when exceeding allowed extent except for the 1-px-off case
-                // https://github.com/mapbox/mapbox-gl-js/issues/8992
-                warnOnce('Geometry exceeds allowed extent, reduce your vector tile buffer size');
-            }
+    // round a given point and convert from @mapbox/point-geometry Point object to local Point object.
+    function convertPoint(point) {
+        // round here because mapbox-gl-native uses integers to represent
+        // points and we need to do the same to avoid renering differences.
+        let x = clamp(Math.round(point.x * scale), MIN, MAX)
+        let y = clamp(Math.round(point.y * scale), MIN, MAX)
+        if (x < point.x || x > point.x + 1 || y < point.y || y > point.y + 1) {
+            // warn when exceeding allowed extent except for the 1-px-off case
+            // https://github.com/mapbox/mapbox-gl-js/issues/8992
+            warnOnce('Geometry exceeds allowed extent, reduce your vector tile buffer size');
         }
+        return new Point(x, y)
     }
-    return geometry;
+
+    return geometry.map(ar=>ar.map(convertPoint));
 }

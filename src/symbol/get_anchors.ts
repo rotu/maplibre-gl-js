@@ -3,7 +3,7 @@ import {interpolates} from '@maplibre/maplibre-gl-style-spec';
 import Anchor from '../symbol/anchor';
 import checkMaxAngle from './check_max_angle';
 
-import type Point from '@mapbox/point-geometry';
+import type {Point} from '#src/geo/point';
 import type {Shaping, PositionedIcon} from './shaping';
 
 export {getAnchors, getCenterAnchor};
@@ -54,11 +54,10 @@ function getCenterAnchor(line: Array<Point>,
         if (prevDistance + segmentDistance > centerDistance) {
             // The center is on this segment
             const t = (centerDistance - prevDistance) / segmentDistance,
-                x = interpolates.number(a.x, b.x, t),
-                y = interpolates.number(a.y, b.y, t);
+                x = Math.round(interpolates.number(a.x, b.x, t)),
+                y = Math.round(interpolates.number(a.y, b.y, t));
 
             const anchor = new Anchor(x, y, b.angleTo(a), i);
-            anchor._round();
             if (!angleWindowSize || checkMaxAngle(line, anchor, labelLength, angleWindowSize, maxAngle)) {
                 return anchor;
             } else {
@@ -142,8 +141,7 @@ function resample(line, offset, spacing, angleWindowSize, maxAngle, labelLength,
             if (x >= 0 && x < tileExtent && y >= 0 && y < tileExtent &&
                     markedDistance - halfLabelLength >= 0 &&
                     markedDistance + halfLabelLength <= lineLength) {
-                const anchor = new Anchor(x, y, angle, i);
-                anchor._round();
+                const anchor = new Anchor(Math.round(x), Math.round(y), angle, i);
 
                 if (!angleWindowSize || checkMaxAngle(line, anchor, labelLength, angleWindowSize, maxAngle)) {
                     anchors.push(anchor);

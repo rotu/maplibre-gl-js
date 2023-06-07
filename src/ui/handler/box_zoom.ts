@@ -4,7 +4,7 @@ import {Event} from '../../util/evented';
 import TransformProvider from './transform-provider';
 
 import type Map from '../map';
-import type Point from '@mapbox/point-geometry';
+import type {Point} from '#src/geo/point';
 
 /**
  * The `BoxZoomHandler` allows the user to zoom the map to fit within a bounding box.

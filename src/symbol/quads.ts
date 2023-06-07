@@ -1,4 +1,4 @@
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 
 import {GLYPH_PBF_BORDER} from '../style/parse_glyph_pbf';
 
@@ -283,10 +283,10 @@ export function getGlyphQuads(
             const x2 = x1 + textureRect.w * positionedGlyph.scale / pixelRatio;
             const y2 = y1 + textureRect.h * positionedGlyph.scale / pixelRatio;
 
-            const tl = new Point(x1, y1);
-            const tr = new Point(x2, y1);
-            const bl = new Point(x1, y2);
-            const br = new Point(x2, y2);
+            let tl = new Point(x1, y1),
+                tr = new Point(x2, y1),
+                bl = new Point(x1, y2),
+                br = new Point(x2, y2);
 
             if (rotateVerticalGlyph) {
                 // Vertical-supporting glyphs are laid out in 24x24 point boxes (1 square em)
@@ -307,21 +307,17 @@ export function getGlyphQuads(
                 const yImageOffsetCorrection = positionedGlyph.imageName ? xHalfWidthOffsetCorrection : 0.0;
                 const halfWidthOffsetCorrection = new Point(5 - SHAPING_DEFAULT_OFFSET - xHalfWidthOffsetCorrection, -yImageOffsetCorrection);
                 const verticalOffsetCorrection = new Point(...verticalizedLabelOffset);
-                tl._rotateAround(verticalRotation, center)._add(halfWidthOffsetCorrection)._add(verticalOffsetCorrection);
-                tr._rotateAround(verticalRotation, center)._add(halfWidthOffsetCorrection)._add(verticalOffsetCorrection);
-                bl._rotateAround(verticalRotation, center)._add(halfWidthOffsetCorrection)._add(verticalOffsetCorrection);
-                br._rotateAround(verticalRotation, center)._add(halfWidthOffsetCorrection)._add(verticalOffsetCorrection);
+                tl = tl.rotateAround(verticalRotation, center).add(halfWidthOffsetCorrection).add(verticalOffsetCorrection);
+                tr = tr.rotateAround(verticalRotation, center).add(halfWidthOffsetCorrection).add(verticalOffsetCorrection);
+                bl = bl.rotateAround(verticalRotation, center).add(halfWidthOffsetCorrection).add(verticalOffsetCorrection);
+                br = br.rotateAround(verticalRotation, center).add(halfWidthOffsetCorrection).add(verticalOffsetCorrection);
             }
 
             if (textRotate) {
-                const sin = Math.sin(textRotate),
-                    cos = Math.cos(textRotate),
-                    matrix = [cos, -sin, sin, cos];
-
-                tl._matMult(matrix);
-                tr._matMult(matrix);
-                bl._matMult(matrix);
-                br._matMult(matrix);
+                tl.rotate(textRotate);
+                tr.rotate(textRotate);
+                bl.rotate(textRotate);
+                br.rotate(textRotate);
             }
 
             const pixelOffsetTL = new Point(0, 0);

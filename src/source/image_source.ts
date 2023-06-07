@@ -214,7 +214,7 @@ class ImageSource extends Evented implements Source {
 
         // Transform the corner coordinates into the coordinate space of our
         // tile.
-        const tileCoords = cornerCoords.map((coord) => this.tileID.getTilePoint(coord)._round());
+        const tileCoords = cornerCoords.map((coord) => this.tileID.getTilePoint(coord).round());
 
         this._boundsArray = new RasterBoundsArray();
         this._boundsArray.emplaceBack(tileCoords[0].x, tileCoords[0].y, 0, 0);

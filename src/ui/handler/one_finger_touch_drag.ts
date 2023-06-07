@@ -1,4 +1,4 @@
-import type Point from '@mapbox/point-geometry';
+import type {Point} from '#src/geo/point';
 
 import {DragMoveHandler, DragRotateResult, DragPitchResult, DragHandler} from './drag_handler';
 import {OneFingerTouchMoveStateManager} from './drag_move_state_manager';

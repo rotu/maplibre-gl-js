@@ -1,6 +1,6 @@
 import DOM from '../util/dom';
 import LngLat from '../geo/lng_lat';
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 import smartWrap from '../util/smart_wrap';
 import {bindAll, extend} from '../util/util';
 import {anchorTranslate, applyAnchorClass} from './anchor';
@@ -450,7 +450,7 @@ export default class Marker extends Evented {
             this._lngLat = smartWrap(this._lngLat, this._pos, this._map.transform);
         }
 
-        this._pos = this._map.project(this._lngLat)._add(this._offset);
+        this._pos = this._map.project(this._lngLat).add(this._offset);
 
         let rotation = '';
         if (this._rotationAlignment === 'viewport' || this._rotationAlignment === 'auto') {

@@ -1,4 +1,4 @@
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 import DOM from '../../util/dom';
 import type Map from '../map';
 

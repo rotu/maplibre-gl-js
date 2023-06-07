@@ -1,5 +1,5 @@
 import DOM from '../../util/dom';
-import type Point from '@mapbox/point-geometry';
+import type {Point} from '#src/geo/point';
 import {DragMoveStateManager} from './drag_move_state_manager';
 import {Handler} from '../handler_manager';
 

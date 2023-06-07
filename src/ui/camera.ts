@@ -3,7 +3,7 @@ import {interpolates} from '@maplibre/maplibre-gl-style-spec';
 import browser from '../util/browser';
 import LngLat from '../geo/lng_lat';
 import LngLatBounds from '../geo/lng_lat_bounds';
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 import {Event, Evented} from '../util/evented';
 import {Debug} from '../util/debug';
 import Terrain from '../render/terrain';
@@ -242,7 +242,7 @@ abstract class Camera extends Evented {
      * @see [Navigate the map with game-like controls](https://maplibre.org/maplibre-gl-js-docs/example/game-controls/)
      */
     panBy(offset: PointLike, options?: AnimationOptions, eventData?: any) {
-        offset = Point.convert(offset).mult(-1);
+        offset = Point.convert(offset).mul(-1);
         return this.panTo(this.transform.center, extend({offset}, options), eventData);
     }
 
@@ -632,7 +632,7 @@ abstract class Camera extends Evented {
         const paddingOffset = new Point(paddingOffsetX, paddingOffsetY);
         const rotatedPaddingOffset = paddingOffset.rotate(bearing * Math.PI / 180);
         const offsetAtInitialZoom = offset.add(rotatedPaddingOffset);
-        const offsetAtFinalZoom = offsetAtInitialZoom.mult(tr.scale / tr.zoomScale(zoom));
+        const offsetAtFinalZoom = offsetAtInitialZoom.mul(tr.scale / tr.zoomScale(zoom));
 
         const center =  tr.unproject(p0world.add(p1world).div(2).sub(offsetAtFinalZoom));
 
@@ -963,7 +963,7 @@ abstract class Camera extends Evented {
                     Math.min(2, finalScale) :
                     Math.max(0.5, finalScale);
                 const speedup = Math.pow(base, 1 - k);
-                const newCenter = tr.unproject(from.add(delta.mult(k * speedup)).mult(scale));
+                const newCenter = tr.unproject(from.add(delta.mul(k * speedup)).mul(scale));
                 tr.setLocationAtPoint(tr.renderWorldCopies ? newCenter.wrap() : newCenter, pointAtOffset);
             }
 
@@ -1311,7 +1311,7 @@ abstract class Camera extends Evented {
 
             if (this.terrain && !options.freezeElevation) this._updateElevation(k);
 
-            const newCenter = k === 1 ? center : tr.unproject(from.add(delta.mult(u(s))).mult(scale));
+            const newCenter = k === 1 ? center : tr.unproject(from.add(delta.mul(u(s))).mul(scale));
             tr.setLocationAtPoint(tr.renderWorldCopies ? newCenter.wrap() : newCenter, pointAtOffset);
 
             this._applyUpdatedTransform(tr);

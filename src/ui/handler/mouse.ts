@@ -1,4 +1,4 @@
-import type Point from '@mapbox/point-geometry';
+import type {Point} from '#src/geo/point';
 
 import DOM from '../../util/dom';
 import {DragMoveHandler, DragPanResult, DragRotateResult, DragPitchResult, DragHandler} from './drag_handler';

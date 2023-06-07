@@ -1,4 +1,4 @@
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 
 export default class DOM {
     private static readonly docStyle = typeof window !== 'undefined' && window.document && window.document.documentElement.style;

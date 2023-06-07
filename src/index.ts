@@ -12,7 +12,7 @@ import Marker from './ui/marker';
 import Style from './style/style';
 import LngLat from './geo/lng_lat';
 import LngLatBounds from './geo/lng_lat_bounds';
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 import MercatorCoordinate from './geo/mercator_coordinate';
 import {Evented} from './util/evented';
 import config from './util/config';

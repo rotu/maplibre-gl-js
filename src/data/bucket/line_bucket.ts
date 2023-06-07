@@ -23,7 +23,7 @@ import type {
     PopulateParameters
 } from '../bucket';
 import type LineStyleLayer from '../../style/style_layer/line_style_layer';
-import type Point from '@mapbox/point-geometry';
+import type {Point} from '#src/geo/point';
 import type {Segment} from '../segment';
 import {RGBAImage} from '../../util/image';
 import type Context from '../../gl/context';
@@ -307,7 +307,7 @@ class LineBucket implements Bucket {
 
         if (isPolygon) {
             currentVertex = vertices[len - 2];
-            nextNormal = vertices[first].sub(currentVertex)._unit()._perp();
+            nextNormal = vertices[first].sub(currentVertex).unit().perp();
         }
 
         for (let i = first; i < len; i++) {
@@ -327,7 +327,7 @@ class LineBucket implements Bucket {
             // Calculate the normal towards the next vertex in this line. In case
             // there is no next vertex, pretend that the line is continuing straight,
             // meaning that we are just using the previous normal.
-            nextNormal = nextVertex ? nextVertex.sub(currentVertex)._unit()._perp() : prevNormal;
+            nextNormal = nextVertex ? nextVertex.sub(currentVertex).unit().perp() : prevNormal;
 
             // If we still don't have a previous normal, this is the beginning of a
             // non-closed line, so we're doing a straight "join".
@@ -341,7 +341,7 @@ class LineBucket implements Bucket {
             // below will also become 0 and miterLength will become Infinity.
             let joinNormal = prevNormal.add(nextNormal);
             if (joinNormal.x !== 0 || joinNormal.y !== 0) {
-                joinNormal._unit();
+                joinNormal = joinNormal.unit();
             }
             /*  joinNormal     prevNormal
              *             ↖      ↑
@@ -370,7 +370,7 @@ class LineBucket implements Bucket {
             if (isSharpCorner && i > first) {
                 const prevSegmentLength = currentVertex.dist(prevVertex);
                 if (prevSegmentLength > 2 * sharpCornerOffset) {
-                    const newPrevVertex = currentVertex.sub(currentVertex.sub(prevVertex)._mult(sharpCornerOffset / prevSegmentLength)._round());
+                    const newPrevVertex = currentVertex.sub(currentVertex.sub(prevVertex).mul(sharpCornerOffset / prevSegmentLength).round());
                     this.updateDistance(prevVertex, newPrevVertex);
                     this.addCurrentVertex(newPrevVertex, prevNormal, 0, 0, segment);
                     prevVertex = newPrevVertex;
@@ -408,7 +408,7 @@ class LineBucket implements Bucket {
 
             if (currentJoin === 'miter') {
 
-                joinNormal._mult(miterLength);
+                joinNormal.mul(miterLength);
                 this.addCurrentVertex(currentVertex, joinNormal, 0, 0, segment);
 
             } else if (currentJoin === 'flipbevel') {
@@ -416,14 +416,14 @@ class LineBucket implements Bucket {
 
                 if (miterLength > 100) {
                     // Almost parallel lines
-                    joinNormal = nextNormal.mult(-1);
+                    joinNormal = nextNormal.mul(-1);
 
                 } else {
                     const bevelLength = miterLength * prevNormal.add(nextNormal).mag() / prevNormal.sub(nextNormal).mag();
-                    joinNormal._perp()._mult(bevelLength * (lineTurnsLeft ? -1 : 1));
+                    joinNormal.perp().mul(bevelLength * (lineTurnsLeft ? -1 : 1));
                 }
                 this.addCurrentVertex(currentVertex, joinNormal, 0, 0, segment);
-                this.addCurrentVertex(currentVertex, joinNormal.mult(-1), 0, 0, segment);
+                this.addCurrentVertex(currentVertex, joinNormal.mul(-1), 0, 0, segment);
 
             } else if (currentJoin === 'bevel' || currentJoin === 'fakeround') {
                 const offset = -Math.sqrt(miterLength * miterLength - 1);
@@ -453,7 +453,7 @@ class LineBucket implements Bucket {
                             const B = 0.848013 + cosAngle * (-1.06021 + cosAngle * 0.215638);
                             t = t + t * t2 * (t - 1) * (A * t2 * t2 + B);
                         }
-                        const extrude = nextNormal.sub(prevNormal)._mult(t)._add(prevNormal)._unit()._mult(lineTurnsLeft ? -1 : 1);
+                        const extrude = nextNormal.sub(prevNormal).mul(t).add(prevNormal).unit().mul(lineTurnsLeft ? -1 : 1);
                         this.addHalfVertex(currentVertex, extrude.x, extrude.y, false, lineTurnsLeft, 0, segment);
                     }
                 }
@@ -491,7 +491,7 @@ class LineBucket implements Bucket {
             if (isSharpCorner && i < len - 1) {
                 const nextSegmentLength = currentVertex.dist(nextVertex);
                 if (nextSegmentLength > 2 * sharpCornerOffset) {
-                    const newCurrentVertex = currentVertex.add(nextVertex.sub(currentVertex)._mult(sharpCornerOffset / nextSegmentLength)._round());
+                    const newCurrentVertex = currentVertex.add(nextVertex.sub(currentVertex).mul(sharpCornerOffset / nextSegmentLength).round());
                     this.updateDistance(currentVertex, newCurrentVertex);
                     this.addCurrentVertex(newCurrentVertex, nextNormal, 0, 0, segment);
                     currentVertex = newCurrentVertex;

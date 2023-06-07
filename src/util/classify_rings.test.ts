@@ -3,7 +3,7 @@ import path from 'path';
 import Protobuf from 'pbf';
 import {VectorTile} from '@mapbox/vector-tile';
 import classifyRings from './classify_rings';
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 
 // Load a fill feature from fixture tile.
 const vt = new VectorTile(new Protobuf(fs.readFileSync(path.resolve(__dirname, '../../test/unit/assets/mbsv5-6-18-23.vector.pbf'))));

@@ -1,6 +1,6 @@
 import Queue from 'tinyqueue';
 
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 import {distToSegmentSquared} from './intersection_tests';
 
 /**

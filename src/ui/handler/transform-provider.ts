@@ -1,7 +1,7 @@
 import type Map from '../map';
 import type {PointLike} from '../camera';
 import type Transform from '../../geo/transform';
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 import LngLat from '../../geo/lng_lat';
 
 /**

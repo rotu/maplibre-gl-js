@@ -5,7 +5,7 @@ import type Transform from '../geo/transform';
 import type {RetainedQueryData} from '../symbol/placement';
 import type {FilterSpecification} from '@maplibre/maplibre-gl-style-spec';
 import type {MapGeoJSONFeature} from '../util/vectortile_to_geojson';
-import type Point from '@mapbox/point-geometry';
+import type {Point} from '#src/geo/point';
 import {mat4} from 'gl-matrix';
 
 /*

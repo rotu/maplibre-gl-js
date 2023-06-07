@@ -1,4 +1,4 @@
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 
 import type {PossiblyEvaluatedPropertyValue} from './properties';
 import type StyleLayer from '../style/style_layer';
@@ -30,10 +30,10 @@ export function translate(queryGeometry: Array<Point>,
     if (!translate[0] && !translate[1]) {
         return queryGeometry;
     }
-    const pt = Point.convert(translate)._mult(pixelsToTileUnits);
+    let pt = Point.convert(translate).mul(pixelsToTileUnits);
 
     if (translateAnchor === 'viewport') {
-        pt._rotate(-bearing);
+        pt = pt.rotate(-bearing);
     }
 
     const translated = [];
@@ -53,16 +53,16 @@ export function offsetLine(rings: Array<Array<Point>>, offset: number) {
             const a = ring[index - 1];
             const b = ring[index];
             const c = ring[index + 1];
-            const aToB = index === 0 ? new Point(0, 0) : b.sub(a)._unit()._perp();
-            const bToC = index === ring.length - 1 ? new Point(0, 0) : c.sub(b)._unit()._perp();
-            const extrude = aToB._add(bToC)._unit();
+            const aToB = index === 0 ? new Point(0, 0) : b.sub(a).unit().perp();
+            const bToC = index === ring.length - 1 ? new Point(0, 0) : c.sub(b).unit().perp();
+            let extrude = aToB.add(bToC).unit();
 
             const cosHalfAngle = extrude.x * bToC.x + extrude.y * bToC.y;
             if (cosHalfAngle !== 0) {
-                extrude._mult(1 / cosHalfAngle);
+                extrude = extrude.mul(1 / cosHalfAngle);
             }
 
-            newRing.push(extrude._mult(offset)._add(b));
+            newRing.push(extrude.mul(offset).add(b));
         }
         newRings.push(newRing);
     }

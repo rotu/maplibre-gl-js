@@ -1,7 +1,7 @@
 import browser from '../util/browser';
 import type Map from './map';
 import {bezier, clamp, extend} from '../util/util';
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 import type {DragPanOptions} from './handler/shim/drag_pan';
 
 const defaultInertiaOptions = {
@@ -87,7 +87,7 @@ export default class HandlerInertia {
             deltas.zoom += settings.zoomDelta || 0;
             deltas.bearing += settings.bearingDelta || 0;
             deltas.pitch += settings.pitchDelta || 0;
-            if (settings.panDelta) deltas.pan._add(settings.panDelta);
+            if (settings.panDelta) deltas.pan = deltas.pan.add(settings.panDelta);
             if (settings.around) deltas.around = settings.around;
             if (settings.pinchAround) deltas.pinchAround = settings.pinchAround;
         }
@@ -99,7 +99,7 @@ export default class HandlerInertia {
 
         if (deltas.pan.mag()) {
             const result = calculateEasing(deltas.pan.mag(), duration, extend({}, defaultPanInertiaOptions, panInertiaOptions || {}));
-            easeOptions.offset = deltas.pan.mult(result.amount / deltas.pan.mag());
+            easeOptions.offset = deltas.pan.mul(result.amount / deltas.pan.mag());
             easeOptions.center = this._map.transform.center;
             extendDuration(easeOptions, result);
         }

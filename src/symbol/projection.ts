@@ -1,4 +1,4 @@
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 
 import {mat4, vec4} from 'gl-matrix';
 import * as symbolSize from './symbol_size';
@@ -364,10 +364,10 @@ function projectTruncatedLineSegment(previousTilePoint: Point, currentTilePoint:
     // If it did, that would mean our label extended all the way out from within the viewport to a (very distant)
     // point near the plane of the camera. We wouldn't be able to render the label anyway once it crossed the
     // plane of the camera.
-    const projectedUnitVertex = project(previousTilePoint.add(previousTilePoint.sub(currentTilePoint)._unit()), projectionMatrix, getElevation).point;
+    const projectedUnitVertex = project(previousTilePoint.add(previousTilePoint.sub(currentTilePoint).unit()), projectionMatrix, getElevation).point;
     const projectedUnitSegment = previousProjectedPoint.sub(projectedUnitVertex);
 
-    return previousProjectedPoint.add(projectedUnitSegment._mult(minimumLength / projectedUnitSegment.mag()));
+    return previousProjectedPoint.add(projectedUnitSegment.mul(minimumLength / projectedUnitSegment.mag()));
 }
 
 type IndexToPointCache = { [lineIndex: number]: Point };
@@ -442,13 +442,13 @@ function projectVertexToViewport(index: number, projectionArgs: ProjectionArgs):
 
 /**
  * Calculate the normal vector for a line segment
- * @param segmentVector will be mutated as a tiny optimization
+ * @param segmentVector
  * @param offset magnitude of resulting vector
  * @param direction direction of line traversal
  * @returns a normal vector from the segment, with magnitude equal to offset amount
  */
 function transformToOffsetNormal(segmentVector: Point, offset: number, direction: number): Point {
-    return segmentVector._unit()._perp()._mult(offset * direction);
+    return segmentVector.unit().perp().mul(offset * direction);
 }
 
 /**
@@ -614,7 +614,7 @@ function placeGlyphAlongLine(
 
     // The point is on the current segment. Interpolate to find it.
     const segmentInterpolationT = (absOffsetX - distanceFromAnchor) / currentSegmentDistance;
-    const p = currentLineSegment._mult(segmentInterpolationT)._add(offsetPreviousVertex || previousVertex);
+    const p = currentLineSegment.mul(segmentInterpolationT).add(offsetPreviousVertex || previousVertex);
 
     const segmentAngle = angle + Math.atan2(currentVertex.y - previousVertex.y, currentVertex.x - previousVertex.x);
 

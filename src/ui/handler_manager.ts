@@ -17,7 +17,7 @@ import DragPanHandler from './handler/shim/drag_pan';
 import DragRotateHandler from './handler/shim/drag_rotate';
 import TouchZoomRotateHandler from './handler/shim/two_fingers_touch';
 import {bindAll, extend} from '../util/util';
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 
 export type InputEvent = MouseEvent | TouchEvent | KeyboardEvent | WheelEvent;
 
@@ -413,7 +413,7 @@ class HandlerManager {
 
         for (const [change, eventsInProgress, deactivatedHandlers] of this._changes) {
 
-            if (change.panDelta) combined.panDelta = (combined.panDelta || new Point(0, 0))._add(change.panDelta);
+            if (change.panDelta) combined.panDelta = (combined.panDelta || new Point(0, 0)).add(change.panDelta);
             if (change.zoomDelta) combined.zoomDelta = (combined.zoomDelta || 0) + change.zoomDelta;
             if (change.bearingDelta) combined.bearingDelta = (combined.bearingDelta || 0) + change.bearingDelta;
             if (change.pitchDelta) combined.pitchDelta = (combined.pitchDelta || 0) + change.pitchDelta;

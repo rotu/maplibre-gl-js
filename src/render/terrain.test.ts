@@ -1,4 +1,4 @@
-import Point from '@mapbox/point-geometry';
+import {Point} from '#src/geo/point';
 import Terrain from './terrain';
 import gl from 'gl';
 import Context from '../gl/context';
